@@ -1,0 +1,43 @@
+:root {
+    --color-1: #F48200;
+    --color-2: #F6BB0A;
+    --color-3: #F9D342;
+    --color-4: #FBE551;
+    --color-5: #FDE88D;
+}
+
+/* Menggunakan font Nunito agar mirip Duolingo */
+body {
+    font-family: 'Nunito', sans-serif;
+}
+
+.input-go {
+    background-color: #FFFFFF;
+    border: 2px solid var(--color-4);
+    border-radius: 18px;
+    padding: 14px 18px;
+    color: var(--color-1);
+    transition: all 0.2s ease;
+}
+
+.input-go:focus {
+    border-color: var(--color-1);
+    box-shadow: 0 0 0 4px rgba(244, 130, 0, 0.15);
+    outline: none;
+}
+
+.btn-go {
+    background-color: var(--color-1);
+    color: #FFFFFF;
+    border-radius: 9999px;
+    font-weight: 800;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px -6px rgba(244, 130, 0, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-go:hover {
+    background-color: var(--color-2);
+    transform: translateY(-2px);
+}
