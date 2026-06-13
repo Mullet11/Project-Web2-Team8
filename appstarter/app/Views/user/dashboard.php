@@ -6,171 +6,122 @@
     <title>Dashboard | Smart Class Booking</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="<?= base_url('css/style.css') ?>">
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="h-screen overflow-hidden bg-[#FFFCE5] antialiased font-['Nunito'] text-[#856404]">
+<body class="h-screen overflow-hidden antialiased bg-slate-50 font-['Inter']">
 
-<div class="flex h-screen p-4 md:p-6 gap-6">
-
-    <aside class="hidden lg:flex w-72 flex-col justify-between bg-white rounded-[40px] p-8 border border-[#FBE551]/30 shadow-sm">
-        <div>
-            <div class="flex items-center gap-3 mb-12">
-                <div class="w-11 h-11 bg-[#F48200] rounded-2xl flex items-center justify-center shadow-lg text-white font-black text-2xl">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                    </svg>
-                </div>
-                <span class="text-2xl font-black text-[#F48200] tracking-tighter uppercase font-black">Smart Class</span>
+<div class="flex h-screen">
+    <aside class="w-64 bg-white border-r border-slate-200 flex flex-col z-30">
+        <div class="p-8 flex items-center gap-3 border-b border-slate-50">
+            <div class="w-9 h-9 bg-[#F48200] rounded-lg flex items-center justify-center text-white shadow-md">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
             </div>
-
-            <nav class="space-y-3">
-                <a href="#" class="flex items-center gap-4 p-4 bg-[#F48200] text-white rounded-2xl shadow-lg font-black">
-                    <span>Daftar Ruang</span>
-                </a>
-                <a href="#" class="flex items-center gap-4 p-4 text-[#F6BB0A] hover:bg-[#FDE88D]/20 rounded-2xl font-black transition-all">
-                    <span>Peminjaman</span>
-                </a>
-            </nav>
+            <span class="text-lg font-bold text-slate-800 tracking-tight uppercase">Smart Class</span>
         </div>
 
-        <div class="bg-[#FDE88D]/10 p-6 rounded-[30px] border border-[#FBE551]/30">
-            <div class="flex items-center gap-3 mb-6 text-center">
-                <div class="w-12 h-12 bg-[#F9D342] mx-auto rounded-full border-2 border-white shadow-sm"></div>
-                <div class="overflow-hidden flex-1 text-left">
-                    <p class="text-sm font-black text-[#F48200] truncate">User Name</p>
-                    <p class="text-[10px] font-black text-[#F6BB0A] uppercase tracking-widest italic">Mahasiswa</p>
+        <nav class="flex-1 p-6 space-y-2">
+            <a href="#" class="flex items-center gap-3 px-4 py-3 bg-slate-100 text-[#F48200] rounded-xl font-semibold text-sm transition-all">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V2z"></path></svg>
+                Daftar Ruangan
+            </a>
+            <a href="#" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 rounded-xl transition-all text-sm font-medium">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                Riwayat Booking
+            </a>
+        </nav>
+
+        <div class="p-6 border-t border-slate-100">
+            <div class="flex items-center gap-3 mb-4 px-2">
+                <div class="w-10 h-10 bg-slate-200 rounded-full flex-shrink-0"></div>
+                <div class="overflow-hidden">
+                    <p class="text-sm font-semibold text-slate-800 truncate">Naufal Khalish</p>
+                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Mahasiswa</p>
                 </div>
             </div>
-            <button class="w-full py-3 bg-[#FFF4A3] text-[#F48200] rounded-xl font-black text-xs uppercase tracking-widest hover:bg-[#F48200] hover:text-white transition-all">
-                Log Out
-            </button>
+            <button class="w-full py-2.5 text-slate-400 hover:text-red-500 text-xs font-bold transition-all text-left uppercase tracking-widest px-2">Log Out</button>
         </div>
     </aside>
 
-    <main class="flex-1 flex flex-col h-full bg-white rounded-[40px] border border-gray-100 overflow-hidden shadow-sm">
-
-        <header class="p-8 md:p-12 flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div>
-                <h2 class="text-4xl font-black text-[#F48200] tracking-tighter uppercase font-black leading-none">Eksplorasi Ruang</h2>
-                <p class="text-[#F6BB0A] font-bold text-lg">Fakultas Teknik ULM</p>
-            </div>
-
-            <div class="flex items-center gap-4">
-                <div class="relative">
-                    <input type="text" placeholder="Cari ruangan..." class="w-72 bg-[#FDE88D]/10 border-2 border-[#FBE551]/20 rounded-2xl py-4 px-12 font-bold text-[#F48200] focus:outline-none focus:border-[#F48200] focus:bg-white transition-all shadow-sm">
-                    <svg class="w-6 h-6 absolute left-4 top-4 text-[#F9D342]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                </div>
+    <main class="flex-1 flex flex-col overflow-hidden">
+        <header class="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-10">
+            <h2 class="text-xl font-bold text-slate-800 uppercase tracking-tight">Eksplorasi Ruangan</h2>
+            <div class="relative w-80">
+                <input type="text" placeholder="Cari ruangan..." class="w-full bg-slate-50 border-none rounded-xl py-2.5 px-10 text-sm focus:ring-2 focus:ring-[#F48200] transition-all">
+                <svg class="w-4 h-4 absolute left-4 top-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
             </div>
         </header>
 
-        <section class="flex-1 overflow-y-auto p-8 md:p-12 pt-0">
-            <div class="flex gap-4 mb-12 overflow-x-auto pb-2 justify-center lg:justify-start">
-                <button class="px-8 py-3 bg-[#F48200] text-white rounded-full font-black text-xs uppercase tracking-widest shadow-lg">Semua</button>
-                <button class="px-8 py-3 bg-[#FDE88D]/30 text-[#F6BB0A] rounded-full font-black text-xs uppercase tracking-widest hover:bg-[#FDE88D]/50 transition-all text-nowrap">Lantai 1</button>
-                <button class="px-8 py-3 bg-[#FDE88D]/30 text-[#F6BB0A] rounded-full font-black text-xs uppercase tracking-widest hover:bg-[#FDE88D]/50 transition-all text-nowrap">Lantai 2</button>
+        <div class="flex-1 overflow-y-auto p-10 bg-slate-50">
+            <div class="flex gap-3 mb-8">
+                <button class="px-6 py-2 bg-slate-800 text-white rounded-lg text-sm font-semibold shadow-sm">Semua</button>
+                <button class="px-6 py-2 bg-white border border-slate-200 text-slate-600 rounded-lg text-sm font-medium hover:bg-slate-50 transition-all">Lantai 1</button>
+                <button class="px-6 py-2 bg-white border border-slate-200 text-slate-600 rounded-lg text-sm font-medium hover:bg-slate-50 transition-all">Lantai 2</button>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10">
-
-                <!-- CARD 1 (Tersedia) -->
-                <div class="group bg-white rounded-[40px] border-2 border-[#FBE551]/10 p-2 shadow-sm hover:shadow-2xl transition-all hover:-translate-y-1">
-                    <div class="relative h-52 rounded-[35px] overflow-hidden bg-[#FDE88D]/10">
-                        <div class="absolute top-5 right-5 z-10 bg-white/90 backdrop-blur-md px-5 py-2 rounded-full shadow-sm">
-                            <span class="flex items-center gap-2 text-[11px] font-black text-green-500 uppercase italic">
-                                <span class="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse"></span> Tersedia
-                            </span>
-                        </div>
-                        <div class="w-full h-full flex items-center justify-center text-[#F9D342] opacity-30">
-                            <svg class="w-20 h-20" fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
-                        </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card-pro overflow-hidden group">
+                    <div class="h-44 bg-slate-100 relative flex items-center justify-center overflow-hidden">
+                        <div class="absolute top-4 left-4 z-10 bg-white/90 backdrop-blur-md px-3 py-1 rounded-md text-[10px] font-bold text-green-600 border border-green-100 shadow-sm">TERSEDIA</div>
+                        <svg class="w-16 h-16 text-slate-200 group-hover:scale-110 transition-transform duration-500" fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
                     </div>
-                    <div class="p-8">
-                        <h4 class="text-3xl font-black text-[#F48200] tracking-tighter uppercase mb-2">Ruang A.1.1</h4>
-                        <p class="font-bold text-sm uppercase italic tracking-widest text-[#F6BB0A] mb-8 uppercase">Lantai 1 • 40 Kursi</p>
-                        <button onclick="openModal()" class="w-full bg-[#F48200] text-white py-5 rounded-[22px] font-black text-sm uppercase tracking-widest shadow-xl hover:bg-[#F6BB0A] transition-all transform active:scale-95">
-                            Booking Sekarang
-                        </button>
+                    <div class="p-6">
+                        <h4 class="text-lg font-bold text-slate-800 mb-1 uppercase tracking-tight">Ruang A.1.1</h4>
+                        <p class="text-xs text-slate-500 font-medium mb-6">Gedung Utama • 40 Kursi • AC</p>
+                        <button onclick="openModal()" class="btn-pro w-full text-xs py-3.5 shadow-sm">Booking Ruangan</button>
                     </div>
                 </div>
 
-                <!-- CARD 2 (Terpakai) -->
-                <div class="bg-white rounded-[40px] border-2 border-gray-50 p-2 shadow-sm opacity-50 grayscale-[0.3]">
-                    <div class="relative h-52 rounded-[35px] overflow-hidden bg-gray-50">
-                        <div class="absolute top-5 right-5 z-10 bg-white/90 backdrop-blur-md px-5 py-2 rounded-full shadow-sm">
-                            <span class="flex items-center gap-2 text-[11px] font-black text-red-400 uppercase italic">
-                                <span class="w-2.5 h-2.5 bg-red-400 rounded-full"></span> Terpakai
-                            </span>
-                        </div>
-                        <div class="w-full h-full flex items-center justify-center text-gray-200 font-black text-xs tracking-widest italic uppercase">
-                            In Use s/d 14:00
-                        </div>
+                <div class="card-pro overflow-hidden opacity-60 grayscale-[0.3]">
+                    <div class="h-44 bg-slate-200 relative flex items-center justify-center">
+                        <div class="absolute top-4 left-4 z-10 bg-white/90 backdrop-blur-md px-3 py-1 rounded-md text-[10px] font-bold text-slate-400 border border-slate-200 shadow-sm uppercase italic">Terpakai</div>
+                        <span class="text-slate-300 font-bold text-[10px] uppercase tracking-widest">In Use s/d 14:00</span>
                     </div>
-                    <div class="p-8">
-                        <h4 class="text-3xl font-black text-gray-400 tracking-tighter uppercase mb-2">Ruang A.1.2</h4>
-                        <p class="font-bold text-sm uppercase italic tracking-widest text-gray-300 mb-8 uppercase">Lantai 1 • 30 Kursi</p>
-                        <button disabled class="w-full bg-gray-50 text-gray-200 py-5 rounded-[22px] font-black text-sm uppercase tracking-widest cursor-not-allowed">
-                            Terisi
-                        </button>
+                    <div class="p-6">
+                        <h4 class="text-lg font-bold text-slate-400 mb-1 uppercase tracking-tight italic">Ruang A.1.2</h4>
+                        <p class="text-xs text-slate-400 font-medium mb-6 italic tracking-tight">Sudah Terisi oleh Himpunan</p>
+                        <button disabled class="w-full py-3.5 bg-slate-100 text-slate-400 rounded-xl text-xs font-bold cursor-not-allowed">Terisi</button>
                     </div>
                 </div>
-
             </div>
-        </section>
+        </div>
     </main>
 </div>
 
 <div id="modalBooking" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
-    <div class="absolute inset-0 bg-[#856404]/40 backdrop-blur-sm"></div>
-    <div class="relative w-full max-w-lg bg-white rounded-[40px] shadow-2xl overflow-hidden border border-[#FBE551]/30">
-        <div class="p-8 bg-[#F48200] text-white flex justify-between items-center font-black">
-            <div>
-                <h3 class="text-2xl font-black uppercase tracking-tight">Form Reservasi</h3>
-                <p class="text-[10px] font-black opacity-80 uppercase tracking-widest">Ruang A.1.1 • Gedung Utama</p>
-            </div>
-            <button onclick="closeModal()" class="w-10 h-10 flex items-center justify-center bg-white/20 rounded-full hover:bg-white/40 transition-all">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"></path></svg>
+    <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeModal()"></div>
+    <div class="relative w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden border border-slate-100 animate-in fade-in zoom-in duration-200">
+        <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-white">
+            <h3 class="text-lg font-bold text-slate-800">Booking Reservasi</h3>
+            <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
         </div>
-
         <form action="#" class="p-8 space-y-5">
             <div>
-                <label class="block text-[11px] font-black text-[#F48200] mb-2 ml-1 uppercase tracking-widest">Nama Kegiatan</label>
-                <input type="text" placeholder="Contoh: Rapat Himpunan" class="w-full bg-[#FDE88D]/10 border-2 border-[#FBE551]/30 rounded-2xl py-4 px-6 font-bold text-[#F48200] focus:outline-none focus:border-[#F48200] transition-all">
+                <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-2">Nama Kegiatan</label>
+                <input type="text" placeholder="Masukkan nama kegiatan" class="input-pro text-sm">
             </div>
-
             <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-[11px] font-black text-[#F48200] mb-2 ml-1 uppercase tracking-widest">Waktu Mulai</label>
-                    <input type="time" class="w-full bg-[#FDE88D]/10 border-2 border-[#FBE551]/30 rounded-2xl py-4 px-6 font-bold text-[#F48200] focus:outline-none focus:border-[#F48200] transition-all">
+                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-2">Mulai</label>
+                    <input type="time" class="input-pro text-sm">
                 </div>
                 <div>
-                    <label class="block text-[11px] font-black text-[#F48200] mb-2 ml-1 uppercase tracking-widest">Waktu Selesai</label>
-                    <input type="time" class="w-full bg-[#FDE88D]/10 border-2 border-[#FBE551]/30 rounded-2xl py-4 px-6 font-bold text-[#F48200] focus:outline-none focus:border-[#F48200] transition-all">
+                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-2">Selesai</label>
+                    <input type="time" class="input-pro text-sm">
                 </div>
             </div>
-
-            <div>
-                <label class="block text-[11px] font-black text-[#F48200] mb-2 ml-1 uppercase tracking-widest">Keterangan</label>
-                <textarea rows="3" placeholder="Opsional..." class="w-full bg-[#FDE88D]/10 border-2 border-[#FBE551]/30 rounded-2xl py-4 px-6 font-bold text-[#F48200] focus:outline-none focus:border-[#F48200] transition-all"></textarea>
-            </div>
-
-            <div class="pt-4 flex gap-4">
-                <button type="button" onclick="closeModal()" class="flex-1 py-4 text-[#F6BB0A] font-black uppercase tracking-widest text-xs hover:underline">Batal</button>
-                <button type="submit" class="flex-[2] bg-[#F48200] text-white py-4 rounded-2xl font-black text-sm uppercase tracking-widest shadow-xl hover:bg-[#F6BB0A] transition-all transform active:scale-95 shadow-[#F48200]/20">
-                    Konfirmasi
-                </button>
+            <div class="pt-6 flex gap-3">
+                <button type="button" onclick="closeModal()" class="flex-1 py-3 text-sm font-bold text-slate-400 hover:text-slate-600 transition-all">BATAL</button>
+                <button type="submit" class="flex-[2] btn-pro text-xs">Konfirmasi Booking</button>
             </div>
         </form>
     </div>
 </div>
 
 <script>
-    function openModal() {
-        document.getElementById('modalBooking').classList.remove('hidden');
-    }
-    function closeModal() {
-        document.getElementById('modalBooking').classList.add('hidden');
-    }
+    function openModal() { document.getElementById('modalBooking').classList.remove('hidden'); }
+    function closeModal() { document.getElementById('modalBooking').classList.add('hidden'); }
 </script>
 
 </body>
