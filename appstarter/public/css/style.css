@@ -34,5 +34,4 @@ body {
 
 .btn-pill:hover {
     transform: translateY(-2px);
-    box-shadow: 0 15px 25px -5px rgba(244, 130, 0, 0.5);
 }
