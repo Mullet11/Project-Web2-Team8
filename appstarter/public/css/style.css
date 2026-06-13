@@ -1,13 +1,13 @@
 :root {
-    --primary-ulm: #F48200; /* Oranye ULM */
-    --bg-illustration: #FDF0E9; /* Peach lembut sesuai gambar */
+    --primary-ulm: #F48200;
+    --bg-illustration: #FDF0E9;
 }
 
 body {
     font-family: 'Inter', 'Nunito', sans-serif;
 }
 
-/* Input style hanya garis bawah */
+
 .input-line {
     width: 100%;
     background: transparent;
@@ -23,14 +23,13 @@ body {
     border-bottom-color: var(--primary-ulm);
 }
 
-/* Tombol Pill-Shaped dengan Shadow */
+
 .btn-pill {
     background: linear-gradient(135deg, #FF5722, #F48200);
     color: white;
     border-radius: 50px;
     padding: 14px;
     font-weight: 700;
-    box-shadow: 0 10px 20px -5px rgba(244, 130, 0, 0.4);
     transition: all 0.3s;
 }
 
