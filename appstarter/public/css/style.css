@@ -1,40 +1,43 @@
 :root {
-    --primary-ulm: #F48200; /* Oranye ULM */
-    --bg-illustration: #FDF0E9; /* Peach lembut sesuai gambar */
+    --color-1: #F48200;
+    --color-2: #F6BB0A;
+    --color-3: #F9D342;
+    --color-4: #FBE551;
+    --color-5: #FDE88D;
 }
 
+/* Menggunakan font Nunito agar mirip Duolingo */
 body {
-    font-family: 'Inter', 'Nunito', sans-serif;
+    font-family: 'Nunito', sans-serif;
 }
 
-/* Input style hanya garis bawah */
-.input-line {
-    width: 100%;
-    background: transparent;
-    border: none;
-    border-bottom: 1.5px solid #E2E8F0;
-    padding: 12px 0 12px 35px;
-    font-size: 14px;
-    transition: all 0.3s;
+.input-go {
+    background-color: #FFFFFF;
+    border: 2px solid var(--color-4);
+    border-radius: 18px;
+    padding: 14px 18px;
+    color: var(--color-1);
+    transition: all 0.2s ease;
 }
 
-.input-line:focus {
+.input-go:focus {
+    border-color: var(--color-1);
+    box-shadow: 0 0 0 4px rgba(244, 130, 0, 0.15);
     outline: none;
-    border-bottom-color: var(--primary-ulm);
 }
 
-/* Tombol Pill-Shaped dengan Shadow */
-.btn-pill {
-    background: linear-gradient(135deg, #FF5722, #F48200);
-    color: white;
-    border-radius: 50px;
-    padding: 14px;
-    font-weight: 700;
-    box-shadow: 0 10px 20px -5px rgba(244, 130, 0, 0.4);
-    transition: all 0.3s;
+.btn-go {
+    background-color: var(--color-1);
+    color: #FFFFFF;
+    border-radius: 9999px;
+    font-weight: 800;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 20px -6px rgba(244, 130, 0, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-.btn-pill:hover {
+.btn-go:hover {
+    background-color: var(--color-2);
     transform: translateY(-2px);
-    box-shadow: 0 15px 25px -5px rgba(244, 130, 0, 0.5);
 }
