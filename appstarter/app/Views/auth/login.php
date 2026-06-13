@@ -24,9 +24,7 @@
 
 
         <div class="flex-1 flex items-center justify-center">
-            <img src="<?= base_url('asset/image/loginIllustration.jpg') ?>"
-                 alt="Illustration"
-                 class="max-w-[85%] h-auto mix-blend-multiply">
+
         </div>
     </div>
 
