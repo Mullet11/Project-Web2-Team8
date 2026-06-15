@@ -8,121 +8,195 @@
     <link rel="stylesheet" href="<?= base_url('css/style.css') ?>">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="h-screen overflow-hidden antialiased bg-slate-50 font-['Inter']">
+<body class="h-screen flex flex-col p-6 bg-[#F8FAFC] antialiased overflow-hidden font-['Inter']">
 
-<div class="flex h-screen">
-    <aside class="w-64 bg-white border-r border-slate-200 flex flex-col z-30">
-        <div class="p-8 flex items-center gap-3 border-b border-slate-50">
-            <div class="w-9 h-9 bg-[#F48200] rounded-lg flex items-center justify-center text-white shadow-md">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
-            </div>
-            <span class="text-lg font-bold text-slate-800 tracking-tight uppercase">Smart Class</span>
-        </div>
 
-        <nav class="flex-1 p-6 space-y-2">
-            <a href="#" class="flex items-center gap-3 px-4 py-3 bg-slate-100 text-[#F48200] rounded-xl font-semibold text-sm transition-all">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V2z"></path></svg>
-                Daftar Ruangan
-            </a>
-            <a href="#" class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 rounded-xl transition-all text-sm font-medium">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                Riwayat Booking
-            </a>
-        </nav>
-
-        <div class="p-6 border-t border-slate-100">
-            <div class="flex items-center gap-3 mb-4 px-2">
-                <div class="w-10 h-10 bg-slate-200 rounded-full flex-shrink-0"></div>
-                <div class="overflow-hidden">
-                    <p class="text-sm font-semibold text-slate-800 truncate">Naufal Khalish</p>
-                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Mahasiswa</p>
-                </div>
-            </div>
-            <button class="w-full py-2.5 text-slate-400 hover:text-red-500 text-xs font-bold transition-all text-left uppercase tracking-widest px-2">Log Out</button>
-        </div>
-    </aside>
-
-    <main class="flex-1 flex flex-col overflow-hidden">
-        <header class="h-20 bg-white border-b border-slate-200 flex items-center justify-between px-10">
-            <h2 class="text-xl font-bold text-slate-800 uppercase tracking-tight">Eksplorasi Ruangan</h2>
-            <div class="relative w-80">
-                <input type="text" placeholder="Cari ruangan..." class="w-full bg-slate-50 border-none rounded-xl py-2.5 px-10 text-sm focus:ring-2 focus:ring-[#F48200] transition-all">
-                <svg class="w-4 h-4 absolute left-4 top-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-            </div>
-        </header>
-
-        <div class="flex-1 overflow-y-auto p-10 bg-slate-50">
-            <div class="flex gap-3 mb-8">
-                <button class="px-6 py-2 bg-slate-800 text-white rounded-lg text-sm font-semibold shadow-sm">Semua</button>
-                <button class="px-6 py-2 bg-white border border-slate-200 text-slate-600 rounded-lg text-sm font-medium hover:bg-slate-50 transition-all">Lantai 1</button>
-                <button class="px-6 py-2 bg-white border border-slate-200 text-slate-600 rounded-lg text-sm font-medium hover:bg-slate-50 transition-all">Lantai 2</button>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="card-pro overflow-hidden group">
-                    <div class="h-44 bg-slate-100 relative flex items-center justify-center overflow-hidden">
-                        <div class="absolute top-4 left-4 z-10 bg-white/90 backdrop-blur-md px-3 py-1 rounded-md text-[10px] font-bold text-green-600 border border-green-100 shadow-sm">TERSEDIA</div>
-                        <svg class="w-16 h-16 text-slate-200 group-hover:scale-110 transition-transform duration-500" fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
-                    </div>
-                    <div class="p-6">
-                        <h4 class="text-lg font-bold text-slate-800 mb-1 uppercase tracking-tight">Ruang A.1.1</h4>
-                        <p class="text-xs text-slate-500 font-medium mb-6">Gedung Utama • 40 Kursi • AC</p>
-                        <button onclick="openModal()" class="btn-pro w-full text-xs py-3.5 shadow-sm">Booking Ruangan</button>
-                    </div>
-                </div>
-
-                <div class="card-pro overflow-hidden opacity-60 grayscale-[0.3]">
-                    <div class="h-44 bg-slate-200 relative flex items-center justify-center">
-                        <div class="absolute top-4 left-4 z-10 bg-white/90 backdrop-blur-md px-3 py-1 rounded-md text-[10px] font-bold text-slate-400 border border-slate-200 shadow-sm uppercase italic">Terpakai</div>
-                        <span class="text-slate-300 font-bold text-[10px] uppercase tracking-widest">In Use s/d 14:00</span>
-                    </div>
-                    <div class="p-6">
-                        <h4 class="text-lg font-bold text-slate-400 mb-1 uppercase tracking-tight italic">Ruang A.1.2</h4>
-                        <p class="text-xs text-slate-400 font-medium mb-6 italic tracking-tight">Sudah Terisi oleh Himpunan</p>
-                        <button disabled class="w-full py-3.5 bg-slate-100 text-slate-400 rounded-xl text-xs font-bold cursor-not-allowed">Terisi</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-</div>
-
-<div id="modalBooking" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
-    <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeModal()"></div>
-    <div class="relative w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden border border-slate-100 animate-in fade-in zoom-in duration-200">
-        <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-white">
-            <h3 class="text-lg font-bold text-slate-800">Booking Reservasi</h3>
-            <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 transition-colors">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
-        </div>
-        <form action="#" class="p-8 space-y-5">
+    <!-- Main Dashboard Card Container -->
+    <div class="flex-1 flex gap-6 overflow-hidden">
+        
+        <!-- Sidebar -->
+        <aside class="w-72 bg-[#FFB800] rounded-[24px] shadow-sm flex flex-col justify-between p-8 text-white flex-shrink-0">
+            <!-- Top Section: Profile & Navigation -->
             <div>
-                <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-2">Nama Kegiatan</label>
-                <input type="text" placeholder="Masukkan nama kegiatan" class="input-pro text-sm">
-            </div>
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-2">Mulai</label>
-                    <input type="time" class="input-pro text-sm">
-                </div>
-                <div>
-                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-2">Selesai</label>
-                    <input type="time" class="input-pro text-sm">
-                </div>
-            </div>
-            <div class="pt-6 flex gap-3">
-                <button type="button" onclick="closeModal()" class="flex-1 py-3 text-sm font-bold text-slate-400 hover:text-slate-600 transition-all">BATAL</button>
-                <button type="submit" class="flex-[2] btn-pro text-xs">Konfirmasi Booking</button>
-            </div>
-        </form>
-    </div>
-</div>
+                <a href="<?= base_url('profil') ?>" class="flex items-center gap-4 mb-10 hover:opacity-90 transition-all cursor-pointer">
+                    <div class="w-12 h-12 bg-white rounded-full flex-shrink-0"></div>
+                    <div>
+                        <h3 class="font-bold text-[17px] leading-tight">Naufal Khalish</h3>
+                        <p class="text-[12px] text-white/95 mt-0.5">Mahasiswa</p>
+                    </div>
+                </a>
 
-<script>
-    function openModal() { document.getElementById('modalBooking').classList.remove('hidden'); }
-    function closeModal() { document.getElementById('modalBooking').classList.add('hidden'); }
-</script>
+                <!-- Navigation Menu -->
+                <nav class="space-y-3">
+                    <a href="<?= base_url('dashboard') ?>" class="flex items-center gap-4 px-4 py-3 bg-white/20 rounded-[14px] font-bold text-[15px] transition-all">
+                        <div class="w-7 h-7 bg-white rounded-full flex-shrink-0"></div>
+                        Daftar Ruangan
+                    </a>
+                    <a href="<?= base_url('history') ?>" class="flex items-center gap-4 px-4 py-3 rounded-[14px] font-semibold text-[15px] hover:bg-white/10 transition-all text-white/90">
+                        <div class="w-7 h-7 bg-white rounded-full flex-shrink-0"></div>
+                        Riwayat Booking
+                    </a>
+                </nav>
+            </div>
+
+            <!-- Bottom Section: Logout -->
+            <a href="<?= base_url('/') ?>" class="flex items-center gap-4 px-4 py-3 rounded-[14px] font-semibold text-[15px] hover:bg-white/10 transition-all text-white/90">
+                <div class="w-7 h-7 bg-white rounded-full flex-shrink-0"></div>
+                Log Out
+            </a>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 flex flex-col bg-white rounded-[24px] shadow-sm border border-slate-100 overflow-hidden">
+            <!-- Search Header -->
+            <div class="px-10 pt-8 pb-4">
+                <div class="relative w-full max-w-[850px]">
+                    <input type="text" id="searchRoom" oninput="filterSearch()" placeholder="Cari Ruangan" 
+                           class="w-full bg-slate-100/80 border-none rounded-full py-4 pl-14 pr-6 text-[15px] focus:outline-none focus:ring-2 focus:ring-[#FFB800] text-slate-800 placeholder-slate-400">
+                    <svg class="w-5 h-5 absolute left-6 top-1/2 -translate-y-1/2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Tabs Section -->
+            <div class="px-10 py-3 flex gap-4">
+                <button onclick="filterFloor('all', this)" class="px-10 py-3.5 bg-[#FFB800] text-white rounded-[14px] text-[15px] font-bold shadow-sm transition-all">Semua</button>
+                <button onclick="filterFloor('1', this)" class="px-10 py-3.5 bg-[#D9D9D9] text-white rounded-[14px] text-[15px] font-bold hover:bg-slate-300 transition-all">Lantai 1</button>
+                <button onclick="filterFloor('2', this)" class="px-10 py-3.5 bg-[#D9D9D9] text-white rounded-[14px] text-[15px] font-bold hover:bg-slate-300 transition-all">Lantai 2</button>
+            </div>
+
+            <!-- Cards Grid Section -->
+            <div class="flex-1 overflow-y-auto px-10 py-6">
+                <!-- Session Alerts -->
+                <?php if (session()->has('success')): ?>
+                    <div class="mb-6 p-4 bg-green-50 border border-green-200 text-green-700 text-sm rounded-[14px] font-semibold">
+                        <?= session('success') ?>
+                    </div>
+                <?php endif; ?>
+                <?php if (session()->has('error')): ?>
+                    <div class="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 text-sm rounded-[14px] font-semibold">
+                        <?= session('error') ?>
+                    </div>
+                <?php endif; ?>
+
+                <div class="grid grid-cols-1 xl:grid-cols-2 gap-8 max-w-[1100px]">
+                    
+                    <?php 
+                    $daftar_ruangan = $rooms ?? [
+                        ['id' => 1, 'nama' => 'Ruang A11', 'lantai' => 1, 'kapasitas' => 35, 'status' => 'Tersedia', 'fakultas' => 'Fakultas Teknik'],
+                        ['id' => 2, 'nama' => 'Ruang A12', 'lantai' => 1, 'kapasitas' => 35, 'status' => 'Penuh', 'fakultas' => 'Fakultas Teknik'],
+                        ['id' => 3, 'nama' => 'Ruang B21', 'lantai' => 2, 'kapasitas' => 35, 'status' => 'Penuh', 'fakultas' => 'Fakultas Teknik'],
+                        ['id' => 4, 'nama' => 'Ruang B22', 'lantai' => 2, 'kapasitas' => 35, 'status' => 'Tersedia', 'fakultas' => 'Fakultas Teknik'],
+                    ];
+                    foreach ($daftar_ruangan as $r):
+                        $is_tersedia = strtolower($r['status']) === 'tersedia';
+                        $status_color_class = $is_tersedia ? 'text-green-600' : 'text-red-600';
+                    ?>
+                    <!-- Card: <?= esc($r['nama']) ?> -->
+                    <div data-lantai="<?= esc($r['lantai']) ?>" class="rounded-[20px] overflow-hidden border border-slate-100 shadow-sm flex flex-col bg-white">
+                        <div class="h-48 bg-[#FFF2E6] flex items-center justify-center p-4">
+                            <img src="<?= base_url($r['image'] ?? 'asset/image/ilustrasi.png') ?>" alt="<?= esc($r['nama']) ?> Illustration" class="h-full object-contain">
+                        </div>
+                        <div class="bg-[#FFB800] p-6 text-white flex flex-col justify-between flex-1">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <h4 class="text-[18px] font-bold tracking-wide"><?= esc($r['nama']) ?></h4>
+                                    <p class="text-[13px] text-white/80 font-medium mt-0.5"><?= esc($r['fakultas'] ?? 'Fakultas Teknik') ?> - Lantai <?= esc($r['lantai']) ?> - <?= esc($r['kapasitas']) ?> Kursi</p>
+                                </div>
+                                <span class="bg-white <?= $status_color_class ?> font-extrabold text-[12px] px-3.5 py-1.5 rounded-[8px]"><?= esc($r['status']) ?></span>
+                            </div>
+                            <a href="<?= base_url('slot?room_id=' . esc($r['id'])) ?>" class="w-full py-3 bg-[#E09800] hover:bg-[#c98900] text-white font-bold text-[14px] rounded-[10px] transition-all block text-center">
+                                Booking
+                            </a>
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Booking Modal -->
+    <div id="modalBooking" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onclick="closeModal()"></div>
+        <div class="relative w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden border border-slate-100 animate-in fade-in zoom-in duration-200">
+            <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-white">
+                <h3 class="text-lg font-bold text-slate-800">Booking Reservasi</h3>
+                <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <form action="#" class="p-8 space-y-5">
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-2">Nama Kegiatan</label>
+                    <input type="text" placeholder="Masukkan nama kegiatan" class="w-full bg-slate-50 border border-slate-200 rounded-[10px] p-3 text-slate-800 placeholder-slate-300 focus:outline-none focus:border-[#FFB800] focus:ring-1 focus:ring-[#FFB800] transition-all text-sm">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-2">Mulai</label>
+                        <input type="time" class="w-full bg-slate-50 border border-slate-200 rounded-[10px] p-3 text-slate-800 focus:outline-none focus:border-[#FFB800] focus:ring-1 focus:ring-[#FFB800] transition-all text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-2">Selesai</label>
+                        <input type="time" class="w-full bg-slate-50 border border-slate-200 rounded-[10px] p-3 text-slate-800 focus:outline-none focus:border-[#FFB800] focus:ring-1 focus:ring-[#FFB800] transition-all text-sm">
+                    </div>
+                </div>
+                <div class="pt-6 flex gap-3">
+                    <button type="button" onclick="closeModal()" class="flex-1 py-3 text-sm font-bold text-slate-400 hover:text-slate-600 transition-all">BATAL</button>
+                    <button type="submit" class="flex-[2] py-3 bg-[#FFB800] hover:bg-[#e0a400] text-white font-bold text-[14px] rounded-[10px] transition-all">Konfirmasi Booking</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openModal() { document.getElementById('modalBooking').classList.remove('hidden'); }
+        function closeModal() { document.getElementById('modalBooking').classList.add('hidden'); }
+
+        let activeFloor = 'all';
+
+        function filterFloor(floor, btn) {
+            activeFloor = floor;
+            
+            // Update button styles
+            const buttons = btn.parentElement.querySelectorAll('button');
+            buttons.forEach(b => {
+                b.classList.remove('bg-[#FFB800]', 'text-white', 'shadow-sm');
+                b.classList.add('bg-[#D9D9D9]', 'text-white', 'hover:bg-slate-300');
+            });
+            btn.classList.remove('bg-[#D9D9D9]', 'hover:bg-slate-300');
+            btn.classList.add('bg-[#FFB800]', 'text-white', 'shadow-sm');
+            
+            // Execute filtering
+            applyFilters();
+        }
+
+        function filterSearch() {
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const query = document.getElementById('searchRoom').value.toLowerCase().trim();
+            const cards = document.querySelectorAll('[data-lantai]');
+            
+            cards.forEach(card => {
+                const lantai = card.getAttribute('data-lantai');
+                const title = card.querySelector('h4').textContent.toLowerCase();
+                const subtitle = card.querySelector('p').textContent.toLowerCase();
+                
+                const matchesFloor = (activeFloor === 'all' || lantai === activeFloor);
+                const matchesSearch = (title.includes(query) || subtitle.includes(query));
+                
+                if (matchesFloor && matchesSearch) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
 
 </body>
 </html>

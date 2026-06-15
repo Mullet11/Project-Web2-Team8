@@ -35,3 +35,59 @@ body {
 .btn-pill:hover {
     transform: translateY(-2px);
 }
+
+/* Card Pro Styling */
+.card-pro {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 1.25rem;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.05), 0 1px 2px -1px rgb(0 0 0 / 0.05);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-pro:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.05), 0 8px 10px -6px rgb(0 0 0 / 0.05);
+    border-color: #cbd5e1;
+}
+
+/* Button Pro Styling */
+.btn-pro {
+    background: linear-gradient(135deg, #FF6F00, var(--primary-ulm));
+    color: #ffffff;
+    font-weight: 700;
+    border-radius: 0.75rem;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+}
+
+.btn-pro:hover {
+    filter: brightness(1.05);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 15px -3px rgba(244, 130, 0, 0.3);
+}
+
+.btn-pro:active {
+    transform: translateY(1px);
+}
+
+/* Input Pro Styling */
+.input-pro {
+    width: 100%;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    color: #1e293b;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+.input-pro:focus {
+    background-color: #ffffff;
+    border-color: var(--primary-ulm);
+    box-shadow: 0 0 0 4px rgba(244, 130, 0, 0.15);
+}
