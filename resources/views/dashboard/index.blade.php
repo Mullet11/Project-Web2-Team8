@@ -83,160 +83,32 @@
 <!-- Rooms Grid Section (Mockup Style) -->
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="rooms-grid">
 
-    <!-- Card 1: Ruang LK-201 (Tersedia) -->
-    <div class="room-card bg-white rounded-[24px] border border-slate-100 hover:-translate-y-1.5 transition-all duration-300 flex flex-col group h-[380px]" data-status="tersedia" data-building="B" data-name="ruang lk-201">
-        <!-- Top Half: Image Placeholder -->
-        <div class="h-44 w-full bg-gradient-to-br from-blue-500/10 via-indigo-500/5 to-teal-500/10 rounded-t-[24px] flex items-center justify-center relative overflow-hidden shrink-0 border-b border-slate-100/50">
-            <div class="absolute inset-0 flex items-center justify-center opacity-20 select-none pointer-events-none">
-                <svg viewBox="0 0 24 24" fill="none" class="w-16 h-16 text-blue-600/30" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-                </svg>
-            </div>
-            <span class="text-[10px] font-bold text-slate-400/80 uppercase tracking-widest">[ Image Placeholder ]</span>
-        </div>
-        <!-- Bottom Half: Details Section -->
-        <div class="p-6 text-white bg-brand-primary rounded-b-[24px] flex flex-col justify-between flex-grow">
-            <!-- Info & Status Badge -->
-            <div class="flex justify-between items-start gap-4">
-                <div class="overflow-hidden">
-                    <h4 class="text-xl font-extrabold tracking-tight truncate">Ruang LK-201</h4>
-                    <p class="text-xs text-teal-100/80 font-semibold truncate mt-1">Gedung B &bull; 40 Kursi</p>
-                </div>
-                <span class="px-3 py-1 bg-white text-emerald-600 text-xs font-bold rounded-xl shrink-0 select-none">
-                    Tersedia
-                </span>
-            </div>
-            <!-- Booking Button -->
-            <a href="/rooms/1" class="w-full py-3 bg-white hover:bg-slate-50 text-brand-primary text-sm font-bold rounded-xl text-center transition-all duration-200">
-                Booking
-            </a>
-        </div>
-    </div>
-
-    <!-- Card 2: AULA UTAMA (Terpakai) -->
-    <div class="room-card bg-white rounded-[24px] border border-slate-100 hover:-translate-y-1.5 transition-all duration-300 flex flex-col group h-[380px]" data-status="terpakai" data-building="A" data-name="aula utama">
-        <!-- Top Half: Image Placeholder (Muted) -->
-        <div class="h-44 w-full bg-gradient-to-br from-slate-100 via-slate-50 to-slate-200/50 rounded-t-[24px] flex items-center justify-center relative overflow-hidden shrink-0 border-b border-slate-100/50">
-            <span class="text-[10px] font-bold text-slate-400/80 uppercase tracking-widest">[ Image Placeholder ]</span>
-        </div>
-        <!-- Bottom Half: Details Section (Slate style for Occupied) -->
-        <div class="p-6 text-white bg-slate-800 rounded-b-[24px] flex flex-col justify-between flex-grow">
-            <!-- Info & Status Badge -->
-            <div class="flex justify-between items-start gap-4">
-                <div class="overflow-hidden">
-                    <h4 class="text-xl font-extrabold tracking-tight truncate">AULA UTAMA</h4>
-                    <p class="text-xs text-slate-400 font-semibold truncate mt-1">Gedung A &bull; 60 Kursi</p>
-                </div>
-                <span class="px-3 py-1 bg-white text-rose-600 text-xs font-bold rounded-xl shrink-0 select-none">
-                    Terpakai
-                </span>
-            </div>
-            <!-- Action Button -->
-            <a href="/rooms/2" class="w-full py-3 bg-slate-900/50 hover:bg-slate-900 text-slate-300 hover:text-white border border-slate-700 text-sm font-bold rounded-xl text-center transition-all duration-200">
-                Lihat Jadwal
-            </a>
-        </div>
-    </div>
-
-    <!-- Card 3: Ruang C-303 (Tersedia) -->
-    <div class="room-card bg-white rounded-[24px] border border-slate-100 hover:-translate-y-1.5 transition-all duration-300 flex flex-col group h-[380px]" data-status="tersedia" data-building="C" data-name="ruang c-303">
+    @foreach ($rooms as $room)
+    <!-- Dynamic Room Card -->
+    <div class="room-card bg-white rounded-[24px] border border-slate-100 hover:-translate-y-1.5 transition-all duration-300 flex flex-col group h-[380px]" data-status="{{ $room['status'] === 'available' ? 'tersedia' : ($room['status'] === 'occupied' ? 'terpakai' : 'inactive') }}" data-building="{{ substr($room['building'], -1) }}" data-name="{{ strtolower($room['name']) }}">
         <!-- Top Half: Image Placeholder -->
         <div class="h-44 w-full bg-gradient-to-br from-blue-500/10 via-indigo-500/5 to-teal-500/10 rounded-t-[24px] flex items-center justify-center relative overflow-hidden shrink-0 border-b border-slate-100/50">
             <span class="text-[10px] font-bold text-slate-400/80 uppercase tracking-widest">[ Image Placeholder ]</span>
         </div>
         <!-- Bottom Half: Details Section -->
-        <div class="p-6 text-white bg-brand-primary rounded-b-[24px] flex flex-col justify-between flex-grow">
+        <div class="p-6 text-white {{ $room['status'] === 'available' ? 'bg-brand-primary' : 'bg-slate-800' }} rounded-b-[24px] flex flex-col justify-between flex-grow">
             <!-- Info & Status Badge -->
             <div class="flex justify-between items-start gap-4">
                 <div class="overflow-hidden">
-                    <h4 class="text-xl font-extrabold tracking-tight truncate">Ruang C-303</h4>
-                    <p class="text-xs text-teal-100/80 font-semibold truncate mt-1">Gedung C &bull; 30 Kursi</p>
+                    <h4 class="text-xl font-extrabold tracking-tight truncate">{{ $room['name'] }}</h4>
+                    <p class="text-xs text-teal-100/80 font-semibold truncate mt-1">{{ $room['building'] }} &bull; {{ $room['capacity'] }} Kursi</p>
                 </div>
-                <span class="px-3 py-1 bg-white text-emerald-600 text-xs font-bold rounded-xl shrink-0 select-none">
-                    Tersedia
+                <span class="px-3 py-1 bg-white {{ $room['status'] === 'available' ? 'text-emerald-600' : 'text-rose-600' }} text-xs font-bold rounded-xl shrink-0 select-none">
+                    {{ $room['status'] === 'available' ? 'Tersedia' : ($room['status'] === 'occupied' ? 'Terpakai' : 'Nonaktif') }}
                 </span>
             </div>
             <!-- Booking Button -->
-            <a href="/rooms/3" class="w-full py-3 bg-white hover:bg-slate-50 text-brand-primary text-sm font-bold rounded-xl text-center transition-all duration-200">
-                Booking
+            <a href="/rooms/{{ $room['id'] }}" class="w-full py-3 {{ $room['status'] === 'available' ? 'bg-white hover:bg-slate-50 text-brand-primary' : 'bg-slate-900/50 hover:bg-slate-900 text-slate-300 hover:text-white border border-slate-700' }} text-sm font-bold rounded-xl text-center transition-all duration-200">
+                {{ $room['status'] === 'available' ? 'Booking' : 'Lihat Jadwal' }}
             </a>
         </div>
     </div>
-
-    <!-- Card 4: Teater Seni D-101 (Tersedia) -->
-    <div class="room-card bg-white rounded-[24px] border border-slate-100 hover:-translate-y-1.5 transition-all duration-300 flex flex-col group h-[380px]" data-status="tersedia" data-building="D" data-name="teater seni d-101">
-        <!-- Top Half: Image Placeholder -->
-        <div class="h-44 w-full bg-gradient-to-br from-blue-500/10 via-indigo-500/5 to-teal-500/10 rounded-t-[24px] flex items-center justify-center relative overflow-hidden shrink-0 border-b border-slate-100/50">
-            <span class="text-[10px] font-bold text-slate-400/80 uppercase tracking-widest">[ Image Placeholder ]</span>
-        </div>
-        <!-- Bottom Half: Details Section -->
-        <div class="p-6 text-white bg-brand-primary rounded-b-[24px] flex flex-col justify-between flex-grow">
-            <!-- Info & Status Badge -->
-            <div class="flex justify-between items-start gap-4">
-                <div class="overflow-hidden">
-                    <h4 class="text-xl font-extrabold tracking-tight truncate">Teater Seni D-101</h4>
-                    <p class="text-xs text-teal-100/80 font-semibold truncate mt-1">Gedung D &bull; 50 Kursi</p>
-                </div>
-                <span class="px-3 py-1 bg-white text-emerald-600 text-xs font-bold rounded-xl shrink-0 select-none">
-                    Tersedia
-                </span>
-            </div>
-            <!-- Booking Button -->
-            <a href="/rooms/4" class="w-full py-3 bg-white hover:bg-slate-50 text-brand-primary text-sm font-bold rounded-xl text-center transition-all duration-200">
-                Booking
-            </a>
-        </div>
-    </div>
-
-    <!-- Card 5: Lab Jaringan LK-203 (Terpakai) -->
-    <div class="room-card bg-white rounded-[24px] border border-slate-100 hover:-translate-y-1.5 transition-all duration-300 flex flex-col group h-[380px]" data-status="terpakai" data-building="B" data-name="lab jaringan lk-203">
-        <!-- Top Half: Image Placeholder (Muted) -->
-        <div class="h-44 w-full bg-gradient-to-br from-slate-100 via-slate-50 to-slate-200/50 rounded-t-[24px] flex items-center justify-center relative overflow-hidden shrink-0 border-b border-slate-100/50">
-            <span class="text-[10px] font-bold text-slate-400/80 uppercase tracking-widest">[ Image Placeholder ]</span>
-        </div>
-        <!-- Bottom Half: Details Section (Slate style for Occupied) -->
-        <div class="p-6 text-white bg-slate-800 rounded-b-[24px] flex flex-col justify-between flex-grow">
-            <!-- Info & Status Badge -->
-            <div class="flex justify-between items-start gap-4">
-                <div class="overflow-hidden">
-                    <h4 class="text-xl font-extrabold tracking-tight truncate">Lab Jaringan LK-203</h4>
-                    <p class="text-xs text-slate-400 font-semibold truncate mt-1">Gedung B &bull; 35 Kursi</p>
-                </div>
-                <span class="px-3 py-1 bg-white text-rose-600 text-xs font-bold rounded-xl shrink-0 select-none">
-                    Terpakai
-                </span>
-            </div>
-            <!-- Action Button -->
-            <a href="/rooms/5" class="w-full py-3 bg-slate-900/50 hover:bg-slate-900 text-slate-300 hover:text-white border border-slate-700 text-sm font-bold rounded-xl text-center transition-all duration-200">
-                Lihat Jadwal
-            </a>
-        </div>
-    </div>
-
-    <!-- Card 6: Ruang Seminar A-202 (Tersedia) -->
-    <div class="room-card bg-white rounded-[24px] border border-slate-100 hover:-translate-y-1.5 transition-all duration-300 flex flex-col group h-[380px]" data-status="tersedia" data-building="A" data-name="ruang seminar a-202">
-        <!-- Top Half: Image Placeholder -->
-        <div class="h-44 w-full bg-gradient-to-br from-blue-500/10 via-indigo-500/5 to-teal-500/10 rounded-t-[24px] flex items-center justify-center relative overflow-hidden shrink-0 border-b border-slate-100/50">
-            <span class="text-[10px] font-bold text-slate-400/80 uppercase tracking-widest">[ Image Placeholder ]</span>
-        </div>
-        <!-- Bottom Half: Details Section -->
-        <div class="p-6 text-white bg-brand-primary rounded-b-[24px] flex flex-col justify-between flex-grow">
-            <!-- Info & Status Badge -->
-            <div class="flex justify-between items-start gap-4">
-                <div class="overflow-hidden">
-                    <h4 class="text-xl font-extrabold tracking-tight truncate">Ruang Seminar A-202</h4>
-                    <p class="text-xs text-teal-100/80 font-semibold truncate mt-1">Gedung A &bull; 40 Kursi</p>
-                </div>
-                <span class="px-3 py-1 bg-white text-emerald-600 text-xs font-bold rounded-xl shrink-0 select-none">
-                    Tersedia
-                </span>
-            </div>
-            <!-- Booking Button -->
-            <a href="/rooms/6" class="w-full py-3 bg-white hover:bg-slate-50 text-brand-primary text-sm font-bold rounded-xl text-center transition-all duration-200">
-                Booking
-            </a>
-        </div>
-    </div>
+    @endforeach
 
     <!-- Empty State (Hidden by default) -->
     <div id="empty-state" class="hidden col-span-full py-16 flex flex-col items-center justify-center text-center">
