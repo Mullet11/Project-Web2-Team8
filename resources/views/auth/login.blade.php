@@ -81,7 +81,7 @@
                         </label>
                     </div>
 
-                    <button type="submit" class="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl shadow-md hover:shadow-lg transition-all duration-200">
+                    <button type="submit" class="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl transition-all duration-200">
                         Sign in
                     </button>
                 </form>
@@ -163,7 +163,7 @@
                         </button>
                     </div>
 
-                    <button type="submit" class="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl shadow-md hover:shadow-lg transition-all duration-200">
+                    <button type="submit" class="w-full py-3.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl transition-all duration-200">
                         Create Account
                     </button>
                 </form>
@@ -182,7 +182,7 @@
         </div>
 
         <!-- ==================== ABSOLUTE FLOATING IMAGE CARD (Desktop Only) ==================== -->
-        <div id="sliding-card" class="hidden lg:block absolute top-4 bottom-4 w-[42%] rounded-[32px] bg-gradient-to-br from-blue-700 via-blue-600 to-indigo-900 shadow-2xl overflow-hidden z-20">
+        <div id="sliding-card" class="hidden lg:block absolute top-4 bottom-4 w-[42%] rounded-[32px] bg-gradient-to-br from-blue-700 via-blue-600 to-indigo-900 overflow-hidden z-20">
             <!-- Abstract Glass Circle Overlays -->
             <div class="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
             <div class="absolute bottom-1/4 left-0 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl"></div>
