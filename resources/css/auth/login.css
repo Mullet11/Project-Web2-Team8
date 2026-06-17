@@ -1,0 +1,88 @@
+/* Page-Specific Styles for Authentication (Sign In / Sign Up Crossover Sliding Layout) */
+
+#sliding-card {
+    transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#signin-wrapper, #signup-wrapper {
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+/* State ketika SIGN IN aktif (default) */
+#auth-container:not(.active) #sliding-card {
+    left: 54%;
+}
+#auth-container:not(.active) #signin-wrapper {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+}
+#auth-container:not(.active) #signup-wrapper {
+    opacity: 0;
+    transform: translateX(20px);
+    pointer-events: none;
+    display: none;
+}
+
+/* State ketika SIGN UP aktif */
+#auth-container.active #sliding-card {
+    left: 4%;
+}
+#auth-container.active #signin-wrapper {
+    opacity: 0;
+    transform: translateX(-20px);
+    pointer-events: none;
+    display: none;
+}
+#auth-container.active #signup-wrapper {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+    display: flex;
+}
+
+/* Override khusus Desktop (lg: 1024px ke atas) agar kolom tidak bergeser */
+@media (min-width: 1024px) {
+    #auth-container:not(.active) #signup-wrapper {
+        display: flex;
+    }
+    #auth-container.active #signin-wrapper {
+        display: flex;
+    }
+}
+
+/* Responsive transitions adjustments for mobile screen sizes (max-width: 1023px) */
+@media (max-width: 1023px) {
+    #auth-container:not(.active) #signup-wrapper {
+        display: none;
+    }
+    #auth-container.active #signin-wrapper {
+        display: none;
+    }
+    #auth-container.active #signup-wrapper {
+        display: flex;
+    }
+}
+
+/* Eye Icon Micro-Animation */
+.eye-icon {
+    transform-origin: center;
+    transition: transform 0.15s ease, color 0.15s ease;
+}
+
+@keyframes eye-pop {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(0.7) rotate(15deg);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.eye-pop-active {
+    animation: eye-pop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
