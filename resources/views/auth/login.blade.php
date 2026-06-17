@@ -17,8 +17,8 @@
 </head>
 <body class="bg-white text-slate-800 font-sans min-h-screen antialiased flex">
 
-    <!-- Container Utama: Auto Active jika ada error di registrasi/Sign Up -->
-    <div id="auth-container" class="flex-grow flex flex-col lg:flex-row p-4 min-h-screen relative overflow-hidden bg-white @if($errors->has('name') || old('is_signup')) active @endif">
+    <!-- Container Utama: Auto Active jika ada error di registrasi/Sign Up atau baru register -->
+    <div id="auth-container" class="flex-grow flex flex-col lg:flex-row p-4 min-h-screen relative overflow-hidden bg-white @if($errors->has('name') || old('is_signup') || request()->has('registered')) active @endif">
         
         <!-- ==================== LEFT COLUMN: SIGN IN FORM ==================== -->
         <div id="signin-wrapper" class="w-full lg:w-1/2 flex flex-col justify-between p-6 sm:p-12 lg:p-16 h-full min-h-[85vh] lg:min-h-0">
@@ -195,6 +195,16 @@
             </div>
         </div>
 
+    </div>
+
+    <!-- Floating Success Toast -->
+    <div id="success-toast" class="fixed top-6 left-1/2 -translate-x-1/2 z-50 transform translate-y-[-100px] opacity-0 transition-all duration-500 pointer-events-none">
+        <div class="bg-emerald-500 text-white px-6 py-3.5 rounded-2xl flex items-center gap-3 border border-emerald-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span class="text-sm font-bold tracking-tight">Registrasi Berhasil! Mengalihkan ke masuk...</span>
+        </div>
     </div>
 
 </body>

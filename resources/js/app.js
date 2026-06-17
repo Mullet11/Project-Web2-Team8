@@ -18,6 +18,41 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Check if redirect from successful registration
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('registered') && container) {
+        const toast = document.getElementById('success-toast');
+        if (toast) {
+            toast.classList.remove('translate-y-[-100px]', 'opacity-0', 'pointer-events-none');
+            toast.classList.add('translate-y-0', 'opacity-100');
+        }
+        
+        // Wait 1.8 seconds, then slide/transition back to sign-in smoothly
+        setTimeout(() => {
+            container.classList.remove('active');
+            
+            // Clean up url query param without reload
+            const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+            window.history.pushState({ path: newUrl }, '', newUrl);
+
+            // Hide toast after transition starts
+            setTimeout(() => {
+                if (toast) {
+                    toast.classList.add('translate-y-[-100px]', 'opacity-0', 'pointer-events-none');
+                    toast.classList.remove('translate-y-0', 'opacity-100');
+                }
+            }, 600);
+        }, 1800);
+    }
+
+    // Clean up url query param for login without reload
+    if (urlParams.has('login')) {
+        setTimeout(() => {
+            const newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+            window.history.pushState({ path: newUrl }, '', newUrl);
+        }, 1000);
+    }
+
     // Universal Toggle Password Visibility
     const togglePasswordButtons = document.querySelectorAll('.toggle-password');
     togglePasswordButtons.forEach(button => {
