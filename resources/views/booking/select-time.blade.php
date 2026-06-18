@@ -61,16 +61,16 @@
                 @foreach($slots as $index => $slot)
                     @if($slot['status'] === 'terpakai')
                         <!-- Booked Slot (Pinkish/Red, Disabled) -->
-                        <button type="button" disabled 
-                            class="h-28 rounded-xl font-bold text-sm text-white flex items-center justify-center cursor-not-allowed select-none transition-all"
-                            style="background-color: #DCA2A2; height: 112px;">
+                        <button type="button" disabled
+                            class="h-28 rounded-xl font-bold text-white flex items-center justify-center cursor-not-allowed select-none transition-all"
+                            style="background-color: #DCA2A2; height: 112px; font-size: 24px;">
                             08:00
                         </button>
                     @else
                         <!-- Available Slot (Greyish-Teal, Clickable) -->
-                        <button type="button" 
-                            class="slot-btn h-28 rounded-xl font-bold text-sm text-white flex items-center justify-center transition-all duration-150 cursor-pointer shadow-sm hover:scale-[1.03] active:scale-[0.98]"
-                            style="background-color: #A4C9C3; height: 112px;"
+                        <button type="button"
+                            class="slot-btn h-28 rounded-xl font-bold text-white flex items-center justify-center transition-all duration-150 cursor-pointer shadow-sm hover:scale-[1.03] active:scale-[0.98]"
+                            style="background-color: #A4C9C3; height: 112px; font-size: 24px;"
                             data-time="{{ $slot['time'] }}"
                             onclick="selectSlot(this)">
                             08:00
