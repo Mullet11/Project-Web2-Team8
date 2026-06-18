@@ -8,7 +8,7 @@
     <div class="w-full max-w-[1440px] px-4 sm:px-6 lg:px-10 flex items-center justify-between">
         <div class="flex items-center gap-5">
             <!-- Back button to detail -->
-            <a href="/history/detail/{{ $booking['status'] }}" class="w-10 h-10 rounded-full bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center shadow-lg transition-transform hover:scale-105 cursor-pointer">
+            <a href="/history/detail/{{ $booking['id'] }}" class="w-10 h-10 rounded-full bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center shadow-lg transition-transform hover:scale-105 cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
                 </svg>
@@ -47,7 +47,7 @@
             </div>
 
             <!-- Form Body -->
-            <form id="edit-booking-form" method="POST" action="/history/edit/{{ $booking['status'] }}" class="p-8 space-y-5">
+            <form id="edit-booking-form" method="POST" action="/history/edit/{{ $booking['id'] }}" class="p-8 space-y-5">
                 @csrf
                 <!-- Nama Lengkap -->
                 <div class="space-y-1.5">
@@ -111,7 +111,7 @@
                 <!-- Tanggal Peminjaman (Full Width) -->
                 <div class="space-y-1.5">
                     <label for="booking-tanggal" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Tanggal Peminjaman</label>
-                    <input type="date" id="booking-tanggal" name="tanggal" required value="{{ $booking['tanggal'] }}"
+                    <input type="date" id="booking-tanggal" name="tanggal" required value="{{ $booking['tanggal_raw'] }}"
                         class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium">
                 </div>
 
@@ -129,9 +129,21 @@
                     </div>
                 </div>
 
+                <!-- Opsi Pembatalan -->
+                <div class="pt-4 mt-6 border-t border-slate-100">
+                    <label class="flex items-center gap-3 cursor-pointer select-none">
+                        <input type="checkbox" name="cancel_booking" id="cancel_booking_cb" value="1" onchange="toggleCancelReason()" class="w-5 h-5 rounded border-slate-300 text-rose-600 focus:ring-rose-500">
+                        <span class="text-sm font-bold text-rose-600">Batalkan Pengajuan Peminjaman Ini</span>
+                    </label>
+                    <div id="cancel_reason_container" class="hidden mt-4 space-y-1.5">
+                        <label for="alasan_batal" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Alasan Batal</label>
+                        <textarea id="alasan_batal" name="alasan_batal" rows="2" placeholder="Sebutkan alasan Anda membatalkan peminjaman (opsional)" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-rose-500 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium placeholder:text-slate-400/80">{{ $booking['alasan_batal'] }}</textarea>
+                    </div>
+                </div>
+
                 <!-- Footer Buttons -->
                 <div class="pt-6 border-t border-slate-100 flex gap-3 justify-end select-none">
-                    <a href="/history/detail/{{ $booking['status'] }}"
+                    <a href="/history/detail/{{ $booking['id'] }}"
                         class="px-5 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-bold rounded-xl transition-colors cursor-pointer text-center flex items-center justify-center">
                         Batal
                     </a>
@@ -180,6 +192,16 @@
             inputDosen.setAttribute('required', 'required');
             inputMatakuliah.setAttribute('required', 'required');
             inputKegiatan.removeAttribute('required');
+        }
+    }
+
+    function toggleCancelReason() {
+        const isChecked = document.getElementById('cancel_booking_cb').checked;
+        const container = document.getElementById('cancel_reason_container');
+        if (isChecked) {
+            container.classList.remove('hidden');
+        } else {
+            container.classList.add('hidden');
         }
     }
 </script>

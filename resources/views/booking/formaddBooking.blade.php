@@ -3,8 +3,8 @@
     <!-- Backdrop overlay to make background dark and blurred -->
     <div id="booking-modal-backdrop" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm opacity-0 transition-opacity duration-300" onclick="closeBookingModal()"></div>
 
-    <!-- Modal Window Container (Large wide layout matching user request) -->
-    <div id="booking-modal-content" class="bg-white rounded-[32px] border border-slate-100 shadow-2xl w-full max-w-[95%] lg:max-w-5xl h-[85vh] md:h-[80vh] relative z-10 transform scale-95 opacity-0 transition-all duration-300 overflow-hidden flex flex-col">
+    <!-- Modal Window Container -->
+    <div id="booking-modal-content" class="bg-white rounded-[32px] border border-slate-100 shadow-2xl w-full max-w-[95%] sm:max-w-xl md:max-w-2xl lg:max-w-3xl max-h-[90vh] overflow-y-auto relative z-10 transform scale-95 opacity-0 transition-all duration-300 flex flex-col mx-auto">
 
         <!-- Success State Container (Covers entire modal over grid) -->
         <div id="booking-success-state" class="hidden flex-col items-center justify-center text-center p-8 md:p-16 space-y-6 bg-white flex-grow h-full select-none absolute inset-0 z-20">
@@ -31,68 +31,60 @@
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                <span>Memproses Halaman</span>
             </div>
         </div>
 
-        <!-- Main Split Grid (50% Room Visual, 50% Form) -->
-        <div id="booking-form-container" class="grid grid-cols-1 lg:grid-cols-2 h-full w-full overflow-hidden">
-
-            <!-- LEFT COLUMN: Only Room Image (Visible only on lg screen sizes) -->
-            <div class="hidden lg:flex items-center justify-center p-12 bg-slate-50 border-r border-slate-100 select-none h-full">
-                <div class="w-full h-full flex items-center justify-center">
-                    <img src="{{ asset('images/profile/ULM PNG.png') }}" alt="ULM Logo Placeholder" class="max-h-[70%] max-w-[70%] object-contain filter drop-shadow-md">
+        <!-- Main Form Container -->
+        <div id="booking-form-container" class="flex flex-col w-full bg-white">
+            <!-- Header -->
+            <div class="px-6 sm:px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/40 select-none sticky top-0 z-10">
+                <div>
+                    <h3 class="text-2xl font-black text-slate-950 tracking-tight">Form Booking</h3>
+                    <p class="text-xs font-semibold text-slate-400 mt-0.5">Lengkapi data untuk mengajukan peminjaman</p>
                 </div>
+                <!-- Close button -->
+                <button type="button" onclick="closeBookingModal()" class="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-700 flex items-center justify-center transition-colors cursor-pointer focus:outline-none shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
             </div>
 
-            <!-- RIGHT COLUMN: Booking Form Container (Scrollable) -->
-            <div class="flex flex-col h-full overflow-hidden bg-white">
-                <!-- Header -->
-                <div class="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/40 select-none">
-                    <div>
-                        <h3 class="text-2xl font-black text-slate-950 tracking-tight">Form Booking</h3>
-                        <p class="text-xs font-semibold text-slate-400 mt-0.5">Lengkapi data untuk mengajukan peminjaman</p>
-                    </div>
-                    <!-- Close button -->
-                    <button type="button" onclick="closeBookingModal()" class="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-700 flex items-center justify-center transition-colors cursor-pointer focus:outline-none">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
-
-                <!-- Scrollable Form Body -->
-                <form id="booking-form" class="overflow-y-auto p-8 space-y-5 flex-grow" onsubmit="submitBooking(event)">
-                    <!-- Nama Lengkap (Full Width) -->
+            <!-- Form Body -->
+            <form id="booking-form" method="POST" action="/booking/{{ $id }}" class="p-6 sm:p-8 space-y-6" onsubmit="submitBooking(event)">
+                @csrf
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
+                    <!-- Nama Lengkap -->
                     <div class="space-y-1.5">
                         <label for="booking-nama" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Nama Lengkap</label>
                         <input type="text" id="booking-nama" name="nama" required placeholder="Masukkan nama lengkap"
                             class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium placeholder:text-slate-400/80">
                     </div>
 
-                    <!-- NIM (Full Width) -->
+                    <!-- NIM -->
                     <div class="space-y-1.5">
                         <label for="booking-nim" class="text-xs font-bold text-slate-500 uppercase tracking-wider">NIM</label>
                         <input type="text" id="booking-nim" name="nim" required placeholder="Masukkan NIM Anda"
                             class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium placeholder:text-slate-400/80">
                     </div>
 
-                    <!-- Prodi/Fakultas (Full Width) -->
+                    <!-- Prodi/Fakultas -->
                     <div class="space-y-1.5">
                         <label for="booking-prodi" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Prodi / Fakultas</label>
                         <input type="text" id="booking-prodi" name="prodi_fakultas" required placeholder="Teknologi Informasi / Teknik"
                             class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium placeholder:text-slate-400/80">
                     </div>
 
-                    <!-- WhatsApp (Full Width) -->
+                    <!-- WhatsApp -->
                     <div class="space-y-1.5">
                         <label for="booking-whatsapp" class="text-xs font-bold text-slate-500 uppercase tracking-wider">No. WhatsApp Aktif</label>
                         <input type="tel" id="booking-whatsapp" name="whatsapp" required placeholder="Contoh: 08123456789"
                             class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium placeholder:text-slate-400/80">
                     </div>
 
-                    <!-- Perihal Peminjaman (Full Width) -->
-                    <div class="space-y-1.5">
+                    <!-- Perihal Peminjaman -->
+                    <div class="space-y-1.5 sm:col-span-2">
                         <label for="booking-perihal" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Perihal Peminjaman</label>
                         <select id="booking-perihal" name="perihal" onchange="togglePerihalFields()"
                             class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-850 font-bold cursor-pointer">
@@ -100,48 +92,49 @@
                             <option value="Kegiatan Kampus">Kegiatan Kampus</option>
                         </select>
                     </div>
+                </div>
 
-                    <!-- Dosen & Mata Kuliah (Only shown for Perkuliahan, stacked vertically) -->
-                    <div id="fields-perkuliahan" class="space-y-5 transition-all duration-200">
-                        <div class="space-y-1.5">
-                            <label for="booking-dosen" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Dosen Pengampu</label>
-                            <input type="text" id="booking-dosen" name="dosen" placeholder="Nama dosen pengampu" required
-                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium placeholder:text-slate-400/80">
-                        </div>
-                        <div class="space-y-1.5">
-                            <label for="booking-matakuliah" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Mata Kuliah</label>
-                            <input type="text" id="booking-matakuliah" name="matakuliah" placeholder="Nama mata kuliah" required
-                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium placeholder:text-slate-400/80">
-                        </div>
-                    </div>
-
-                    <!-- Nama Kegiatan (Only shown for Kegiatan Kampus, full width) -->
-                    <div id="fields-kegiatan" class="space-y-1.5 hidden transition-all duration-200">
-                        <label for="booking-kegiatan" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Nama Kegiatan</label>
-                        <input type="text" id="booking-kegiatan" name="nama_kegiatan" placeholder="Nama kegiatan organisasi / kampus"
+                <!-- Dosen & Mata Kuliah (Perkuliahan) -->
+                <div id="fields-perkuliahan" class="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6 transition-all duration-200">
+                    <div class="space-y-1.5">
+                        <label for="booking-dosen" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Dosen Pengampu</label>
+                        <input type="text" id="booking-dosen" name="dosen" placeholder="Nama dosen pengampu" required
                             class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium placeholder:text-slate-400/80">
                     </div>
-
-                    <!-- Tanggal Peminjaman (Full Width) -->
                     <div class="space-y-1.5">
+                        <label for="booking-matakuliah" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Mata Kuliah</label>
+                        <input type="text" id="booking-matakuliah" name="matakuliah" placeholder="Nama mata kuliah" required
+                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium placeholder:text-slate-400/80">
+                    </div>
+                </div>
+
+                <!-- Nama Kegiatan (Kegiatan Kampus) -->
+                <div id="fields-kegiatan" class="space-y-1.5 hidden transition-all duration-200">
+                    <label for="booking-kegiatan" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Nama Kegiatan</label>
+                    <input type="text" id="booking-kegiatan" name="nama_kegiatan" placeholder="Nama kegiatan organisasi / kampus"
+                        class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium placeholder:text-slate-400/80">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
+                    <!-- Tanggal Peminjaman -->
+                    <div class="space-y-1.5 sm:col-span-2">
                         <label for="booking-tanggal" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Tanggal Peminjaman</label>
                         <input type="date" id="booking-tanggal" name="tanggal" required
-                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium">
+                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium cursor-not-allowed text-slate-500">
                     </div>
 
-                    <!-- Waktu Mulai & Waktu Selesai (2 columns for neatness) -->
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="space-y-1.5">
-                            <label for="booking-waktu-mulai" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Waktu Mulai</label>
-                            <input type="time" id="booking-waktu-mulai" name="waktu_mulai" required
-                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium">
-                        </div>
-                        <div class="space-y-1.5">
-                            <label for="booking-waktu-selesai" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Waktu Selesai</label>
-                            <input type="time" id="booking-waktu-selesai" name="waktu_selesai" required
-                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium">
-                        </div>
+                    <!-- Waktu Mulai & Waktu Selesai -->
+                    <div class="space-y-1.5">
+                        <label for="booking-waktu-mulai" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Waktu Mulai</label>
+                        <input type="time" id="booking-waktu-mulai" name="waktu_mulai" required
+                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium cursor-not-allowed text-slate-500">
                     </div>
+                    <div class="space-y-1.5">
+                        <label for="booking-waktu-selesai" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Waktu Selesai</label>
+                        <input type="time" id="booking-waktu-selesai" name="waktu_selesai" required
+                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium cursor-not-allowed text-slate-500">
+                    </div>
+                </div>
 
                     <!-- Footer Buttons -->
                     <div class="pt-4 border-t border-slate-100 flex gap-3 justify-end bg-white select-none">
@@ -266,17 +259,16 @@
         }
     }
 
-    // Handle Form Submit (Simulates API saving and triggers redirect)
+    // Handle Form Submit
     function submitBooking(event) {
-        event.preventDefault();
-
-        // Show success state inside the modal
+        // We will show the animation and let the form submit naturally
+        // But since standard form submission refreshes the page, we don't need to preventDefault
+        // Just show the success state before it unloads
+        
         document.getElementById('booking-form-container').classList.add('hidden');
         document.getElementById('booking-success-state').classList.replace('hidden', 'flex');
-
-        // Redirect to /history after 2.5 seconds (feel premium and let the user see the success check)
-        setTimeout(() => {
-            window.location.href = '/history';
-        }, 2500);
+        
+        // Let the form submit
+        return true;
     }
 </script>

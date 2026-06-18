@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Reservation extends Model
 {
-    protected $fillable = [
-        'booking_code', 'user_id', 'room_id', 'title', 'purpose', 
-        'reservation_date', 'start_time', 'end_time', 'status'
-    ];
+    use HasFactory;
+
+    protected $guarded = ['id'];
 
     public function user()
     {

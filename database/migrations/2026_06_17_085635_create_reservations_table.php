@@ -13,15 +13,31 @@ return new class extends Migration
     {
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
-            $table->string('booking_code')->unique();
+            $table->string('no_booking')->unique();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('room_id')->constrained()->cascadeOnDelete();
-            $table->string('title');
-            $table->string('purpose')->nullable();
-            $table->date('reservation_date');
-            $table->time('start_time');
-            $table->time('end_time');
-            $table->enum('status', ['active', 'cancelled', 'finished'])->default('active');
+            
+            // Info Peminjam
+            $table->string('nama');
+            $table->string('nim');
+            $table->string('prodi_fakultas');
+            $table->string('whatsapp');
+            
+            // Rincian Kegiatan
+            $table->enum('perihal', ['Perkuliahan', 'Kegiatan Kampus']);
+            $table->string('dosen')->nullable();
+            $table->string('matakuliah')->nullable();
+            $table->string('nama_kegiatan')->nullable();
+            
+            // Waktu
+            $table->date('tanggal');
+            $table->time('waktu_mulai');
+            $table->time('waktu_selesai');
+            
+            // Status & Catatan
+            $table->enum('status', ['menunggu', 'disetujui', 'dibatalkan', 'selesai'])->default('menunggu');
+            $table->text('alasan_batal')->nullable();
+            
             $table->timestamps();
         });
     }
