@@ -9,5 +9,7 @@ class Room extends Model
 {
     use HasFactory;
 
-    protected $guarded = ['id'];
+    protected $fillable = [
+        'name', 'building', 'capacity', 'facilities', 'status'
+    ];
 }
