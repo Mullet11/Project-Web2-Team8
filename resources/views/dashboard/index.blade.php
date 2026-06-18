@@ -59,7 +59,7 @@
 
     <!-- Bottom Row: Horizontal Building Tabs -->
     <div class="flex flex-col gap-2">
-        <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Pilih Gedung</span>
+
         <div class="flex gap-2 overflow-x-auto pb-2 -mx-2 px-2 scrollbar-none" id="building-tabs-container">
             <button data-building="all" class="building-tab px-4 py-2 bg-blue-600 text-white text-xs font-bold rounded-xl transition-all whitespace-nowrap">
                 Semua Gedung
