@@ -147,6 +147,19 @@
                         @enderror
                     </div>
 
+                    <!-- Email Floating Input -->
+                    <div class="relative">
+                        <input type="email" id="signup_email" name="email" value="{{ old('email') }}" required placeholder=" " 
+                            class="block px-4 py-3.5 w-full text-sm text-slate-900 bg-transparent rounded-xl border @error('email') border-rose-500 focus:border-rose-500 @else border-slate-200 focus:border-blue-600 @enderror appearance-none focus:outline-none focus:ring-0 peer transition-all" />
+                        <label for="signup_email" 
+                            class="absolute text-sm @error('email') text-rose-500 @else text-slate-400 peer-focus:text-blue-600 @enderror duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-3 select-none pointer-events-none">
+                            Email (wajib @mhs.ulm.ac.id)
+                        </label>
+                        @error('email')
+                            <p class="mt-1.5 text-xs text-rose-600 font-medium">{{ $message }}</p>
+                        @enderror
+                    </div>
+
                     <!-- Password Floating Input -->
                     <div class="relative">
                         <input type="password" id="signup_password" name="password" required placeholder=" " 
@@ -154,6 +167,25 @@
                         <label for="signup_password" 
                             class="absolute text-sm @error('password') text-rose-500 @else text-slate-400 peer-focus:text-blue-600 @enderror duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-3 select-none pointer-events-none">
                             Password
+                        </label>
+                        
+                        <button type="button" class="toggle-password absolute inset-y-0 right-0 flex items-center pr-4 text-slate-400 hover:text-slate-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 eye-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path class="eye-path" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a10.025 10.025 0 014.132-5.4M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 21l-2-2m-13.875-13.875L3 3" />
+                            </svg>
+                        </button>
+                        @error('password')
+                            <p class="mt-1.5 text-xs text-rose-600 font-medium">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Confirm Password Floating Input -->
+                    <div class="relative">
+                        <input type="password" id="signup_password_confirmation" name="password_confirmation" required placeholder=" " 
+                            class="block px-4 py-3.5 pr-12 w-full text-sm text-slate-900 bg-transparent rounded-xl border border-slate-200 focus:border-blue-600 appearance-none focus:outline-none focus:ring-0 peer transition-all" />
+                        <label for="signup_password_confirmation" 
+                            class="absolute text-sm text-slate-400 peer-focus:text-blue-600 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-3 select-none pointer-events-none">
+                            Konfirmasi Password
                         </label>
                         
                         <button type="button" class="toggle-password absolute inset-y-0 right-0 flex items-center pr-4 text-slate-400 hover:text-slate-600">

@@ -7,6 +7,22 @@
     <p class="text-sm text-slate-500 mt-1">Kelola informasi pribadi dan keamanan akun Anda.</p>
 </div>
 
+@if(session('success'))
+    <div class="mb-4 bg-emerald-100 border border-emerald-400 text-emerald-700 px-4 py-3 rounded-xl relative">
+        <span class="block sm:inline">{{ session('success') }}</span>
+    </div>
+@endif
+
+@if($errors->any())
+    <div class="mb-4 bg-rose-100 border border-rose-400 text-rose-700 px-4 py-3 rounded-xl relative">
+        <ul>
+            @foreach($errors->all() as $error)
+                <li>- {{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
 <!-- ========== CONTENT ========== -->
 <div class="grid grid-cols-1 gap-6">
     <!-- Personal Info -->
@@ -25,7 +41,9 @@
                 </button>
             </div>
 
-            <form id="profile-form" class="space-y-5">
+            <form id="profile-form" action="/profile" method="POST" class="space-y-5">
+                @csrf
+                @method('PUT')
 
                 <!-- Avatar Placeholder - Centered -->
                 <div class="flex flex-col items-center py-6 mb-2">
@@ -47,42 +65,36 @@
                     <!-- Nama Lengkap -->
                     <div class="space-y-1.5">
                         <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Nama Lengkap</label>
-                        <input type="text" id="input-name" value="Muhammad Rakha"
+                        <input type="text" id="input-name" value="{{ $user->name }}"
                             class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-blue-600 focus:bg-white transition-all disabled:opacity-60 disabled:cursor-not-allowed"
                             disabled>
                     </div>
                     <!-- NIM -->
                     <div class="space-y-1.5">
-                        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">NIM</label>
-                        <input type="text" id="input-nim" value="2210511001"
+                        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">NIM / NIDN</label>
+                        <input type="text" id="input-nim" value="{{ $user->identity_number }}"
                             class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-blue-600 focus:bg-white transition-all disabled:opacity-60 disabled:cursor-not-allowed"
                             disabled>
                     </div>
                     <!-- Email -->
-                    <div class="space-y-1.5">
+                    <div class="space-y-1.5 sm:col-span-2">
                         <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Email</label>
-                        <input type="email" id="input-email" value="m.rakha@upnvj.ac.id"
+                        <input type="email" id="input-email" value="{{ $user->email }}"
                             class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-blue-600 focus:bg-white transition-all disabled:opacity-60 disabled:cursor-not-allowed"
                             disabled>
                     </div>
-                    <!-- No. HP -->
+
+                    <!-- Password Baru -->
                     <div class="space-y-1.5">
-                        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">No. Handphone</label>
-                        <input type="text" id="input-phone" value="081234567890"
+                        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Password Baru (Opsional)</label>
+                        <input type="password" id="input-password" name="password" placeholder="Biarkan kosong jika tidak diubah"
                             class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-blue-600 focus:bg-white transition-all disabled:opacity-60 disabled:cursor-not-allowed"
                             disabled>
                     </div>
-                    <!-- Program Studi -->
+                    <!-- Konfirmasi Password -->
                     <div class="space-y-1.5">
-                        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Program Studi</label>
-                        <input type="text" id="input-prodi" value="Teknik Informatika"
-                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-blue-600 focus:bg-white transition-all disabled:opacity-60 disabled:cursor-not-allowed"
-                            disabled>
-                    </div>
-                    <!-- Angkatan -->
-                    <div class="space-y-1.5">
-                        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Angkatan</label>
-                        <input type="text" id="input-angkatan" value="2022"
+                        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Konfirmasi Password Baru</label>
+                        <input type="password" id="input-password-confirmation" name="password_confirmation" placeholder="Biarkan kosong jika tidak diubah"
                             class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-blue-600 focus:bg-white transition-all disabled:opacity-60 disabled:cursor-not-allowed"
                             disabled>
                     </div>

@@ -6,6 +6,8 @@ use App\Application\Auth\LoginUser;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 class AuthController extends Controller
 {
@@ -19,6 +21,9 @@ class AuthController extends Controller
         $credentials = $request->only('identity_number', 'password');
 
         if ($loginUser->execute($credentials)) {
+            if (Auth::user()->role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            }
             return redirect()->route('dashboard');
         }
 
@@ -35,5 +40,34 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
+    }
+
+    public function showRegister()
+    {
+        return view('auth.register');
+    }
+
+    public function register(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'identity_number' => 'required|string|max:255|unique:users',
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users', 'regex:/^[a-zA-Z0-9._%+-]+@mhs\.ulm\.ac\.id$/'],
+            'password' => 'required|string|min:8|confirmed',
+        ], [
+            'email.regex' => 'Email harus menggunakan domain @mhs.ulm.ac.id untuk mendaftar sebagai mahasiswa.'
+        ]);
+
+        $user = User::create([
+            'name' => $validated['name'],
+            'identity_number' => $validated['identity_number'],
+            'email' => $validated['email'],
+            'password' => $validated['password'],
+            'role' => 'mahasiswa',
+        ]);
+
+        Auth::login($user);
+
+        return redirect()->route('dashboard');
     }
 }
