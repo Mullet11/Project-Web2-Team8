@@ -1,0 +1,282 @@
+<!-- Booking Form Modal Overlay (Dark background backdrop) -->
+<div id="booking-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 opacity-0 pointer-events-none transition-opacity duration-300 select-none">
+    <!-- Backdrop overlay to make background dark and blurred -->
+    <div id="booking-modal-backdrop" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm opacity-0 transition-opacity duration-300" onclick="closeBookingModal()"></div>
+
+    <!-- Modal Window Container (Large wide layout matching user request) -->
+    <div id="booking-modal-content" class="bg-white rounded-[32px] border border-slate-100 shadow-2xl w-full max-w-[95%] lg:max-w-5xl h-[85vh] md:h-[80vh] relative z-10 transform scale-95 opacity-0 transition-all duration-300 overflow-hidden flex flex-col">
+
+        <!-- Success State Container (Covers entire modal over grid) -->
+        <div id="booking-success-state" class="hidden flex-col items-center justify-center text-center p-8 md:p-16 space-y-6 bg-white flex-grow h-full select-none absolute inset-0 z-20">
+            <!-- Pulsing success checkmark icon -->
+            <div class="relative flex items-center justify-center">
+                <div class="absolute w-28 h-28 rounded-full bg-emerald-100 animate-ping opacity-75"></div>
+                <div class="relative w-24 h-24 rounded-full bg-emerald-500 flex items-center justify-center shadow-lg shadow-emerald-500/20 text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                </div>
+            </div>
+
+            <div class="space-y-3 max-w-md">
+                <h3 class="text-3xl font-extrabold text-slate-950">Booking Berhasil!</h3>
+                <p class="text-sm text-slate-500 font-semibold leading-relaxed">
+                    Pengajuan peminjaman ruangan Anda berhasil dikirim. Anda akan diarahkan ke halaman Riwayat Booking...
+                </p>
+            </div>
+
+            <!-- Loading Spinner Indicator -->
+            <div class="flex items-center gap-2 text-blue-600 font-bold text-xs uppercase tracking-wider">
+                <svg class="animate-spin h-5 w-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span>Memproses Halaman</span>
+            </div>
+        </div>
+
+        <!-- Main Split Grid (50% Room Visual, 50% Form) -->
+        <div id="booking-form-container" class="grid grid-cols-1 lg:grid-cols-2 h-full w-full overflow-hidden">
+
+            <!-- LEFT COLUMN: Only Room Image (Visible only on lg screen sizes) -->
+            <div class="hidden lg:flex items-center justify-center p-12 bg-slate-50 border-r border-slate-100 select-none h-full">
+                <div class="w-full h-full flex items-center justify-center">
+                    <img src="{{ asset('images/profile/ULM PNG.png') }}" alt="ULM Logo Placeholder" class="max-h-[70%] max-w-[70%] object-contain filter drop-shadow-md">
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN: Booking Form Container (Scrollable) -->
+            <div class="flex flex-col h-full overflow-hidden bg-white">
+                <!-- Header -->
+                <div class="px-8 py-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/40 select-none">
+                    <div>
+                        <h3 class="text-2xl font-black text-slate-950 tracking-tight">Form Booking</h3>
+                        <p class="text-xs font-semibold text-slate-400 mt-0.5">Lengkapi data untuk mengajukan peminjaman</p>
+                    </div>
+                    <!-- Close button -->
+                    <button type="button" onclick="closeBookingModal()" class="w-10 h-10 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-700 flex items-center justify-center transition-colors cursor-pointer focus:outline-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Scrollable Form Body -->
+                <form id="booking-form" class="overflow-y-auto p-8 space-y-5 flex-grow" onsubmit="submitBooking(event)">
+                    <!-- Nama Lengkap (Full Width) -->
+                    <div class="space-y-1.5">
+                        <label for="booking-nama" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Nama Lengkap</label>
+                        <input type="text" id="booking-nama" name="nama" required placeholder="Masukkan nama lengkap"
+                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium placeholder:text-slate-400/80">
+                    </div>
+
+                    <!-- NIM (Full Width) -->
+                    <div class="space-y-1.5">
+                        <label for="booking-nim" class="text-xs font-bold text-slate-500 uppercase tracking-wider">NIM</label>
+                        <input type="text" id="booking-nim" name="nim" required placeholder="Masukkan NIM Anda"
+                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium placeholder:text-slate-400/80">
+                    </div>
+
+                    <!-- Prodi/Fakultas (Full Width) -->
+                    <div class="space-y-1.5">
+                        <label for="booking-prodi" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Prodi / Fakultas</label>
+                        <input type="text" id="booking-prodi" name="prodi_fakultas" required placeholder="Teknologi Informasi / Teknik"
+                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium placeholder:text-slate-400/80">
+                    </div>
+
+                    <!-- WhatsApp (Full Width) -->
+                    <div class="space-y-1.5">
+                        <label for="booking-whatsapp" class="text-xs font-bold text-slate-500 uppercase tracking-wider">No. WhatsApp Aktif</label>
+                        <input type="tel" id="booking-whatsapp" name="whatsapp" required placeholder="Contoh: 08123456789"
+                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium placeholder:text-slate-400/80">
+                    </div>
+
+                    <!-- Perihal Peminjaman (Full Width) -->
+                    <div class="space-y-1.5">
+                        <label for="booking-perihal" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Perihal Peminjaman</label>
+                        <select id="booking-perihal" name="perihal" onchange="togglePerihalFields()"
+                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-850 font-bold cursor-pointer">
+                            <option value="Perkuliahan">Perkuliahan / Praktikum</option>
+                            <option value="Kegiatan Kampus">Kegiatan Kampus</option>
+                        </select>
+                    </div>
+
+                    <!-- Dosen & Mata Kuliah (Only shown for Perkuliahan, stacked vertically) -->
+                    <div id="fields-perkuliahan" class="space-y-5 transition-all duration-200">
+                        <div class="space-y-1.5">
+                            <label for="booking-dosen" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Dosen Pengampu</label>
+                            <input type="text" id="booking-dosen" name="dosen" placeholder="Nama dosen pengampu" required
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium placeholder:text-slate-400/80">
+                        </div>
+                        <div class="space-y-1.5">
+                            <label for="booking-matakuliah" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Mata Kuliah</label>
+                            <input type="text" id="booking-matakuliah" name="matakuliah" placeholder="Nama mata kuliah" required
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium placeholder:text-slate-400/80">
+                        </div>
+                    </div>
+
+                    <!-- Nama Kegiatan (Only shown for Kegiatan Kampus, full width) -->
+                    <div id="fields-kegiatan" class="space-y-1.5 hidden transition-all duration-200">
+                        <label for="booking-kegiatan" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Nama Kegiatan</label>
+                        <input type="text" id="booking-kegiatan" name="nama_kegiatan" placeholder="Nama kegiatan organisasi / kampus"
+                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium placeholder:text-slate-400/80">
+                    </div>
+
+                    <!-- Tanggal Peminjaman (Full Width) -->
+                    <div class="space-y-1.5">
+                        <label for="booking-tanggal" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Tanggal Peminjaman</label>
+                        <input type="date" id="booking-tanggal" name="tanggal" required
+                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium">
+                    </div>
+
+                    <!-- Waktu Mulai & Waktu Selesai (2 columns for neatness) -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="space-y-1.5">
+                            <label for="booking-waktu-mulai" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Waktu Mulai</label>
+                            <input type="time" id="booking-waktu-mulai" name="waktu_mulai" required
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium">
+                        </div>
+                        <div class="space-y-1.5">
+                            <label for="booking-waktu-selesai" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Waktu Selesai</label>
+                            <input type="time" id="booking-waktu-selesai" name="waktu_selesai" required
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium">
+                        </div>
+                    </div>
+
+                    <!-- Footer Buttons -->
+                    <div class="pt-4 border-t border-slate-100 flex gap-3 justify-end bg-white select-none">
+                        <button type="button" onclick="closeBookingModal()"
+                            class="px-5 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-bold rounded-xl transition-colors cursor-pointer">
+                            Batal
+                        </button>
+                        <button type="submit"
+                            class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl shadow-lg shadow-blue-600/15 hover:shadow-blue-600/25 transition-all cursor-pointer">
+                            Simpan Booking
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Open Booking Modal Function
+    function openBookingModal(selectedTime) {
+        const modal = document.getElementById('booking-modal');
+        const backdrop = document.getElementById('booking-modal-backdrop');
+        const content = document.getElementById('booking-modal-content');
+
+        // Ensure success state is hidden and form is visible on open
+        document.getElementById('booking-success-state').classList.add('hidden');
+        document.getElementById('booking-form-container').classList.remove('hidden');
+
+        // Reset form inputs (except defaults)
+        document.getElementById('booking-form').reset();
+
+        // Pre-fill Date input with today's date in YYYY-MM-DD local format
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        document.getElementById('booking-tanggal').value = `${year}-${month}-${day}`;
+
+        // Set Waktu Mulai (Start Time) to selected slot time
+        document.getElementById('booking-waktu-mulai').value = selectedTime;
+
+        // Calculate Waktu Selesai (End Time) as 1.5 hours later
+        if (selectedTime) {
+            const timeParts = selectedTime.split(':');
+            let hours = parseInt(timeParts[0], 10);
+            let minutes = parseInt(timeParts[1], 10);
+
+            // Add 1 hour and 30 minutes
+            minutes += 30;
+            if (minutes >= 60) {
+                minutes -= 60;
+                hours += 1;
+            }
+            hours += 1;
+
+            // Format hours and minutes back to HH:MM
+            const endHours = String(hours).padStart(2, '0');
+            const endMinutes = String(minutes).padStart(2, '0');
+            document.getElementById('booking-waktu-selesai').value = `${endHours}:${endMinutes}`;
+        }
+
+        // Trigger Perihal Fields visibility check
+        togglePerihalFields();
+
+        // Animate modal entry
+        modal.classList.remove('pointer-events-none', 'opacity-0');
+        modal.classList.add('opacity-100');
+        backdrop.classList.replace('opacity-0', 'opacity-100');
+
+        setTimeout(() => {
+            content.classList.replace('scale-95', 'scale-100');
+            content.classList.replace('opacity-0', 'opacity-100');
+        }, 50);
+    }
+
+    // Close Booking Modal Function
+    function closeBookingModal() {
+        const modal = document.getElementById('booking-modal');
+        const backdrop = document.getElementById('booking-modal-backdrop');
+        const content = document.getElementById('booking-modal-content');
+
+        // Animate modal exit
+        content.classList.replace('scale-100', 'scale-95');
+        content.classList.replace('opacity-100', 'opacity-0');
+        backdrop.classList.replace('opacity-100', 'opacity-0');
+
+        setTimeout(() => {
+            modal.classList.add('pointer-events-none', 'opacity-0');
+            modal.classList.remove('opacity-100');
+        }, 300);
+    }
+
+    // Toggle Perihal Fields Visibility and Required status
+    function togglePerihalFields() {
+        const perihal = document.getElementById('booking-perihal').value;
+        const fieldsPerkuliahan = document.getElementById('fields-perkuliahan');
+        const fieldsKegiatan = document.getElementById('fields-kegiatan');
+
+        const inputDosen = document.getElementById('booking-dosen');
+        const inputMatakuliah = document.getElementById('booking-matakuliah');
+        const inputKegiatan = document.getElementById('booking-kegiatan');
+
+        if (perihal === 'Kegiatan Kampus') {
+            // Hide perkuliahan fields, show kegiatan fields
+            fieldsPerkuliahan.classList.add('hidden');
+            fieldsKegiatan.classList.remove('hidden');
+
+            // Toggle required status
+            inputDosen.removeAttribute('required');
+            inputMatakuliah.removeAttribute('required');
+            inputKegiatan.setAttribute('required', 'required');
+        } else {
+            // Show perkuliahan fields, hide kegiatan fields
+            fieldsPerkuliahan.classList.remove('hidden');
+            fieldsKegiatan.classList.add('hidden');
+
+            // Toggle required status
+            inputDosen.setAttribute('required', 'required');
+            inputMatakuliah.setAttribute('required', 'required');
+            inputKegiatan.removeAttribute('required');
+        }
+    }
+
+    // Handle Form Submit (Simulates API saving and triggers redirect)
+    function submitBooking(event) {
+        event.preventDefault();
+
+        // Show success state inside the modal
+        document.getElementById('booking-form-container').classList.add('hidden');
+        document.getElementById('booking-success-state').classList.replace('hidden', 'flex');
+
+        // Redirect to /history after 2.5 seconds (feel premium and let the user see the success check)
+        setTimeout(() => {
+            window.location.href = '/history';
+        }, 2500);
+    }
+</script>

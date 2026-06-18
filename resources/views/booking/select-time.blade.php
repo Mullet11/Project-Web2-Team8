@@ -64,7 +64,7 @@
                         <button type="button" disabled
                             class="h-28 rounded-xl font-bold text-white flex items-center justify-center cursor-not-allowed select-none transition-all"
                             style="background-color: #DCA2A2; height: 112px; font-size: 24px;">
-                            08:00
+                            {{ $slot['time'] }}
                         </button>
                     @else
                         <!-- Available Slot (Greyish-Teal, Clickable) -->
@@ -73,7 +73,7 @@
                             style="background-color: #A4C9C3; height: 112px; font-size: 24px;"
                             data-time="{{ $slot['time'] }}"
                             onclick="selectSlot(this)">
-                            08:00
+                            {{ $slot['time'] }}
                         </button>
                     @endif
                 @endforeach
@@ -153,6 +153,10 @@
     </div>
 </div>
 </div>
+
+@push('modals')
+    @include('booking.formaddBooking')
+@endpush
 @endsection
 
 @section('scripts')
@@ -186,8 +190,8 @@
         const selectedTime = document.getElementById('selected-slot-input').value;
         if (!selectedTime) return;
 
-        // Temporary feedback for Step 1 focus
-        alert(`Anda memilih slot waktu ${selectedTime}. Halaman form booking akan dibuka selanjutnya.`);
+        // Open the booking modal from formaddBooking sub-view
+        openBookingModal(selectedTime);
     }
 </script>
 @endsection
