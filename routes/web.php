@@ -21,3 +21,15 @@ Route::middleware('auth')->group(function () {
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
+
+Route::get('/history', function () {
+    return view('history.index');
+});
+
+Route::post('/register', function () {
+    return redirect('/?registered=1');
+});
+
+Route::post('/login', function () {
+    return redirect('/dashboard?login=1');
+});

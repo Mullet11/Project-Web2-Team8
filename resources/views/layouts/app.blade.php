@@ -97,7 +97,7 @@
     </button>
 
     <!-- ==================== MAIN CONTENT CONTAINER ==================== -->
-    <div class="flex-grow min-h-screen lg:pl-64 flex flex-col justify-between">
+    <div class="flex-grow min-h-screen lg:pl-64 flex flex-col justify-between @if(request()->has('login')) animate-slide-down @endif">
 
         <!-- Dynamic Main Content -->
         <main class="flex-grow p-4 sm:p-6 lg:p-8 pt-20 lg:pt-8">
