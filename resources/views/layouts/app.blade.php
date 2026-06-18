@@ -111,6 +111,9 @@
 
     </div>
 
+    <!-- Modals Stack (Renders modals at root body level) -->
+    @stack('modals')
+
     <!-- Page Specific Scripts -->
     @yield('scripts')
 </body>
