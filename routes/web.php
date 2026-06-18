@@ -14,6 +14,10 @@ Route::get('/history', function () {
     return view('history.index');
 });
 
+Route::get('/profile', function () {
+    return view('profile.index');
+});
+
 Route::post('/register', function () {
     return redirect('/?registered=1');
 });
