@@ -84,27 +84,33 @@
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="rooms-grid">
 
     @foreach ($rooms as $room)
-    <!-- Dynamic Room Card -->
-    <div class="room-card bg-white rounded-[24px] border border-slate-100 hover:-translate-y-1.5 transition-all duration-300 flex flex-col group h-[380px]" data-status="{{ $room['status'] === 'available' ? 'tersedia' : ($room['status'] === 'occupied' ? 'terpakai' : 'inactive') }}" data-building="{{ substr($room['building'], -1) }}" data-name="{{ strtolower($room['name']) }}">
+    <div class="room-card bg-white rounded-[24px] border border-slate-100 hover:-translate-y-1.5 transition-all duration-300 flex flex-col group h-[380px]" data-status="{{ $room->data_status }}" data-building="{{ $room->data_building }}" data-name="{{ $room->data_name }}">
         <!-- Top Half: Image Placeholder -->
-        <div class="h-44 w-full bg-gradient-to-br from-blue-500/10 via-indigo-500/5 to-teal-500/10 rounded-t-[24px] flex items-center justify-center relative overflow-hidden shrink-0 border-b border-slate-100/50">
+        <div class="h-44 w-full bg-gradient-to-br {{ $room->image_bg_gradient }} rounded-t-[24px] flex items-center justify-center relative overflow-hidden shrink-0 border-b border-slate-100/50">
+            @if($room->data_status === 'tersedia')
+            <div class="absolute inset-0 flex items-center justify-center opacity-20 select-none pointer-events-none">
+                <svg viewBox="0 0 24 24" fill="none" class="w-16 h-16 text-blue-600/30" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                </svg>
+            </div>
+            @endif
             <span class="text-[10px] font-bold text-slate-400/80 uppercase tracking-widest">[ Image Placeholder ]</span>
         </div>
         <!-- Bottom Half: Details Section -->
-        <div class="p-6 text-white {{ $room['status'] === 'available' ? 'bg-brand-primary' : 'bg-slate-800' }} rounded-b-[24px] flex flex-col justify-between flex-grow">
+        <div class="p-6 text-white {{ $room->content_bg_color }} rounded-b-[24px] flex flex-col justify-between flex-grow">
             <!-- Info & Status Badge -->
             <div class="flex justify-between items-start gap-4">
                 <div class="overflow-hidden">
-                    <h4 class="text-xl font-extrabold tracking-tight truncate">{{ $room['name'] }}</h4>
-                    <p class="text-xs text-teal-100/80 font-semibold truncate mt-1">{{ $room['building'] }} &bull; {{ $room['capacity'] }} Kursi</p>
+                    <h4 class="text-xl font-extrabold tracking-tight truncate">{{ $room->name }}</h4>
+                    <p class="text-xs {{ $room->subtext_class }} font-semibold truncate mt-1">{{ $room->building }} &bull; {{ $room->capacity }} Kursi</p>
                 </div>
-                <span class="px-3 py-1 bg-white {{ $room['status'] === 'available' ? 'text-emerald-600' : 'text-rose-600' }} text-xs font-bold rounded-xl shrink-0 select-none">
-                    {{ $room['status'] === 'available' ? 'Tersedia' : ($room['status'] === 'occupied' ? 'Terpakai' : 'Nonaktif') }}
+                <span class="px-3 py-1 bg-white {{ $room->badge_text_color }} text-xs font-bold rounded-xl shrink-0 select-none">
+                    {{ $room->badge_text }}
                 </span>
             </div>
-            <!-- Booking Button -->
-            <a href="/rooms/{{ $room['id'] }}" class="w-full py-3 {{ $room['status'] === 'available' ? 'bg-white hover:bg-slate-50 text-brand-primary' : 'bg-slate-900/50 hover:bg-slate-900 text-slate-300 hover:text-white border border-slate-700' }} text-sm font-bold rounded-xl text-center transition-all duration-200">
-                {{ $room['status'] === 'available' ? 'Booking' : 'Lihat Jadwal' }}
+            <!-- Action Button -->
+            <a href="{{ $room->button_url }}" class="w-full py-3 {{ $room->button_class }} text-sm font-bold rounded-xl text-center transition-all duration-200">
+                {{ $room->button_text }}
             </a>
         </div>
     </div>

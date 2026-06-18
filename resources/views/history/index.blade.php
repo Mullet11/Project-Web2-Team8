@@ -31,6 +31,9 @@
             <button data-status="dibatalkan" class="status-tab px-4 py-2 text-xs font-bold rounded-lg transition-all whitespace-nowrap text-slate-500 hover:text-slate-850">
                 Dibatalkan
             </button>
+            <button data-status="menunggu" class="status-tab px-4 py-2 text-xs font-bold rounded-lg transition-all whitespace-nowrap text-slate-500 hover:text-slate-850">
+                Menunggu
+            </button>
         </div>
     </div>
 </div>
@@ -78,9 +81,9 @@
             </p>
 
             <!-- Action Button (Identical to mockup button) -->
-            <button class="w-full py-3 bg-white hover:bg-slate-50 text-blue-600 text-sm font-bold rounded-xl text-center transition-all duration-200 cursor-pointer">
+            <a href="/history/detail/disetujui" class="w-full py-3 bg-white hover:bg-slate-50 text-blue-600 text-sm font-bold rounded-xl text-center transition-all duration-200 cursor-pointer block">
                 Detail
-            </button>
+            </a>
         </div>
     </div>
 
@@ -123,9 +126,9 @@
             </p>
 
             <!-- Action Button -->
-            <button class="w-full py-3 bg-white hover:bg-slate-50 text-brand-primary text-sm font-bold rounded-xl text-center transition-all duration-200 cursor-pointer">
+            <a href="/history/detail/selesai" class="w-full py-3 bg-white hover:bg-slate-50 text-brand-primary text-sm font-bold rounded-xl text-center transition-all duration-200 cursor-pointer block">
                 Detail
-            </button>
+            </a>
         </div>
     </div>
 
@@ -170,9 +173,50 @@
             </p>
 
             <!-- Action Button -->
-            <button class="w-full py-3 bg-white hover:bg-slate-50 text-rose-600 text-sm font-bold rounded-xl text-center transition-all duration-200 cursor-pointer">
+            <a href="/history/detail/dibatalkan" class="w-full py-3 bg-white hover:bg-slate-50 text-rose-600 text-sm font-bold rounded-xl text-center transition-all duration-200 cursor-pointer block">
                 Detail
-            </button>
+            </a>
+        </div>
+    </div>
+
+    <!-- Card 4: Teater Seni D-101 (Menunggu) -->
+    <div class="history-card bg-white rounded-[24px] border border-slate-100 hover:-translate-y-1.5 transition-all duration-300 flex flex-col group h-[380px]" data-status="menunggu" data-search="teater seni d-101">
+        <!-- Top Half: Clock Illustration (Hourglass/Waiting) -->
+        <div class="h-44 w-full bg-slate-50 flex items-center justify-center relative overflow-hidden shrink-0 border-b border-slate-100/50 rounded-t-[24px]">
+            <svg viewBox="0 0 200 120" class="w-full h-full max-h-36 object-contain" xmlns="http://www.w3.org/2000/svg">
+                <!-- Desk -->
+                <rect x="20" y="90" width="160" height="6" rx="3" fill="#e2e8f0" />
+                <!-- Clock waiting circle -->
+                <circle cx="100" cy="50" r="30" fill="#cbd5e1" />
+                <circle cx="100" cy="50" r="26" fill="#f8fafc" />
+                <path d="M100 32 v18 h12" fill="none" stroke="#94a3b8" stroke-width="4" stroke-linecap="round" />
+                <!-- Pending badge indicator -->
+                <circle cx="128" cy="28" r="11" fill="#64748b" />
+                <path d="M125 24 v5 h6" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" />
+            </svg>
+        </div>
+        <!-- Bottom Half: Details Section (Theme: Slate/Grey for Pending) -->
+        <div class="p-6 text-white bg-slate-500 rounded-b-[24px] flex flex-col justify-between flex-grow">
+            <!-- Info & Status Badge -->
+            <div class="flex justify-between items-center gap-4">
+                <div class="overflow-hidden">
+                    <h4 class="text-xl font-bold tracking-tight truncate">Teater Seni D-101</h4>
+                    <p class="text-xs text-slate-100/90 font-medium truncate mt-0.5">Gedung D &bull; 50 Kursi</p>
+                </div>
+                <span class="px-3.5 py-1.5 bg-white text-slate-600 text-xs font-bold rounded-xl shrink-0 select-none">
+                    Menunggu
+                </span>
+            </div>
+
+            <!-- Booking Time -->
+            <p class="text-xs text-slate-100/90 font-semibold my-2">
+                Kamis, 25 Juni &bull; 10:00 - 12:00 WIB
+            </p>
+
+            <!-- Action Button -->
+            <a href="/history/detail/menunggu" class="w-full py-3 bg-white hover:bg-slate-50 text-slate-600 text-sm font-bold rounded-xl text-center transition-all duration-200 cursor-pointer block">
+                Detail
+            </a>
         </div>
     </div>
 
