@@ -5,6 +5,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\HistoryController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ProfileController;
 
 // Auth Routes
 Route::middleware('guest')->group(function () {
@@ -12,9 +14,8 @@ Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin']);
     Route::post('/login', [AuthController::class, 'login']);
     
-    Route::post('/register', function () {
-        return redirect('/?registered=1');
-    });
+    Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+    Route::post('/register', [AuthController::class, 'register']);
 });
 
 // Protected Routes (Butuh Login)
@@ -24,9 +25,8 @@ Route::middleware('auth')->group(function () {
     // Dashboard menggunakan Controller Backend
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::get('/profile', function () {
-        return view('profile.index');
-    });
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+    Route::put('/profile', [ProfileController::class, 'update']);
     
     // Booking Routes
     Route::get('/rooms/{id}', [BookingController::class, 'showRoom']);
@@ -37,4 +37,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/history/detail/{id}', [HistoryController::class, 'show']);
     Route::get('/history/edit/{id}', [HistoryController::class, 'edit']);
     Route::post('/history/edit/{id}', [HistoryController::class, 'update']);
+
+    // Admin Routes
+    Route::middleware('is_admin')->prefix('admin')->group(function () {
+        Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+        Route::post('/approve/{id}', [AdminController::class, 'approve']);
+        Route::post('/reject/{id}', [AdminController::class, 'reject']);
+    });
 });

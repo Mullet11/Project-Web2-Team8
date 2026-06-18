@@ -193,5 +193,17 @@
         // Open the booking modal from formaddBooking sub-view
         openBookingModal(selectedTime);
     }
+
+    @if($errors->any())
+    document.addEventListener('DOMContentLoaded', function() {
+        // Find the slot time that was submitted previously
+        const oldWaktuMulai = "{{ old('waktu_mulai') }}";
+        if (oldWaktuMulai) {
+            // Mock selection to ensure UI is consistent
+            document.getElementById('selected-slot-input').value = oldWaktuMulai;
+            openBookingModal(oldWaktuMulai);
+        }
+    });
+    @endif
 </script>
 @endsection

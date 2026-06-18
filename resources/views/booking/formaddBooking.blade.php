@@ -55,6 +55,15 @@
                 @csrf
                 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
+                    @if($errors->any())
+                        <div id="booking-error-alert" class="sm:col-span-2 mb-4 bg-rose-100 border border-rose-400 text-rose-700 px-4 py-3 rounded-xl relative">
+                            <ul>
+                                @foreach($errors->all() as $error)
+                                    <li>- {{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <!-- Nama Lengkap -->
                     <div class="space-y-1.5">
                         <label for="booking-nama" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Nama Lengkap</label>
@@ -216,6 +225,11 @@
         const modal = document.getElementById('booking-modal');
         const backdrop = document.getElementById('booking-modal-backdrop');
         const content = document.getElementById('booking-modal-content');
+
+        const errorAlert = document.getElementById('booking-error-alert');
+        if (errorAlert) {
+            errorAlert.style.display = 'none';
+        }
 
         // Animate modal exit
         content.classList.replace('scale-100', 'scale-95');

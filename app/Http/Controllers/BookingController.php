@@ -65,6 +65,16 @@ class BookingController extends Controller
             'waktu_selesai' => 'required',
         ]);
 
+        $exists = Reservation::where('room_id', $id)
+            ->where('tanggal', $validated['tanggal'])
+            ->where('waktu_mulai', $validated['waktu_mulai'])
+            ->whereIn('status', ['disetujui', 'menunggu'])
+            ->exists();
+
+        if ($exists) {
+            return back()->withErrors(['waktu_mulai' => 'Maaf, jadwal ini baru saja dibooking pengguna lain! Silakan pilih jam lain.'])->withInput();
+        }
+
         $no_booking = 'SBC-' . date('Ymd') . '-' . str_pad(rand(1, 999), 3, '0', STR_PAD_LEFT);
 
         Reservation::create([
