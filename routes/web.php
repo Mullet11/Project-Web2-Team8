@@ -95,6 +95,103 @@ Route::get('/rooms/{id}', function ($id) {
     return view('booking.select-time', compact('id', 'room', 'slots'));
 });
 
+Route::get('/history/detail/{status}', function ($status) {
+    // Simulasi data booking berdasarkan status untuk UI detail
+    $booking = [
+        'status' => $status, // disetujui, selesai, dibatalkan, menunggu
+        'room_name' => 'AULA UTAMA',
+        'building' => 'Gedung A (Dekanat)',
+        'capacity' => 60,
+        'type' => 'Aula Utama',
+        'nama' => 'Muhammad Naufal',
+        'nim' => '2210817210005',
+        'prodi_fakultas' => 'Teknologi Informasi / Teknik',
+        'whatsapp' => '6281234567890',
+        'perihal' => 'Kegiatan Kampus',
+        'nama_kegiatan' => 'Seminar Nasional TechTalk 2026',
+        'tanggal' => 'Senin, 22 Juni 2026',
+        'waktu' => '13:00 - 16:00 WIB',
+        'no_booking' => 'SBC-20260622-0042',
+        'dosen' => 'Dr. Ir. H. M. Ismail, M.T.',
+        'matakuliah' => 'Pemrograman Web II'
+    ];
+
+    if ($status === 'selesai') {
+        $booking['room_name'] = 'Ruang LK-201';
+        $booking['building'] = 'Gedung B (Lab Komputer)';
+        $booking['capacity'] = 40;
+        $booking['type'] = 'Lab Komputer';
+        $booking['perihal'] = 'Perkuliahan';
+        $booking['tanggal'] = 'Jumat, 12 Juni 2026';
+        $booking['waktu'] = '08:00 - 10:00 WIB';
+        $booking['no_booking'] = 'SBC-20260612-0015';
+    } elseif ($status === 'dibatalkan') {
+        $booking['room_name'] = 'Ruang Seminar A-202';
+        $booking['building'] = 'Gedung A (Dekanat)';
+        $booking['capacity'] = 40;
+        $booking['type'] = 'Dekanat';
+        $booking['perihal'] = 'Perkuliahan';
+        $booking['tanggal'] = 'Rabu, 10 Juni 2026';
+        $booking['waktu'] = '09:00 - 11:00 WIB';
+        $booking['no_booking'] = 'SBC-20260610-0009';
+        $booking['alasan_batal'] = 'Permintaan peminjaman dibatalkan oleh Admin BAAK karena bentrok dengan jadwal Ujian Tengah Semester (UTS) mata kuliah lain di hari yang sama.';
+    } elseif ($status === 'menunggu') {
+        $booking['room_name'] = 'Teater Seni D-101';
+        $booking['building'] = 'Gedung D (Sastra & Seni)';
+        $booking['capacity'] = 50;
+        $booking['type'] = 'Sastra & Seni';
+        $booking['perihal'] = 'Kegiatan Kampus';
+        $booking['nama_kegiatan'] = 'Latihan Teater Mahasiswa Baru';
+        $booking['tanggal'] = 'Kamis, 25 Juni 2026';
+        $booking['waktu'] = '10:00 - 12:00 WIB';
+        $booking['no_booking'] = 'SBC-20260625-0081';
+    }
+
+    return view('viewDetailHistory.viewDetailHistoryClass', compact('booking'));
+});
+
+Route::get('/history/edit/{status}', function ($status) {
+    // Simulasi data booking untuk di-edit
+    $booking = [
+        'status' => $status,
+        'room_name' => 'Teater Seni D-101',
+        'building' => 'Gedung D (Sastra & Seni)',
+        'capacity' => 50,
+        'type' => 'Sastra & Seni',
+        'nama' => 'Muhammad Naufal',
+        'nim' => '2210817210005',
+        'prodi_fakultas' => 'Teknologi Informasi / Teknik',
+        'whatsapp' => '6281234567890',
+        'perihal' => 'Kegiatan Kampus',
+        'nama_kegiatan' => 'Latihan Teater Mahasiswa Baru',
+        'tanggal' => '2026-06-25', // format YYYY-MM-DD
+        'waktu_mulai' => '10:00',
+        'waktu_selesai' => '12:00',
+        'no_booking' => 'SBC-20260625-0081',
+        'dosen' => 'Dr. Ir. H. M. Ismail, M.T.',
+        'matakuliah' => 'Pemrograman Web II'
+    ];
+
+    if ($status === 'selesai') {
+        $booking['room_name'] = 'Ruang LK-201';
+        $booking['building'] = 'Gedung B (Lab Komputer)';
+        $booking['capacity'] = 40;
+        $booking['type'] = 'Lab Komputer';
+        $booking['perihal'] = 'Perkuliahan';
+        $booking['tanggal'] = '2026-06-12';
+        $booking['waktu_mulai'] = '08:00';
+        $booking['waktu_selesai'] = '10:00';
+        $booking['no_booking'] = 'SBC-20260612-0015';
+    }
+
+    return view('viewDetailHistory.editDetailHistory', compact('booking'));
+});
+
+Route::post('/history/edit/{status}', function ($status) {
+    // Simulasi submit form edit, arahkan kembali ke detail dengan parameter success
+    return redirect('/history/detail/' . $status . '?edited=1');
+});
+
 Route::post('/register', function () {
     return redirect('/?registered=1');
 });
