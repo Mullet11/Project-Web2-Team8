@@ -10,6 +10,10 @@ Route::get('/dashboard', function () {
     return view('dashboard.index');
 });
 
+Route::get('/history', function () {
+    return view('history.index');
+});
+
 Route::post('/register', function () {
     return redirect('/?registered=1');
 });
