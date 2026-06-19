@@ -91,13 +91,37 @@
                 <div id="fields-perkuliahan" class="space-y-5 transition-all duration-200">
                     <div class="space-y-1.5">
                         <label for="booking-dosen" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Dosen Pengampu</label>
-                        <input type="text" id="booking-dosen" name="dosen" value="{{ $booking['dosen'] ?? '' }}" placeholder="Nama dosen pengampu"
-                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium placeholder:text-slate-400/80">
+                        <div class="relative">
+                            <select id="booking-dosen" name="dosen"
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium appearance-none cursor-pointer pr-10">
+                                <option value="" disabled>Pilih Dosen Pengampu</option>
+                                <option value="Dr. H. Andi Wijaya, M.T." {{ ($booking['dosen'] ?? '') === 'Dr. H. Andi Wijaya, M.T.' ? 'selected' : '' }}>Dr. H. Andi Wijaya, M.T.</option>
+                                <option value="Rina Setyawati, M.Kom." {{ ($booking['dosen'] ?? '') === 'Rina Setyawati, M.Kom.' ? 'selected' : '' }}>Rina Setyawati, M.Kom.</option>
+                                <option value="Dr. Ir. H. M. Ismail, M.T." {{ ($booking['dosen'] ?? '') === 'Dr. Ir. H. M. Ismail, M.T.' ? 'selected' : '' }}>Dr. Ir. H. M. Ismail, M.T.</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-450">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </div>
+                        </div>
                     </div>
                     <div class="space-y-1.5">
                         <label for="booking-matakuliah" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Mata Kuliah</label>
-                        <input type="text" id="booking-matakuliah" name="matakuliah" value="{{ $booking['matakuliah'] ?? '' }}" placeholder="Nama mata kuliah"
-                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium placeholder:text-slate-400/80">
+                        <div class="relative">
+                            <select id="booking-matakuliah" name="matakuliah"
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium appearance-none cursor-pointer pr-10">
+                                <option value="" disabled>Pilih Mata Kuliah</option>
+                                <option value="Praktikum Jaringan Komputer" {{ ($booking['matakuliah'] ?? '') === 'Praktikum Jaringan Komputer' ? 'selected' : '' }}>Praktikum Jaringan Komputer</option>
+                                <option value="Keamanan Sistem Informasi" {{ ($booking['matakuliah'] ?? '') === 'Keamanan Sistem Informasi' ? 'selected' : '' }}>Keamanan Sistem Informasi</option>
+                                <option value="Pemrograman Web II" {{ ($booking['matakuliah'] ?? '') === 'Pemrograman Web II' ? 'selected' : '' }}>Pemrograman Web II</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-450">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -119,8 +143,8 @@
                 <div class="grid grid-cols-2 gap-4">
                     <div class="space-y-1.5">
                         <label for="booking-waktu-mulai" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Waktu Mulai</label>
-                        <input type="time" id="booking-waktu-mulai" name="waktu_mulai" required value="{{ $booking['waktu_mulai'] }}"
-                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium">
+                        <input type="time" id="booking-waktu-mulai" name="waktu_mulai" required readonly value="{{ $booking['waktu_mulai'] }}"
+                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium cursor-not-allowed text-slate-500">
                     </div>
                     <div class="space-y-1.5">
                         <label for="booking-waktu-selesai" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Waktu Selesai</label>
