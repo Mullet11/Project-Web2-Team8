@@ -107,13 +107,37 @@
                 <div id="fields-perkuliahan" class="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6 transition-all duration-200">
                     <div class="space-y-1.5">
                         <label for="booking-dosen" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Dosen Pengampu</label>
-                        <input type="text" id="booking-dosen" name="dosen" placeholder="Nama dosen pengampu" required
-                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium placeholder:text-slate-400/80">
+                        <div class="relative">
+                            <select id="booking-dosen" name="dosen" required
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium appearance-none cursor-pointer pr-10">
+                                <option value="" disabled selected>Pilih Dosen Pengampu</option>
+                                <option value="Dr. H. Andi Wijaya, M.T.">Dr. H. Andi Wijaya, M.T.</option>
+                                <option value="Rina Setyawati, M.Kom.">Rina Setyawati, M.Kom.</option>
+                                <option value="Dr. Ir. H. M. Ismail, M.T.">Dr. Ir. H. M. Ismail, M.T.</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-450">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </div>
+                        </div>
                     </div>
                     <div class="space-y-1.5">
                         <label for="booking-matakuliah" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Mata Kuliah</label>
-                        <input type="text" id="booking-matakuliah" name="matakuliah" placeholder="Nama mata kuliah" required
-                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium placeholder:text-slate-400/80">
+                        <div class="relative">
+                            <select id="booking-matakuliah" name="matakuliah" required
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium appearance-none cursor-pointer pr-10">
+                                <option value="" disabled selected>Pilih Mata Kuliah</option>
+                                <option value="Praktikum Jaringan Komputer">Praktikum Jaringan Komputer</option>
+                                <option value="Keamanan Sistem Informasi">Keamanan Sistem Informasi</option>
+                                <option value="Pemrograman Web II">Pemrograman Web II</option>
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-450">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -135,13 +159,13 @@
                     <!-- Waktu Mulai & Waktu Selesai -->
                     <div class="space-y-1.5">
                         <label for="booking-waktu-mulai" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Waktu Mulai</label>
-                        <input type="time" id="booking-waktu-mulai" name="waktu_mulai" required
+                        <input type="time" id="booking-waktu-mulai" name="waktu_mulai" required readonly
                             class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium cursor-not-allowed text-slate-500">
                     </div>
                     <div class="space-y-1.5">
                         <label for="booking-waktu-selesai" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Waktu Selesai</label>
                         <input type="time" id="booking-waktu-selesai" name="waktu_selesai" required
-                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium cursor-not-allowed text-slate-500">
+                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium">
                     </div>
                 </div>
 
