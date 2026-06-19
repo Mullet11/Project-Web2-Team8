@@ -31,7 +31,7 @@ class BookingViewModel
 
                 // Check overlap
                 if ($slotStartTime < $bookingEnd && $slotEndTime > $bookingStart) {
-                    $status = 'terpakai';
+                    $status = $booking->status === 'menunggu' ? 'diproses' : 'terpakai';
                     break;
                 }
             }
