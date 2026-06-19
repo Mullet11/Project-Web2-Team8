@@ -50,20 +50,33 @@
                         <span>Dibooking</span>
                     </div>
                     <div class="flex items-center gap-1.5">
+                        <span class="w-3.5 h-3.5 rounded shrink-0" style="background-color: #EAB308;"></span>
+                        <span>Diproses</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
                         <span class="w-3.5 h-3.5 rounded bg-[#A4C9C3] shrink-0"></span>
                         <span>Tersedia</span>
                     </div>
                 </div>
             </div>
-
+ 
             <!-- Timeslots Grid (4 Columns, 2 Rows - exactly matches mockup layout) -->
             <div class="grid grid-cols-4 gap-4">
                 @foreach($slots as $index => $slot)
                     @if($slot['status'] === 'terpakai')
-                        <!-- Booked Slot (Pinkish/Red, Disabled) -->
-                        <button type="button" disabled
-                            class="h-28 rounded-xl font-bold text-white flex items-center justify-center cursor-not-allowed select-none transition-all"
-                            style="background-color: #DCA2A2; height: 112px; font-size: 24px;">
+                        <!-- Booked Slot (Pinkish/Red, Clickable Warning) -->
+                        <button type="button"
+                            class="h-28 rounded-xl font-bold text-white flex items-center justify-center cursor-pointer select-none transition-all hover:scale-[1.02] active:scale-[0.98]"
+                            style="background-color: #DCA2A2; height: 112px; font-size: 24px;"
+                            onclick="showWarning('booked')">
+                            {{ $slot['time'] }}
+                        </button>
+                    @elseif($slot['status'] === 'diproses')
+                        <!-- Processing Slot (Yellow, Clickable Warning) -->
+                        <button type="button"
+                            class="h-28 rounded-xl font-bold text-white flex items-center justify-center cursor-pointer select-none transition-all hover:scale-[1.02] active:scale-[0.98]"
+                            style="background-color: #EAB308; height: 112px; font-size: 24px;"
+                            onclick="showWarning('processing')">
                             {{ $slot['time'] }}
                         </button>
                     @else
@@ -154,6 +167,24 @@
 </div>
 </div>
 
+<!-- Custom Warning Toast -->
+<div id="warning-toast" class="fixed top-6 right-6 z-50 flex items-center gap-3 bg-white border border-slate-100 shadow-2xl rounded-2xl px-5 py-4 -translate-y-20 opacity-0 pointer-events-none transition-all duration-300 max-w-sm select-none">
+    <div id="warning-toast-icon-bg" class="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-500 shrink-0 shadow-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5.5 w-5.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+    </div>
+    <div class="space-y-0.5">
+        <p id="warning-toast-title" class="text-xs font-black text-slate-600 uppercase tracking-wider">Peringatan</p>
+        <p id="warning-toast-message" class="text-sm font-bold text-slate-500 leading-normal"></p>
+    </div>
+    <button type="button" onclick="closeWarningToast()" class="text-slate-400 hover:text-slate-600 transition-colors ml-2 cursor-pointer focus:outline-none shrink-0">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+    </button>
+</div>
+
 @push('modals')
     @include('booking.formaddBooking')
 @endpush
@@ -162,6 +193,52 @@
 @section('scripts')
 <script>
     let selectedSlotBtn = null;
+
+    let toastTimeout = null;
+
+    function showWarning(status) {
+        const toast = document.getElementById('warning-toast');
+        const iconBg = document.getElementById('warning-toast-icon-bg');
+        const titleText = document.getElementById('warning-toast-title');
+        const messageText = document.getElementById('warning-toast-message');
+
+        // Reset classes
+        toast.className = "fixed top-6 right-6 z-50 flex items-center gap-3 bg-white border shadow-2xl rounded-2xl px-5 py-4 -translate-y-20 opacity-0 pointer-events-none transition-all duration-300 max-w-sm select-none";
+
+        if (status === 'booked') {
+            toast.classList.add('border-rose-100');
+            iconBg.className = "w-10 h-10 rounded-xl bg-rose-50 flex items-center justify-center text-rose-500 shrink-0 shadow-sm";
+            titleText.className = "text-xs font-black text-rose-600 uppercase tracking-wider";
+            titleText.textContent = "JADWAL DIBOOKING";
+            messageText.textContent = "Maaf, jadwal ini baru saja dibooking pengguna lain!";
+        } else if (status === 'processing') {
+            toast.classList.add('border-amber-100');
+            iconBg.className = "w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center text-amber-500 shrink-0 shadow-sm";
+            titleText.className = "text-xs font-black text-amber-600 uppercase tracking-wider";
+            titleText.textContent = "JADWAL DIPROSES";
+            messageText.textContent = "Maaf, jadwal ini sedang dalam proses antrean review oleh admin BAAK!";
+        }
+
+        // Animate Entry
+        toast.classList.remove('pointer-events-none', 'opacity-0', '-translate-y-20');
+        toast.classList.add('opacity-100', 'translate-y-0');
+
+        // Clear timeout
+        if (toastTimeout) {
+            clearTimeout(toastTimeout);
+        }
+
+        // Auto close after 4 seconds
+        toastTimeout = setTimeout(() => {
+            closeWarningToast();
+        }, 4000);
+    }
+
+    function closeWarningToast() {
+        const toast = document.getElementById('warning-toast');
+        toast.classList.remove('opacity-100', 'translate-y-0');
+        toast.classList.add('opacity-0', '-translate-y-20', 'pointer-events-none');
+    }
 
     function selectSlot(buttonElement) {
         // Reset previous selected slot button
