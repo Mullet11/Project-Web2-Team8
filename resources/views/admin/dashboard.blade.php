@@ -3,65 +3,287 @@
 @section('title', 'Admin Dashboard - Smart Class Booking')
 
 @section('content')
-<div class="px-6 py-8 mx-auto max-w-7xl">
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold text-slate-800">Admin Dashboard (Approval)</h1>
+<!-- Header Banner / Back Button (Matches brand style) -->
+<div class="relative w-full h-32 bg-gradient-to-r from-blue-500/10 via-indigo-500/5 to-blue-600/10 -mt-20 lg:-mt-8 -mx-4 sm:-mx-6 lg:-mx-8 w-[calc(100%+2rem)] sm:w-[calc(100%+3rem)] lg:w-[calc(100%+4rem)] rounded-none border-b border-blue-100/30 mb-8 flex items-center justify-center overflow-hidden select-none">
+    <div class="w-full max-w-[1440px] px-4 sm:px-6 lg:px-10 flex items-center justify-between">
+        <div class="flex items-center gap-5">
+            <div class="space-y-0.5">
+                <h1 class="text-2xl font-black text-slate-900 tracking-tight">Admin Dashboard</h1>
+                <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Persetujuan Pengajuan Peminjaman Ruangan</p>
+            </div>
+        </div>
     </div>
+</div>
+
+<!-- Main Container -->
+<div class="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 mb-10">
 
     @if(session('success'))
-        <div class="mb-4 bg-emerald-100 border border-emerald-400 text-emerald-700 px-4 py-3 rounded-xl relative">
-            <span class="block sm:inline">{{ session('success') }}</span>
+        <!-- Success Alert (Matches theme) -->
+        <div class="w-full mb-6 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-2xl p-4 flex items-center justify-between shadow-sm animate-slide-down select-none">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center text-white shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                </div>
+                <div class="space-y-0.5">
+                    <p class="text-sm font-black">Berhasil!</p>
+                    <p class="text-xs font-semibold text-emerald-600">{{ session('success') }}</p>
+                </div>
+            </div>
+            <button type="button" onclick="this.parentElement.remove()" class="text-emerald-400 hover:text-emerald-600 cursor-pointer transition-colors focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
         </div>
     @endif
 
-    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-        <table class="w-full text-sm text-left text-slate-500">
-            <thead class="text-xs text-slate-700 uppercase bg-slate-50 border-b border-slate-200">
-                <tr>
-                    <th class="px-6 py-4">Peminjam</th>
-                    <th class="px-6 py-4">Ruangan</th>
-                    <th class="px-6 py-4">Waktu</th>
-                    <th class="px-6 py-4">Perihal</th>
-                    <th class="px-6 py-4 text-center">Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse($reservations as $res)
-                <tr class="bg-white border-b hover:bg-slate-50">
-                    <td class="px-6 py-4 font-medium text-slate-900 whitespace-nowrap">
-                        {{ $res->nama }}<br>
-                        <span class="text-xs text-slate-400">{{ $res->nim }}</span>
-                    </td>
-                    <td class="px-6 py-4">
-                        {{ $res->room->name ?? 'Unknown Room' }}
-                    </td>
-                    <td class="px-6 py-4">
-                        {{ \Carbon\Carbon::parse($res->tanggal)->format('d M Y') }}<br>
-                        <span class="font-semibold">{{ $res->waktu_mulai }} - {{ $res->waktu_selesai }}</span>
-                    </td>
-                    <td class="px-6 py-4">
+    <!-- Table Card Container (Limited width, centered, padded top-header) -->
+    <div class="w-full bg-white rounded-3xl border border-slate-100 shadow-sm">
+        <!-- Card Header -->
+        <div class="px-6 py-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/20 select-none rounded-t-3xl">
+            <div>
+                <h3 class="text-base font-black text-slate-900 tracking-tight">Daftar Pengajuan Peminjaman</h3>
+
+            </div>
+        </div>
+
+        <!-- Desktop Table View (Visible on desktop, hidden on mobile, allows dropdown overflow) -->
+        <div class="hidden md:block md:overflow-visible w-full">
+            <table class="w-full text-sm text-left text-slate-500 border-collapse">
+                <thead class="text-[10px] text-slate-400 uppercase bg-slate-50/40 border-b border-slate-100 tracking-wider font-black select-none">
+                    <tr>
+                        <th class="px-6 py-4">Peminjam</th>
+                        <th class="px-6 py-4">Ruangan</th>
+                        <th class="px-6 py-4">Tanggal</th>
+                        <th class="px-6 py-4">Waktu</th>
+                        <th class="px-6 py-4">Perihal</th>
+                        <th class="px-6 py-4 text-center">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    @forelse($reservations as $res)
+                    <tr class="hover:bg-slate-50/30 transition-colors">
+                        <!-- Peminjam -->
+                        <td class="px-6 py-5 whitespace-nowrap">
+                            <p class="font-extrabold text-slate-800 leading-none">{{ $res->nama }}</p>
+                            <p class="text-xs font-semibold text-slate-400 mt-1 tracking-wider">{{ $res->nim }}</p>
+                        </td>
+                        <!-- Ruangan -->
+                        <td class="px-6 py-5 whitespace-nowrap font-extrabold text-slate-700">
+                            {{ $res->room->name ?? 'Unknown Room' }}
+                        </td>
+                        <!-- Tanggal -->
+                        <td class="px-6 py-5 whitespace-nowrap font-extrabold text-slate-600">
+                            {{ \Carbon\Carbon::parse($res->tanggal)->format('d M Y') }}
+                        </td>
+                        <!-- Waktu -->
+                        <td class="px-6 py-5 whitespace-nowrap">
+                            <span class="inline-block px-2.5 py-1 bg-blue-50 text-blue-600 text-xs font-bold rounded-lg border border-blue-100/30">
+                                {{ \Carbon\Carbon::parse($res->waktu_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($res->waktu_selesai)->format('H:i') }}
+                            </span>
+                        </td>
+                        <!-- Perihal -->
+                        <td class="px-6 py-5 whitespace-nowrap">
+                            <span class="inline-block px-2.5 py-0.5 bg-slate-100 text-slate-600 text-[10px] font-black rounded-md uppercase tracking-wider select-none">
+                                {{ $res->perihal }}
+                            </span>
+                        </td>
+                        <!-- Aksi Dropdown -->
+                        <td class="px-6 py-5 text-center whitespace-nowrap">
+                            <div class="relative inline-block text-left dropdown-container">
+                                <button onclick="toggleDropdown(this)" type="button" class="inline-flex items-center gap-1.5 px-4 py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200/60 text-xs font-bold rounded-xl transition-all cursor-pointer focus:outline-none select-none">
+                                    <span>Aksi</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 dropdown-icon transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+
+                                <!-- Dropdown Menu -->
+                                <div class="dropdown-menu absolute right-0 mt-2 w-36 rounded-xl bg-white border border-slate-100 shadow-xl z-20 overflow-hidden py-1.5 origin-top-right focus:outline-none hidden opacity-0 transition-all duration-150">
+                                    <!-- Setujui Option -->
+                                    <form action="/admin/approve/{{ $res->id }}" method="POST" class="block w-full">
+                                        @csrf
+                                        <button type="submit" class="flex items-center gap-2 w-full px-4 py-2 text-left text-xs font-bold text-emerald-600 hover:bg-emerald-50 transition-colors cursor-pointer">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                            </svg>
+                                            <span>Setujui</span>
+                                        </button>
+                                    </form>
+
+                                    <!-- Tolak Option -->
+                                    <form action="/admin/reject/{{ $res->id }}" method="POST" class="block w-full">
+                                        @csrf
+                                        <button type="submit" class="flex items-center gap-2 w-full px-4 py-2 text-left text-xs font-bold text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                            <span>Tolak</span>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="6" class="px-6 py-16 text-center select-none">
+                            <div class="w-16 h-16 mx-auto rounded-2xl bg-slate-50 flex items-center justify-center text-slate-400 mb-4 border border-slate-100/80">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <h3 class="text-base font-extrabold text-slate-800">Semua Pengajuan Selesai</h3>
+                            <p class="text-sm text-slate-400 mt-1 max-w-xs mx-auto">Tidak ada pengajuan peminjaman ruangan yang menunggu persetujuan Anda saat ini.</p>
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Mobile Card View (Visible on mobile, hidden on desktop, prevents horizontal table scrolling issues) -->
+        <div class="block md:hidden divide-y divide-slate-100">
+            @forelse($reservations as $res)
+            <div class="p-5 space-y-4 hover:bg-slate-50/30 transition-colors">
+                <!-- Top Row: Peminjam & Status/Perihal -->
+                <div class="flex items-start justify-between">
+                    <div class="space-y-1">
+                        <p class="font-extrabold text-slate-800 leading-tight text-base">{{ $res->nama }}</p>
+                        <p class="text-xs font-semibold text-slate-400 tracking-wider">{{ $res->nim }}</p>
+                    </div>
+                    <span class="inline-block px-2.5 py-0.5 bg-slate-100 text-slate-600 text-[10px] font-black rounded-md uppercase tracking-wider select-none">
                         {{ $res->perihal }}
-                    </td>
-                    <td class="px-6 py-4 flex justify-center gap-2">
-                        <form action="/admin/approve/{{ $res->id }}" method="POST">
-                            @csrf
-                            <button type="submit" class="px-4 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 font-bold text-xs transition">Setujui</button>
-                        </form>
-                        <form action="/admin/reject/{{ $res->id }}" method="POST">
-                            @csrf
-                            <button type="submit" class="px-4 py-2 bg-rose-500 text-white rounded-lg hover:bg-rose-600 font-bold text-xs transition">Tolak</button>
-                        </form>
-                    </td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="5" class="px-6 py-8 text-center text-slate-500">
-                        Tidak ada pengajuan yang menunggu persetujuan.
-                    </td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
+                    </span>
+                </div>
+
+                <!-- Info Grid -->
+                <div class="grid grid-cols-2 gap-3 text-xs">
+                    <div>
+                        <p class="text-slate-400 font-bold uppercase tracking-wider text-[9px]">Ruangan</p>
+                        <p class="font-extrabold text-slate-700 mt-0.5">{{ $res->room->name ?? 'Unknown Room' }}</p>
+                    </div>
+                    <div>
+                        <p class="text-slate-400 font-bold uppercase tracking-wider text-[9px]">Tanggal</p>
+                        <p class="font-extrabold text-slate-700 mt-0.5">{{ \Carbon\Carbon::parse($res->tanggal)->format('d M Y') }}</p>
+                    </div>
+                    <div class="col-span-2">
+                        <p class="text-slate-400 font-bold uppercase tracking-wider text-[9px]">Waktu</p>
+                        <div class="mt-1">
+                            <span class="inline-block px-2.5 py-1 bg-blue-50 text-blue-600 font-bold rounded-lg border border-blue-100/30">
+                                {{ \Carbon\Carbon::parse($res->waktu_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($res->waktu_selesai)->format('H:i') }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Dropdown for Mobile -->
+                <div class="flex justify-end pt-3 border-t border-slate-100">
+                    <div class="relative inline-block text-left dropdown-container w-full sm:w-auto">
+                        <button onclick="toggleDropdown(this)" type="button" class="flex items-center justify-between gap-1.5 w-full sm:w-auto px-4 py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200/60 text-xs font-bold rounded-xl transition-all cursor-pointer focus:outline-none select-none">
+                            <span>Aksi</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 dropdown-icon transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+
+                        <!-- Dropdown Menu -->
+                        <div class="dropdown-menu absolute right-0 mt-2 w-full sm:w-36 rounded-xl bg-white border border-slate-100 shadow-xl z-20 overflow-hidden py-1.5 origin-top-right focus:outline-none hidden opacity-0 transition-all duration-150">
+                            <!-- Setujui Option -->
+                            <form action="/admin/approve/{{ $res->id }}" method="POST" class="block w-full">
+                                @csrf
+                                <button type="submit" class="flex items-center gap-2 w-full px-4 py-2 text-left text-xs font-bold text-emerald-600 hover:bg-emerald-50 transition-colors cursor-pointer">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span>Setujui</span>
+                                </button>
+                            </form>
+
+                            <!-- Tolak Option -->
+                            <form action="/admin/reject/{{ $res->id }}" method="POST" class="block w-full">
+                                @csrf
+                                <button type="submit" class="flex items-center gap-2 w-full px-4 py-2 text-left text-xs font-bold text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                    <span>Tolak</span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @empty
+            <div class="p-8 text-center select-none">
+                <div class="w-16 h-16 mx-auto rounded-2xl bg-slate-50 flex items-center justify-center text-slate-400 mb-4 border border-slate-100/80">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <h3 class="text-base font-extrabold text-slate-800">Semua Pengajuan Selesai</h3>
+                <p class="text-sm text-slate-400 mt-1 max-w-xs mx-auto">Tidak ada pengajuan peminjaman ruangan yang menunggu persetujuan Anda saat ini.</p>
+            </div>
+            @endforelse
+        </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+    function toggleDropdown(button) {
+        const container = button.closest('.dropdown-container');
+        const menu = container.querySelector('.dropdown-menu');
+        const icon = container.querySelector('.dropdown-icon');
+
+        // Close all other open dropdowns
+        document.querySelectorAll('.dropdown-menu').forEach(m => {
+            if (m !== menu) {
+                m.classList.add('hidden', 'opacity-0');
+                const parent = m.closest('.dropdown-container');
+                if (parent) {
+                    const btnIcon = parent.querySelector('.dropdown-icon');
+                    if (btnIcon) btnIcon.classList.remove('rotate-180');
+                }
+            }
+        });
+
+        // Toggle current dropdown
+        const isHidden = menu.classList.contains('hidden');
+        if (isHidden) {
+            menu.classList.remove('hidden');
+            setTimeout(() => {
+                menu.classList.remove('opacity-0');
+            }, 10);
+            icon.classList.add('rotate-180');
+        } else {
+            menu.classList.add('opacity-0');
+            setTimeout(() => {
+                menu.classList.add('hidden');
+            }, 150);
+            icon.classList.remove('rotate-180');
+        }
+    }
+
+    // Close dropdown on click outside
+    document.addEventListener('click', function(event) {
+        if (!event.target.closest('.dropdown-container')) {
+            document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                menu.classList.add('opacity-0');
+                setTimeout(() => {
+                    menu.classList.add('hidden');
+                }, 150);
+                const parent = menu.closest('.dropdown-container');
+                if (parent) {
+                    const btnIcon = parent.querySelector('.dropdown-icon');
+                    if (btnIcon) btnIcon.classList.remove('rotate-180');
+                }
+            });
+        }
+    });
+</script>
 @endsection
