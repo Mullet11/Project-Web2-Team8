@@ -18,7 +18,7 @@
 <body class="bg-white text-slate-800 font-sans min-h-screen antialiased flex">
 
     <!-- Container Utama: Auto Active jika ada error di registrasi/Sign Up atau baru register -->
-    <div id="auth-container" class="flex-grow flex flex-col lg:flex-row p-4 min-h-screen relative overflow-hidden bg-white @if($errors->has('name') || old('is_signup') || request()->has('registered')) active @endif">
+    <div id="auth-container" class="flex-grow flex flex-col lg:flex-row p-4 min-h-screen relative overflow-hidden bg-white @if($errors->has('name') || old('is_signup') || request()->has('registered') || isset($is_signup)) active @endif">
         
         <!-- ==================== LEFT COLUMN: SIGN IN FORM ==================== -->
         <div id="signin-wrapper" class="w-full lg:w-1/2 flex flex-col justify-between p-6 sm:p-12 lg:p-16 h-full min-h-[85vh] lg:min-h-0">
@@ -153,12 +153,65 @@
                             class="block px-4 py-3.5 w-full text-sm text-slate-900 bg-transparent rounded-xl border @error('email') border-rose-500 focus:border-rose-500 @else border-slate-200 focus:border-blue-600 @enderror appearance-none focus:outline-none focus:ring-0 peer transition-all" />
                         <label for="signup_email" 
                             class="absolute text-sm @error('email') text-rose-500 @else text-slate-400 peer-focus:text-blue-600 @enderror duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-3 select-none pointer-events-none">
-                            Email (wajib @mhs.ulm.ac.id)
+                            Email (wajib @mhs.ulm.ac.id atau @ulm.ac.id)
                         </label>
                         @error('email')
                             <p class="mt-1.5 text-xs text-rose-600 font-medium">{{ $message }}</p>
                         @enderror
                     </div>
+
+                    <!-- WhatsApp Floating Input -->
+                    <div class="relative">
+                        <input type="tel" id="signup_whatsapp" name="whatsapp" value="{{ old('whatsapp') }}" required placeholder=" " 
+                            class="block px-4 py-3.5 w-full text-sm text-slate-900 bg-transparent rounded-xl border @error('whatsapp') border-rose-500 focus:border-rose-500 @else border-slate-200 focus:border-blue-600 @enderror appearance-none focus:outline-none focus:ring-0 peer transition-all" />
+                        <label for="signup_whatsapp" 
+                            class="absolute text-sm @error('whatsapp') text-rose-500 @else text-slate-400 peer-focus:text-blue-600 @enderror duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-3 select-none pointer-events-none">
+                            Nomor WhatsApp Aktif
+                        </label>
+                        @error('whatsapp')
+                            <p class="mt-1.5 text-xs text-rose-600 font-medium">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Fakultas Dropdown -->
+                    <div class="relative">
+                        <select id="signup_fakultas" required
+                            class="block px-4 py-3.5 w-full text-sm text-slate-900 bg-transparent rounded-xl border @error('prodi_fakultas') border-rose-500 focus:border-rose-500 @else border-slate-200 focus:border-blue-600 @enderror appearance-none focus:outline-none focus:ring-0 peer transition-all cursor-pointer pr-10">
+                            <option value="" disabled selected>Pilih Fakultas</option>
+                            <option value="Teknik">Fakultas Teknik</option>
+                        </select>
+                        <label for="signup_fakultas" 
+                            class="absolute text-sm text-slate-400 peer-focus:text-blue-600 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 left-3 select-none pointer-events-none">
+                            Fakultas
+                        </label>
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-slate-400">
+                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Program Studi Dropdown -->
+                    <div class="relative">
+                        <select id="signup_prodi" required disabled
+                            class="block px-4 py-3.5 w-full text-sm text-slate-900 bg-transparent rounded-xl border @error('prodi_fakultas') border-rose-500 focus:border-rose-500 @else border-slate-200 focus:border-blue-600 @enderror appearance-none focus:outline-none focus:ring-0 peer transition-all cursor-pointer pr-10 disabled:opacity-60 disabled:cursor-not-allowed">
+                            <option value="" disabled selected>Pilih Program Studi</option>
+                        </select>
+                        <label for="signup_prodi" 
+                            class="absolute text-sm text-slate-400 peer-focus:text-blue-600 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 left-3 select-none pointer-events-none">
+                            Program Studi
+                        </label>
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-slate-400">
+                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    <input type="hidden" id="signup_prodi_fakultas" name="prodi_fakultas" value="{{ old('prodi_fakultas') }}">
+                    @error('prodi_fakultas')
+                        <p class="mt-1.5 text-xs text-rose-600 font-medium">{{ $message }}</p>
+                    @enderror
 
                     <!-- Password Floating Input -->
                     <div class="relative">
@@ -239,5 +292,71 @@
         </div>
     </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const fakultasSelect = document.getElementById('signup_fakultas');
+            const prodiSelect = document.getElementById('signup_prodi');
+            const hiddenInput = document.getElementById('signup_prodi_fakultas');
+
+            const prodiList = {
+                'Teknik': [
+                    'Teknik Sipil',
+                    'Teknik Arsitektur',
+                    'Teknik Pertambangan',
+                    'Teknik Kimia',
+                    'Teknik Lingkungan',
+                    'Teknik Mesin',
+                    'Teknologi Informasi',
+                    'Teknik Geologi',
+                    'Rekayasa Elektro',
+                    'Rekayasa Sistem Komputer'
+                ]
+            };
+
+            function updateHiddenInput() {
+                if (prodiSelect.value && fakultasSelect.value) {
+                    hiddenInput.value = prodiSelect.value + ' / ' + fakultasSelect.value;
+                } else {
+                    hiddenInput.value = '';
+                }
+            }
+
+            fakultasSelect.addEventListener('change', () => {
+                const selectedFakultas = fakultasSelect.value;
+                prodiSelect.innerHTML = '<option value="" disabled selected>Pilih Program Studi</option>';
+                
+                if (prodiList[selectedFakultas]) {
+                    prodiSelect.disabled = false;
+                    prodiList[selectedFakultas].forEach(prodi => {
+                        const option = document.createElement('option');
+                        option.value = prodi;
+                        option.textContent = prodi;
+                        prodiSelect.appendChild(option);
+                    });
+                } else {
+                    prodiSelect.disabled = true;
+                }
+                updateHiddenInput();
+            });
+
+            prodiSelect.addEventListener('change', updateHiddenInput);
+
+            // Pre-fill if validation failed and old input exists
+            const oldVal = hiddenInput.value;
+            if (oldVal && oldVal.includes(' / ')) {
+                const parts = oldVal.split(' / ');
+                const oldProdi = parts[0];
+                const oldFakultas = parts[1];
+
+                if (oldFakultas === 'Teknik') {
+                    fakultasSelect.value = oldFakultas;
+                    // Trigger change manually
+                    fakultasSelect.dispatchEvent(new Event('change'));
+                    prodiSelect.value = oldProdi;
+                    updateHiddenInput();
+                }
+            }
+        });
+    </script>
 </body>
 </html>
