@@ -43,5 +43,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
         Route::post('/approve/{id}', [AdminController::class, 'approve']);
         Route::post('/reject/{id}', [AdminController::class, 'reject']);
+
+        // Room Management CRUD
+        Route::get('/rooms', [AdminController::class, 'rooms'])->name('admin.rooms');
+        Route::post('/rooms', [AdminController::class, 'storeRoom'])->name('admin.rooms.store');
+        Route::put('/rooms/{id}', [AdminController::class, 'updateRoom'])->name('admin.rooms.update');
+        Route::delete('/rooms/{id}', [AdminController::class, 'deleteRoom'])->name('admin.rooms.delete');
     });
 });

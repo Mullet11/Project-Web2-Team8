@@ -16,7 +16,7 @@ class BookingController extends Controller
         
         $roomData = [
             'name' => $room->name,
-            'building' => $room->building,
+            'campus' => $room->campus,
             'capacity' => $room->capacity,
             'facilities' => $room->facilities,
             'status' => $room->status === 'available' ? 'tersedia' : 'terpakai'

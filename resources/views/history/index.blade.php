@@ -53,7 +53,7 @@
             <div class="flex justify-between items-center gap-4">
                 <div class="overflow-hidden">
                     <h4 class="text-xl font-bold tracking-tight truncate">{{ $card['room_name'] }}</h4>
-                    <p class="text-xs {{ $card['theme']['text_bottom'] }} font-medium truncate mt-0.5">{{ $card['building'] }} &bull; {{ $card['capacity'] }} Kursi</p>
+                    <p class="text-xs {{ $card['theme']['text_bottom'] }} font-medium truncate mt-0.5">{{ $card['campus'] }} &bull; {{ $card['capacity'] }} Kursi</p>
                 </div>
                 <span class="px-3.5 py-1.5 bg-white {{ $card['theme']['badge_text'] }} text-xs font-bold rounded-xl shrink-0 select-none">
                     {{ $card['status_label'] }}

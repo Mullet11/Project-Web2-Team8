@@ -199,7 +199,7 @@
             <div class="space-y-1 overflow-hidden select-none">
                 <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Ruangan Dipesan</span>
                 <h4 class="text-lg font-black text-slate-900 leading-tight truncate">{{ $booking['room_name'] }}</h4>
-                <p class="text-xs text-slate-500 font-semibold truncate">{{ $booking['building'] }} &bull; {{ $booking['capacity'] }} Kursi</p>
+                <p class="text-xs text-slate-500 font-semibold truncate">{{ $booking['campus'] }} &bull; {{ $booking['capacity'] }} Kursi</p>
             </div>
         </div>
 

@@ -62,7 +62,7 @@ class RoomSeeder extends Seeder
                 'status' => 'available'
             ],
             [
-                'name' => 'Ruang Theater FT BJM',
+                'name' => 'Gedung Theater FT BJM',
                 'campus' => 'Kampus Banjarmasin',
                 'faculty' => 'Teknik',
                 'building' => 'Gedung Dekanat FT BJM',
@@ -118,7 +118,7 @@ class RoomSeeder extends Seeder
                 'status' => 'available'
             ],
             [
-                'name' => 'Ruang Theater FT BJB',
+                'name' => 'Gedung Theater FT BJB',
                 'campus' => 'Kampus Banjarbaru',
                 'faculty' => 'Teknik',
                 'building' => 'Gedung Dekanat Baru FT',

@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const facultyOptions = facultyMenu.querySelectorAll('.faculty-option');
             facultyOptions.forEach(opt => {
                 const val = opt.getAttribute('data-value');
-                if (val === '' || allowedFaculties.has(val)) {
+                if (val === '' || allowedFaculties.has(val.toLowerCase())) {
                     opt.style.display = '';
                 } else {
                     opt.style.display = 'none';

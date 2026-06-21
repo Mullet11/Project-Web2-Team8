@@ -78,7 +78,47 @@
                             <span class="w-2 h-2 rounded-full bg-slate-400"></span>
                             Pilih Fakultas
                         </div>
-                        <div class="faculty-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-600 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="teknik">
+                        <div class="faculty-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-600 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="Keguruan dan Ilmu Pendidikan">
+                            <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+                            Keguruan dan Ilmu Pendidikan (FKIP)
+                        </div>
+                        <div class="faculty-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-600 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="Ekonomi dan Bisnis">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                            Ekonomi dan Bisnis (FEB)
+                        </div>
+                        <div class="faculty-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-600 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="Hukum">
+                            <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+                            Hukum (FH)
+                        </div>
+                        <div class="faculty-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-600 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="Ilmu Sosial dan Ilmu Politik">
+                            <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                            Ilmu Sosial dan Ilmu Politik (FISIP)
+                        </div>
+                        <div class="faculty-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-600 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="Kedokteran">
+                            <span class="w-2 h-2 rounded-full bg-teal-500"></span>
+                            Kedokteran (FK)
+                        </div>
+                        <div class="faculty-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-600 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="Kedokteran Gigi">
+                            <span class="w-2 h-2 rounded-full bg-pink-500"></span>
+                            Kedokteran Gigi (FKG)
+                        </div>
+                        <div class="faculty-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-600 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="Matematika dan Ilmu Pengetahuan Alam">
+                            <span class="w-2 h-2 rounded-full bg-sky-500"></span>
+                            Matematika dan Ilmu Pengetahuan Alam (FMIPA)
+                        </div>
+                        <div class="faculty-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-600 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="Kehutanan">
+                            <span class="w-2 h-2 rounded-full bg-amber-700"></span>
+                            Kehutanan (Fahutan)
+                        </div>
+                        <div class="faculty-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-600 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="Pertanian">
+                            <span class="w-2 h-2 rounded-full bg-lime-600"></span>
+                            Pertanian (Faperta)
+                        </div>
+                        <div class="faculty-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-600 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="Perikanan dan Kelautan">
+                            <span class="w-2 h-2 rounded-full bg-cyan-600"></span>
+                            Perikanan dan Kelautan (FPK)
+                        </div>
+                        <div class="faculty-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-600 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="Teknik">
                             <span class="w-2 h-2 rounded-full bg-amber-500"></span>
                             Teknik (FT)
                         </div>

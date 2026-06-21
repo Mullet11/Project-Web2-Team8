@@ -93,19 +93,6 @@ class DashboardViewModel
 
             $location_label = $room->campus;
 
-            $data_building = 'other';
-            if (stripos($room->building, 'Gedung A') !== false) {
-                $data_building = 'A';
-            } elseif (stripos($room->building, 'Gedung Lab') !== false || stripos($room->building, 'Gedung B') !== false) {
-                $data_building = 'B';
-            } elseif (stripos($room->building, 'Gedung Utama') !== false || stripos($room->building, 'Gedung Dekanat FH') !== false) {
-                $data_building = 'C';
-            } elseif (stripos($room->building, 'Gedung IT') !== false || stripos($room->building, 'Gedung Dekanat Baru') !== false) {
-                $data_building = 'D';
-            } elseif (stripos($room->building, 'Gedung FMIPA') !== false) {
-                $data_building = 'E';
-            }
-
             return (object) [
                 'id' => $room->id,
                 'name' => $room->name,
@@ -113,8 +100,8 @@ class DashboardViewModel
                 'campus' => $room->campus,
                 'faculty' => $room->faculty,
                 'data_faculty' => strtolower($room->faculty),
-                'building' => $room->building,
-                'data_building' => $data_building,
+                'building' => $room->campus,
+                'data_building' => 'all',
                 'data_type' => $data_type,
                 'type_label' => $type_label,
                 'category_badge_class' => $category_badge_class,

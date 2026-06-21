@@ -15,7 +15,7 @@
             </a>
             <div class="space-y-0.5">
                 <h1 class="text-2xl font-black text-slate-900 tracking-tight">{{ $room['name'] }}</h1>
-                <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">{{ $room['building'] }}</p>
+                <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">{{ $room['campus'] }}</p>
             </div>
         </div>
         <!-- Occupied status badge (Terpakai) -->
