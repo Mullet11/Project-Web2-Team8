@@ -108,14 +108,33 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ==================== CUSTOM STATUS DROPDOWN & FILTER LOGIC ====================
+    // ==================== CUSTOM DROPDOWN & FILTER LOGIC ====================
     const statusDropdown = document.getElementById('status-dropdown');
     const statusBtn = document.getElementById('status-dropdown-button');
     const statusMenu = document.getElementById('status-dropdown-menu');
     const statusInput = document.getElementById('status-filter-input');
     const statusSelectedLabel = document.getElementById('status-selected-label');
+
+    const facultyDropdown = document.getElementById('faculty-dropdown');
+    const facultyBtn = document.getElementById('faculty-dropdown-button');
+    const facultyMenu = document.getElementById('faculty-dropdown-menu');
+    const facultyInput = document.getElementById('faculty-filter-input');
+    const facultySelectedLabel = document.getElementById('faculty-selected-label');
+
+    const campusDropdown = document.getElementById('campus-dropdown');
+    const campusBtn = document.getElementById('campus-dropdown-button');
+    const campusMenu = document.getElementById('campus-dropdown-menu');
+    const campusInput = document.getElementById('campus-filter-input');
+    const campusSelectedLabel = document.getElementById('campus-selected-label');
+
+    const filterInstruction = document.getElementById('filter-instruction');
+    const buildingFiltersSection = document.getElementById('building-filters-section');
+    const buildingFiltersDivider = document.getElementById('building-filters-divider');
+    const typeFiltersSection = document.getElementById('type-filters-section');
+    const typeFiltersDivider = document.getElementById('type-filters-divider');
     const searchInput = document.getElementById('search-input');
     const buildingTabs = document.querySelectorAll('.building-tab');
+    const typeTabs = document.querySelectorAll('.type-tab');
     const roomCards = document.querySelectorAll('.room-card');
     const emptyState = document.getElementById('empty-state');
 
@@ -123,23 +142,125 @@ document.addEventListener('DOMContentLoaded', () => {
     let activeFilters = {
         search: '',
         status: 'all',
-        building: 'all'
+        building: 'all',
+        type: 'all',
+        campus: '',
+        faculty: ''
     };
+    let showAllTriggered = false;
+
+
+
+    function updateDropdownOptions() {
+        const allRooms = Array.from(roomCards);
+
+        // Determine allowed faculties based on selected campus
+        let allowedFaculties = new Set();
+        allRooms.forEach(card => {
+            const cardCampus = card.getAttribute('data-campus') || '';
+            const cardFaculty = (card.getAttribute('data-faculty') || '').toLowerCase();
+            
+            if (activeFilters.campus === '' || cardCampus === activeFilters.campus) {
+                if (cardFaculty) allowedFaculties.add(cardFaculty);
+            }
+        });
+
+        // Determine allowed campuses based on selected faculty
+        let allowedCampuses = new Set();
+        allRooms.forEach(card => {
+            const cardCampus = card.getAttribute('data-campus') || '';
+            const cardFaculty = (card.getAttribute('data-faculty') || '').toLowerCase();
+            
+            if (activeFilters.faculty === '' || cardFaculty === activeFilters.faculty.toLowerCase()) {
+                if (cardCampus) allowedCampuses.add(cardCampus);
+            }
+        });
+
+        // Update Campus dropdown options visibility
+        if (campusMenu) {
+            const campusOptions = campusMenu.querySelectorAll('.campus-option');
+            campusOptions.forEach(opt => {
+                const val = opt.getAttribute('data-value');
+                if (val === '' || allowedCampuses.has(val)) {
+                    opt.style.display = '';
+                } else {
+                    opt.style.display = 'none';
+                }
+            });
+        }
+
+        // Update Faculty dropdown options visibility
+        if (facultyMenu) {
+            const facultyOptions = facultyMenu.querySelectorAll('.faculty-option');
+            facultyOptions.forEach(opt => {
+                const val = opt.getAttribute('data-value');
+                if (val === '' || allowedFaculties.has(val)) {
+                    opt.style.display = '';
+                } else {
+                    opt.style.display = 'none';
+                }
+            });
+        }
+    }
+
+    function updateTypeTabs() {
+        if ((!activeFilters.campus || !activeFilters.faculty) && !showAllTriggered) {
+            // Hide the type tabs and divider
+            if (typeFiltersSection) typeFiltersSection.classList.add('hidden');
+            if (typeFiltersDivider) typeFiltersDivider.classList.add('hidden');
+            return;
+        }
+
+        // Show the type tabs and divider
+        if (typeFiltersSection) typeFiltersSection.classList.remove('hidden');
+        if (typeFiltersDivider) typeFiltersDivider.classList.remove('hidden');
+
+        // Always show all type tabs
+        typeTabs.forEach(tab => {
+            tab.style.display = '';
+        });
+    }
 
     // Filter execution
     function applyFilters() {
+        updateTypeTabs();
+        updateDropdownOptions();
+
+        if ((!activeFilters.campus || !activeFilters.faculty) && !showAllTriggered) {
+            // Hide all room cards
+            roomCards.forEach(card => {
+                card.style.display = 'none';
+            });
+            // Show instruction and hide empty state
+            if (filterInstruction) filterInstruction.classList.remove('hidden');
+            if (emptyState) emptyState.classList.add('hidden');
+            // Hide sections
+            if (typeFiltersSection) typeFiltersSection.classList.add('hidden');
+            if (typeFiltersDivider) typeFiltersDivider.classList.add('hidden');
+            return;
+        }
+
+        // Hide instruction
+        if (filterInstruction) filterInstruction.classList.add('hidden');
+
         let visibleCount = 0;
 
         roomCards.forEach(card => {
             const cardName = (card.getAttribute('data-name') || '').toLowerCase();
             const cardStatus = card.getAttribute('data-status') || '';
             const cardBuilding = card.getAttribute('data-building') || '';
+            const cardType = card.getAttribute('data-type') || '';
+            const cardCampus = card.getAttribute('data-campus') || '';
+            const cardFaculty = (card.getAttribute('data-faculty') || '').toLowerCase();
 
             const matchesSearch = activeFilters.search === '' || cardName.includes(activeFilters.search);
             const matchesStatus = activeFilters.status === 'all' || cardStatus === activeFilters.status;
             const matchesBuilding = activeFilters.building === 'all' || cardBuilding === activeFilters.building;
+            const matchesType = activeFilters.type === 'all' || cardType === activeFilters.type;
+            const matchesCampus = activeFilters.campus === '' || cardCampus === activeFilters.campus;
+            const matchesFaculty = activeFilters.faculty === '' || cardFaculty === activeFilters.faculty.toLowerCase();
 
-            if (matchesSearch && matchesStatus && matchesBuilding) {
+            if (matchesSearch && matchesStatus && matchesBuilding && matchesType && matchesCampus && matchesFaculty) {
                 card.style.display = '';
                 visibleCount++;
             } else {
@@ -156,7 +277,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Dropdown toggle
+    // Status Dropdown toggle
     if (statusBtn && statusMenu) {
         statusBtn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -175,16 +296,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 statusMenu.classList.remove('pointer-events-none');
                 statusBtn.querySelector('svg').classList.add('rotate-180');
             }
-        });
 
-        // Close dropdown when clicking outside
-        document.addEventListener('click', () => {
-            statusBtn.setAttribute('aria-expanded', 'false');
-            statusMenu.classList.add('opacity-0', 'invisible', 'scale-95');
-            statusMenu.classList.remove('opacity-100', 'visible', 'scale-100');
-            statusMenu.classList.add('pointer-events-none');
-            const svg = statusBtn.querySelector('svg');
-            if (svg) svg.classList.remove('rotate-180');
+            // Close other dropdowns
+            if (facultyBtn && facultyMenu) {
+                facultyBtn.setAttribute('aria-expanded', 'false');
+                facultyMenu.classList.add('opacity-0', 'invisible', 'scale-95');
+                facultyMenu.classList.remove('opacity-100', 'visible', 'scale-100');
+                facultyMenu.classList.add('pointer-events-none');
+                facultyBtn.querySelector('svg').classList.remove('rotate-180');
+            }
+            if (campusBtn && campusMenu) {
+                campusBtn.setAttribute('aria-expanded', 'false');
+                campusMenu.classList.add('opacity-0', 'invisible', 'scale-95');
+                campusMenu.classList.remove('opacity-100', 'visible', 'scale-100');
+                campusMenu.classList.add('pointer-events-none');
+                const svg = campusBtn.querySelector('svg');
+                if (svg) svg.classList.remove('rotate-180');
+            }
         });
 
         // Option selection
@@ -195,10 +323,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const val = option.getAttribute('data-value');
                 const labelText = option.innerText.trim();
 
-                // Update input
                 if (statusInput) statusInput.value = val;
 
-                // Update button trigger UI
                 if (statusSelectedLabel) {
                     if (val === 'tersedia') {
                         statusSelectedLabel.innerHTML = `
@@ -221,19 +347,193 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
 
-                // Close dropdown
                 statusBtn.setAttribute('aria-expanded', 'false');
                 statusMenu.classList.add('opacity-0', 'invisible', 'scale-95');
                 statusMenu.classList.remove('opacity-100', 'visible', 'scale-100');
                 statusMenu.classList.add('pointer-events-none');
                 statusBtn.querySelector('svg').classList.remove('rotate-180');
 
-                // Apply filter
                 activeFilters.status = val;
                 applyFilters();
             });
         });
     }
+
+    // Faculty Dropdown toggle
+    if (facultyBtn && facultyMenu) {
+        facultyBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isExpanded = facultyBtn.getAttribute('aria-expanded') === 'true';
+            
+            if (isExpanded) {
+                facultyBtn.setAttribute('aria-expanded', 'false');
+                facultyMenu.classList.add('opacity-0', 'invisible', 'scale-95');
+                facultyMenu.classList.remove('opacity-100', 'visible', 'scale-100');
+                facultyMenu.classList.add('pointer-events-none');
+                facultyBtn.querySelector('svg').classList.remove('rotate-180');
+            } else {
+                facultyBtn.setAttribute('aria-expanded', 'true');
+                facultyMenu.classList.remove('opacity-0', 'invisible', 'scale-95');
+                facultyMenu.classList.add('opacity-100', 'visible', 'scale-100');
+                facultyMenu.classList.remove('pointer-events-none');
+                facultyBtn.querySelector('svg').classList.add('rotate-180');
+            }
+
+            // Close other dropdowns
+            if (statusBtn && statusMenu) {
+                statusBtn.setAttribute('aria-expanded', 'false');
+                statusMenu.classList.add('opacity-0', 'invisible', 'scale-95');
+                statusMenu.classList.remove('opacity-100', 'visible', 'scale-100');
+                statusMenu.classList.add('pointer-events-none');
+                statusBtn.querySelector('svg').classList.remove('rotate-180');
+            }
+            if (campusBtn && campusMenu) {
+                campusBtn.setAttribute('aria-expanded', 'false');
+                campusMenu.classList.add('opacity-0', 'invisible', 'scale-95');
+                campusMenu.classList.remove('opacity-100', 'visible', 'scale-100');
+                campusMenu.classList.add('pointer-events-none');
+                const svg = campusBtn.querySelector('svg');
+                if (svg) svg.classList.remove('rotate-180');
+            }
+        });
+
+        // Option selection
+        const options = facultyMenu.querySelectorAll('.faculty-option');
+        options.forEach(option => {
+            option.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const val = option.getAttribute('data-value');
+                const labelText = option.innerText.trim();
+
+                if (facultyInput) facultyInput.value = val;
+
+                if (facultySelectedLabel) {
+                    if (val === 'all') {
+                        facultySelectedLabel.innerHTML = `
+                            <span class="w-2 h-2 rounded-full bg-slate-400 shrink-0"></span>
+                            <span class="text-slate-600">${labelText}</span>
+                        `;
+                    } else {
+                        const bulletSpan = option.querySelector('span');
+                        const bulletClass = bulletSpan ? bulletSpan.className : 'w-2 h-2 rounded-full bg-blue-500 shrink-0';
+                        facultySelectedLabel.innerHTML = `
+                            <span class="${bulletClass}"></span>
+                            <span class="text-slate-600">${labelText}</span>
+                        `;
+                    }
+                }
+
+                facultyBtn.setAttribute('aria-expanded', 'false');
+                facultyMenu.classList.add('opacity-0', 'invisible', 'scale-95');
+                facultyMenu.classList.remove('opacity-100', 'visible', 'scale-100');
+                facultyMenu.classList.add('pointer-events-none');
+                facultyBtn.querySelector('svg').classList.remove('rotate-180');
+
+                showAllTriggered = false;
+                activeFilters.faculty = val;
+                applyFilters();
+            });
+        });
+    }
+
+    // Campus Dropdown toggle
+    if (campusBtn && campusMenu) {
+        campusBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isExpanded = campusBtn.getAttribute('aria-expanded') === 'true';
+            
+            if (isExpanded) {
+                campusBtn.setAttribute('aria-expanded', 'false');
+                campusMenu.classList.add('opacity-0', 'invisible', 'scale-95');
+                campusMenu.classList.remove('opacity-100', 'visible', 'scale-100');
+                campusMenu.classList.add('pointer-events-none');
+                campusBtn.querySelector('svg').classList.remove('rotate-180');
+            } else {
+                campusBtn.setAttribute('aria-expanded', 'true');
+                campusMenu.classList.remove('opacity-0', 'invisible', 'scale-95');
+                campusMenu.classList.add('opacity-100', 'visible', 'scale-100');
+                campusMenu.classList.remove('pointer-events-none');
+                campusBtn.querySelector('svg').classList.add('rotate-180');
+            }
+
+            // Close other dropdowns
+            if (statusBtn && statusMenu) {
+                statusBtn.setAttribute('aria-expanded', 'false');
+                statusMenu.classList.add('opacity-0', 'invisible', 'scale-95');
+                statusMenu.classList.remove('opacity-100', 'visible', 'scale-100');
+                statusMenu.classList.add('pointer-events-none');
+                const svg = statusBtn.querySelector('svg');
+                if (svg) svg.classList.remove('rotate-180');
+            }
+            if (facultyBtn && facultyMenu) {
+                facultyBtn.setAttribute('aria-expanded', 'false');
+                facultyMenu.classList.add('opacity-0', 'invisible', 'scale-95');
+                facultyMenu.classList.remove('opacity-100', 'visible', 'scale-100');
+                facultyMenu.classList.add('pointer-events-none');
+                const svg = facultyBtn.querySelector('svg');
+                if (svg) svg.classList.remove('rotate-180');
+            }
+        });
+
+        // Option selection
+        const options = campusMenu.querySelectorAll('.campus-option');
+        options.forEach(option => {
+            option.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const val = option.getAttribute('data-value');
+                const labelText = option.innerText.trim();
+
+                if (campusInput) campusInput.value = val;
+
+                if (campusSelectedLabel) {
+                    const bulletSpan = option.querySelector('span');
+                    const bulletClass = bulletSpan ? bulletSpan.className : 'w-2 h-2 rounded-full bg-slate-400 shrink-0';
+                    campusSelectedLabel.innerHTML = `
+                        <span class="${bulletClass}"></span>
+                        <span class="text-slate-600">${labelText}</span>
+                    `;
+                }
+
+                campusBtn.setAttribute('aria-expanded', 'false');
+                campusMenu.classList.add('opacity-0', 'invisible', 'scale-95');
+                campusMenu.classList.remove('opacity-100', 'visible', 'scale-100');
+                campusMenu.classList.add('pointer-events-none');
+                campusBtn.querySelector('svg').classList.remove('rotate-180');
+
+                showAllTriggered = false;
+                activeFilters.campus = val;
+                applyFilters();
+            });
+        });
+    }
+
+    // Global document click to close dropdowns
+    document.addEventListener('click', () => {
+        if (statusBtn && statusMenu) {
+            statusBtn.setAttribute('aria-expanded', 'false');
+            statusMenu.classList.add('opacity-0', 'invisible', 'scale-95');
+            statusMenu.classList.remove('opacity-100', 'visible', 'scale-100');
+            statusMenu.classList.add('pointer-events-none');
+            const svg = statusBtn.querySelector('svg');
+            if (svg) svg.classList.remove('rotate-180');
+        }
+        if (facultyBtn && facultyMenu) {
+            facultyBtn.setAttribute('aria-expanded', 'false');
+            facultyMenu.classList.add('opacity-0', 'invisible', 'scale-95');
+            facultyMenu.classList.remove('opacity-100', 'visible', 'scale-100');
+            facultyMenu.classList.add('pointer-events-none');
+            const svg = facultyBtn.querySelector('svg');
+            if (svg) svg.classList.remove('rotate-180');
+        }
+        if (campusBtn && campusMenu) {
+            campusBtn.setAttribute('aria-expanded', 'false');
+            campusMenu.classList.add('opacity-0', 'invisible', 'scale-95');
+            campusMenu.classList.remove('opacity-100', 'visible', 'scale-100');
+            campusMenu.classList.add('pointer-events-none');
+            const svg = campusBtn.querySelector('svg');
+            if (svg) svg.classList.remove('rotate-180');
+        }
+    });
 
     // Search bar event
     if (searchInput) {
@@ -243,20 +543,41 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Show All Rooms button event
+    const showAllBtn = document.getElementById('show-all-rooms-btn');
+    if (showAllBtn) {
+        showAllBtn.addEventListener('click', () => {
+            showAllTriggered = true;
+            applyFilters();
+        });
+    }
+
     // Building tabs event
     if (buildingTabs.length > 0) {
         buildingTabs.forEach(tab => {
             tab.addEventListener('click', () => {
-                // Remove active classes from all tabs
                 buildingTabs.forEach(t => {
-                    t.className = 'building-tab px-4 py-2 bg-slate-50 hover:bg-slate-100 text-slate-600 text-xs font-bold rounded-xl transition-all whitespace-nowrap border border-slate-100/50';
+                    t.className = 'building-tab px-4 py-2 bg-slate-50 hover:bg-slate-100 text-slate-600 text-xs font-bold rounded-xl transition-all whitespace-nowrap border border-slate-100/50 cursor-pointer';
                 });
+                tab.className = 'building-tab px-4 py-2 bg-blue-600 text-white text-xs font-bold rounded-xl transition-all whitespace-nowrap cursor-pointer';
 
-                // Add active classes to selected tab
-                tab.className = 'building-tab px-4 py-2 bg-blue-600 text-white text-xs font-bold rounded-xl transition-all whitespace-nowrap';
-
-                // Filter
                 activeFilters.building = tab.getAttribute('data-building') || 'all';
+                applyFilters();
+            });
+        });
+    }
+    // Type tabs event
+    if (typeTabs.length > 0) {
+        typeTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                typeTabs.forEach(t => {
+                    t.classList.remove('bg-blue-600', 'text-white', 'shadow-md', 'shadow-blue-500/10');
+                    t.classList.add('bg-white', 'text-slate-600', 'border', 'border-slate-200/60', 'shadow-sm', 'hover:bg-slate-50', 'hover:text-slate-900');
+                });
+                tab.classList.remove('bg-white', 'text-slate-600', 'border', 'border-slate-200/60', 'shadow-sm', 'hover:bg-slate-50', 'hover:text-slate-900');
+                tab.classList.add('bg-blue-600', 'text-white', 'shadow-md', 'shadow-blue-500/10');
+
+                activeFilters.type = tab.getAttribute('data-type') || 'all';
                 applyFilters();
             });
         });

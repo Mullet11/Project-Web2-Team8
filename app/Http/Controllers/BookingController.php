@@ -18,25 +18,9 @@ class BookingController extends Controller
             'name' => $room->name,
             'building' => $room->building,
             'capacity' => $room->capacity,
-            'type' => $room->facilities ?? 'Ruang Kelas',
+            'facilities' => $room->facilities,
             'status' => $room->status === 'available' ? 'tersedia' : 'terpakai'
         ];
-
-        if ($room->status === 'occupied') {
-            $schedules = Reservation::where('room_id', $room->id)
-                            ->where('tanggal', date('Y-m-d'))
-                            ->whereIn('status', ['disetujui'])
-                            ->orderBy('waktu_mulai')
-                            ->get();
-                            
-            $formattedSchedules = BookingViewModel::formatSchedules($schedules);
-            
-            return view('viewClass.viewClassUsed', [
-                'id' => $room->id,
-                'room' => $roomData,
-                'schedules' => $formattedSchedules
-            ]);
-        }
 
         $todayBookings = Reservation::where('room_id', $room->id)
                             ->where('tanggal', date('Y-m-d'))
@@ -67,8 +51,11 @@ class BookingController extends Controller
 
         $exists = Reservation::where('room_id', $id)
             ->where('tanggal', $validated['tanggal'])
-            ->where('waktu_mulai', $validated['waktu_mulai'])
             ->whereIn('status', ['disetujui', 'menunggu'])
+            ->where(function ($query) use ($validated) {
+                $query->where('waktu_mulai', '<', $validated['waktu_selesai'])
+                      ->where('waktu_selesai', '>', $validated['waktu_mulai']);
+            })
             ->exists();
 
         if ($exists) {

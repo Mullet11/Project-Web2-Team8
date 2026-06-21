@@ -31,3 +31,28 @@
 .animate-slide-down {
     animation: slideDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+/* Prevent horizontal page jumps when browser scrollbar toggles */
+html {
+    scrollbar-gutter: stable;
+}
+
+/* Smooth fade-in animation for filtered room cards */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.room-card {
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.room-card:not([style*="display: none"]) {
+    animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
