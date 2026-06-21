@@ -18,10 +18,19 @@
                 <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">{{ $room['campus'] }}</p>
             </div>
         </div>
-        <!-- Occupied status badge (Terpakai) -->
-        <span class="px-4 py-2 bg-rose-50 border border-rose-200 text-rose-600 text-xs font-black rounded-xl select-none shrink-0 tracking-wider uppercase animate-pulse">
-            Terpakai
-        </span>
+        <!-- Occupied status badge (Dynamic) -->
+        @php
+            $isOccupied = collect($schedules)->contains('status', 'sedang_berlangsung');
+        @endphp
+        @if($isOccupied)
+            <span class="px-4 py-2 bg-rose-50 border border-rose-200 text-rose-600 text-xs font-black rounded-xl select-none shrink-0 tracking-wider uppercase animate-pulse">
+                Terpakai
+            </span>
+        @else
+            <span class="px-4 py-2 bg-emerald-50 border border-emerald-200 text-emerald-600 text-xs font-black rounded-xl select-none shrink-0 tracking-wider uppercase">
+                Tersedia
+            </span>
+        @endif
     </div>
 </div>
 
@@ -50,7 +59,7 @@
 
         <!-- Vertical Timeline List -->
         <div class="relative pl-6 border-l border-slate-200/80 space-y-8 flex-grow py-2">
-            @foreach($schedules as $schedule)
+            @forelse($schedules as $schedule)
                 <!-- Timeline Item -->
                 <div class="relative">
                     
@@ -121,7 +130,7 @@
                         </div>
 
                         <!-- Action/WhatsApp Contact Button -->
-                        @if($schedule['status'] !== 'selesai')
+                        @if($schedule['status'] !== 'selesai' && !empty($schedule['whatsapp']))
                             <a href="https://wa.me/{{ $schedule['whatsapp'] }}" target="_blank" 
                                 class="px-4 py-2.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-600 hover:text-emerald-700 text-xs font-black rounded-xl flex items-center gap-1.5 transition-colors cursor-pointer select-none border border-emerald-100 shrink-0">
                                 <!-- WhatsApp icon -->
@@ -134,7 +143,17 @@
 
                     </div>
                 </div>
-            @endforeach
+            @empty
+                <div class="bg-white rounded-2xl border border-slate-200/60 p-8 text-center select-none shadow-sm flex flex-col items-center justify-center">
+                    <div class="w-14 h-14 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-400 mb-4 animate-pulse">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6.5 w-6.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-sm font-extrabold text-slate-800">Tidak Ada Agenda Hari Ini</h3>
+                    <p class="text-xs text-slate-400 mt-1 max-w-xs leading-relaxed">Ruangan ini tidak memiliki jadwal perkuliahan tetap atau agenda kegiatan untuk hari ini.</p>
+                </div>
+            @endforelse
         </div>
     </div>
 

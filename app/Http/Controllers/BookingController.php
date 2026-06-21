@@ -62,6 +62,103 @@ class BookingController extends Controller
         ]);
     }
 
+    public function viewClassUsed($id)
+    {
+        $room = Room::findOrFail($id);
+        
+        $today = date('Y-m-d');
+        $dayOfWeek = date('l', strtotime($today));
+        $dayMap = [
+            'Monday' => 'Senin',
+            'Tuesday' => 'Selasa',
+            'Wednesday' => 'Rabu',
+            'Thursday' => 'Kamis',
+            'Friday' => 'Jumat',
+            'Saturday' => 'Sabtu',
+            'Sunday' => 'Minggu',
+        ];
+        $indonesianDay = $dayMap[$dayOfWeek] ?? 'Senin';
+
+        // Get approved reservations for today
+        $todayBookings = Reservation::where('room_id', $room->id)
+                            ->where('tanggal', $today)
+                            ->where('status', 'disetujui')
+                            ->get();
+
+        // Get routine academic schedules for today
+        $routineSchedules = \App\Models\Schedule::with('room')
+                            ->where('room_id', $room->id)
+                            ->where('day', $indonesianDay)
+                            ->get();
+
+        // Merge into standard objects
+        $events = collect();
+
+        foreach ($todayBookings as $res) {
+            $events->push((object)[
+                'waktu_mulai' => $res->waktu_mulai,
+                'waktu_selesai' => $res->waktu_selesai,
+                'perihal' => $res->perihal,
+                'matakuliah' => $res->matakuliah,
+                'nama_kegiatan' => $res->nama_kegiatan,
+                'dosen' => $res->dosen,
+                'nama' => $res->nama,
+                'prodi_fakultas' => $res->prodi_fakultas,
+                'whatsapp' => $res->whatsapp,
+            ]);
+        }
+
+        foreach ($routineSchedules as $sched) {
+            $events->push((object)[
+                'waktu_mulai' => $sched->start_time,
+                'waktu_selesai' => $sched->end_time,
+                'perihal' => $sched->type === 'fixed_class' ? 'Perkuliahan' : 'Kegiatan Kampus',
+                'matakuliah' => $sched->type === 'fixed_class' ? $sched->title : null,
+                'nama_kegiatan' => $sched->type === 'general' ? $sched->title : null,
+                'dosen' => $sched->lecturer_name,
+                'nama' => $sched->lecturer_name ?? 'BAAK Akademik',
+                'prodi_fakultas' => $sched->prodi ? $sched->prodi . ' / ' . ($sched->room->faculty ?? '') : 'Fakultas ' . ($sched->room->faculty ?? ''),
+                'whatsapp' => '',
+            ]);
+        }
+
+        // Sort events chronologically by waktu_mulai
+        $sortedEvents = $events->sortBy('waktu_mulai');
+
+        // Format schedules using BookingViewModel helper
+        $formattedSchedules = BookingViewModel::formatSchedules($sortedEvents);
+
+        // Determine room type label
+        $data_type = 'kelas';
+        if (stripos($room->name, 'Lab') !== false) {
+            $data_type = 'lab';
+        } elseif (stripos($room->name, 'Aula') !== false) {
+            $data_type = 'aula';
+        } elseif (stripos($room->name, 'Teater') !== false || stripos($room->name, 'Theater') !== false) {
+            $data_type = 'theater';
+        }
+
+        $type_label = match ($data_type) {
+            'lab' => 'Laboratorium',
+            'aula' => 'Aula',
+            'theater' => 'Theater',
+            default => 'Ruang kelas',
+        };
+
+        $roomData = [
+            'id' => $room->id,
+            'name' => $room->name,
+            'campus' => $room->campus,
+            'capacity' => $room->capacity,
+            'type' => $type_label,
+        ];
+
+        return view('viewClass.viewClassUsed', [
+            'room' => $roomData,
+            'schedules' => $formattedSchedules
+        ]);
+    }
+
     public function store(Request $request, $id)
     {
         $validated = $request->validate([

@@ -44,8 +44,20 @@
         <div class="flex flex-col md:flex-row items-center md:items-start justify-between gap-6 mt-2">
             <div class="flex flex-col md:flex-row items-center gap-5">
                 <!-- Avatar (ULM Logo in clean frame, guaranteed circle/square ratio) -->
-                <div class="rounded-2xl border-4 border-slate-50 bg-slate-50/50 shadow-sm overflow-hidden flex items-center justify-center shrink-0 select-none" style="width: 96px; height: 96px;">
-                    <img src="{{ asset('images/profile/ULM PNG.png') }}" alt="Logo ULM" class="w-16 h-16 object-contain">
+                <div class="relative group select-none">
+                    <div id="avatar-container" class="rounded-2xl border-4 border-slate-50 bg-slate-50/50 shadow-sm overflow-hidden flex items-center justify-center shrink-0 relative" style="width: 96px; height: 96px;">
+                        <!-- Profile Image -->
+                        <img id="avatar-preview" src="{{ $user->profile_photo_path ? asset('storage/' . $user->profile_photo_path) : asset('images/profile/ULM PNG.png') }}" alt="Foto Profil" class="{{ $user->profile_photo_path ? 'w-full h-full object-cover' : 'w-16 h-16 object-contain' }}">
+                        
+                        <!-- Hover Overlay (Visible/Active only when editing) -->
+                        <div id="avatar-overlay" class="absolute inset-0 bg-slate-900/50 flex flex-col items-center justify-center gap-1 opacity-0 hover:opacity-100 cursor-pointer transition-opacity duration-200 hidden">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            <span class="text-[9px] font-black text-white uppercase tracking-wider">Ubah Foto</span>
+                        </div>
+                    </div>
                 </div>
                 <!-- Identity Info -->
                 <div class="text-center md:text-left">
@@ -70,7 +82,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
                             </svg>
-                            {{ $user->role === 'dosen' ? 'NIDN' : 'NIM' }}: {{ $user->identity_number }}
+                            {{ $user->role === 'admin' ? 'ID Admin' : ($user->role === 'dosen' ? 'NIDN' : 'NIM') }}: {{ $user->identity_number }}
                         </span>
                         <span class="hidden md:inline text-slate-300">&bull;</span>
                         <span class="flex items-center gap-1.5">
@@ -102,6 +114,7 @@
         </div>
     </div>
 
+    @if($user->role !== 'admin')
     <!-- 2. Booking Statistics Grid (3 Columns) -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 select-none">
         <!-- Total Bookings -->
@@ -114,7 +127,7 @@
                 </div>
                 <div>
                     <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                        {{ $user->role === 'admin' ? 'Total Peminjaman' : 'Peminjaman Saya' }}
+                        Peminjaman Saya
                     </p>
                     <p class="text-sm font-extrabold text-slate-700 mt-0.5">Semua Pengajuan</p>
                 </div>
@@ -132,7 +145,7 @@
                 </div>
                 <div>
                     <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                        {{ $user->role === 'admin' ? 'Menunggu Konfirmasi' : 'Dalam Proses' }}
+                        Dalam Proses
                     </p>
                     <p class="text-sm font-extrabold text-slate-700 mt-0.5">Butuh Konfirmasi</p>
                 </div>
@@ -150,7 +163,7 @@
                 </div>
                 <div>
                     <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                        {{ $user->role === 'admin' ? 'Persetujuan Aktif' : 'Disetujui' }}
+                        Disetujui
                     </p>
                     <p class="text-sm font-extrabold text-slate-700 mt-0.5">Reservasi Aktif</p>
                 </div>
@@ -158,105 +171,273 @@
             <span class="text-3xl font-black text-emerald-600 tracking-tight">{{ $approvedBookings }}</span>
         </div>
     </div>
+    @endif
 
     <!-- 3. Form Section (Side-by-Side Cards) -->
-    <form id="profile-form" action="/profile" method="POST" class="space-y-6">
+    <form id="profile-form" action="/profile" method="POST" class="space-y-6" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            
-            <!-- Detail Profil Akun Card -->
-            <div class="bg-white rounded-[24px] border border-slate-100 p-6 shadow-sm flex flex-col justify-between">
-                <div>
-                    <div class="flex items-center gap-2.5 mb-6 pb-4 border-b border-slate-50 select-none">
-                        <div class="w-7 h-7 rounded-lg bg-blue-50 text-blue-500 flex items-center justify-center shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                            </svg>
+        <!-- Hidden file input for profile photo -->
+        <input type="file" id="input-avatar" name="profile_photo" class="hidden" accept="image/*" disabled>
+        
+        @if($user->role === 'admin')
+            <!-- Admin Layout -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Left: Detail & Security (col-span 5) -->
+                <div class="lg:col-span-5 space-y-6">
+                    <!-- Detail Profil Akun Card -->
+                    <div class="bg-white rounded-[24px] border border-slate-100 p-6 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-2.5 mb-6 pb-4 border-b border-slate-50 select-none">
+                                <div class="w-7 h-7 rounded-lg bg-blue-50 text-blue-500 flex items-center justify-center shrink-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                    </svg>
+                                </div>
+                                <h3 class="text-base font-extrabold text-slate-800 tracking-tight">Detail Administrator</h3>
+                            </div>
+
+                            <div class="space-y-4">
+                                <!-- Nama Lengkap (Editable) -->
+                                <div class="space-y-1.5">
+                                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Nama Lengkap</label>
+                                    <input type="text" id="input-name" name="name" value="{{ $user->name }}"
+                                        class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-blue-600 focus:bg-white transition-all disabled:opacity-75 disabled:cursor-not-allowed"
+                                        disabled>
+                                </div>
+
+                                <!-- ID Admin (Readonly) -->
+                                <div class="space-y-1.5">
+                                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">ID Administrator</label>
+                                    <input type="text" value="{{ $user->identity_number }}"
+                                        class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-400 focus:outline-none cursor-not-allowed select-none opacity-60"
+                                        disabled readonly>
+                                </div>
+
+                                <!-- Email (Readonly) -->
+                                <div class="space-y-1.5">
+                                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Email Resmi</label>
+                                    <input type="email" value="{{ $user->email }}"
+                                        class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-400 focus:outline-none cursor-not-allowed select-none opacity-60"
+                                        disabled readonly>
+                                </div>
+
+                                <!-- Tanggal Terdaftar -->
+                                <div class="space-y-1.5">
+                                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Tanggal Terdaftar</label>
+                                    <input type="text" value="{{ $user->created_at ? $user->created_at->locale('id')->translatedFormat('d F Y') : '-' }}"
+                                        class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-400 focus:outline-none cursor-not-allowed select-none opacity-60"
+                                        disabled readonly>
+                                </div>
+                            </div>
                         </div>
-                        <h3 class="text-base font-extrabold text-slate-800 tracking-tight">Detail Profil Akun</h3>
                     </div>
 
-                    <div class="space-y-4">
-                        <!-- Nama Lengkap (Editable) -->
-                        <div class="space-y-1.5">
-                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Nama Lengkap</label>
-                            <input type="text" id="input-name" name="name" value="{{ $user->name }}"
-                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-blue-600 focus:bg-white transition-all disabled:opacity-75 disabled:cursor-not-allowed"
-                                disabled>
-                        </div>
+                    <!-- Ubah Kata Sandi Card -->
+                    <div class="bg-white rounded-[24px] border border-slate-100 p-6 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-2.5 mb-6 pb-4 border-b border-slate-50 select-none">
+                                <div class="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-500 flex items-center justify-center shrink-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                    </svg>
+                                </div>
+                                <h3 class="text-base font-extrabold text-slate-800 tracking-tight">Keamanan & Sandi</h3>
+                            </div>
 
-                        <!-- Fakultas (Editable) -->
-                        <div class="space-y-1.5">
-                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Fakultas</label>
-                            <input type="text" id="input-faculty" name="faculty" value="{{ $user->faculty }}" placeholder="Masukkan nama fakultas (contoh: Teknik)"
-                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-blue-600 focus:bg-white transition-all disabled:opacity-75 disabled:cursor-not-allowed"
-                                disabled>
+                            <div class="space-y-4">
+                                <p class="text-xs text-slate-400 font-semibold mb-2 select-none leading-relaxed">Untuk memperbarui kata sandi akun Anda, silakan aktifkan mode edit terlebih dahulu, lalu isi kolom berikut.</p>
+                                
+                                <!-- Password Baru -->
+                                <div class="space-y-1.5">
+                                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Password Baru</label>
+                                    <input type="password" id="input-password" name="password" placeholder="Biarkan kosong jika tidak diubah"
+                                        class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-blue-600 focus:bg-white transition-all disabled:opacity-75 disabled:cursor-not-allowed"
+                                        disabled>
+                                </div>
+                                
+                                <!-- Konfirmasi Password -->
+                                <div class="space-y-1.5">
+                                    <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Konfirmasi Password Baru</label>
+                                    <input type="password" id="input-password-confirmation" name="password_confirmation" placeholder="Biarkan kosong jika tidak diubah"
+                                        class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-blue-600 focus:bg-white transition-all disabled:opacity-75 disabled:cursor-not-allowed"
+                                        disabled>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                </div>
 
-                        <!-- Program Studi (Editable) -->
-                        <div class="space-y-1.5">
-                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Program Studi / Prodi</label>
-                            <input type="text" id="input-study-program" name="study_program" value="{{ $user->study_program }}" placeholder="Masukkan program studi (contoh: Teknologi Informasi)"
-                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-blue-600 focus:bg-white transition-all disabled:opacity-75 disabled:cursor-not-allowed"
-                                disabled>
-                        </div>
-                        
-                        <!-- NIM / NIDN (Readonly) -->
-                        <div class="space-y-1.5">
-                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">{{ $user->role === 'dosen' ? 'NIDN' : 'NIM' }}</label>
-                            <input type="text" value="{{ $user->identity_number }}"
-                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-400 focus:outline-none cursor-not-allowed select-none opacity-60"
-                                disabled readonly>
-                        </div>
-                        
-                        <!-- Email (Readonly) -->
-                        <div class="space-y-1.5">
-                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Alamat Email Resmi</label>
-                            <input type="email" value="{{ $user->email }}"
-                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-400 focus:outline-none cursor-not-allowed select-none opacity-60"
-                                disabled readonly>
+                <!-- Right: Control Board (col-span 7) -->
+                <div class="lg:col-span-7 flex flex-col">
+                    <!-- Pusat Kendali Administrator Card -->
+                    <div class="bg-white rounded-[24px] border border-slate-100 p-6 shadow-sm flex flex-col justify-between flex-grow">
+                        <div class="flex flex-col h-full justify-between flex-grow">
+                            <div class="flex items-center gap-2.5 mb-6 pb-4 border-b border-slate-50 select-none">
+                                <div class="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-500 flex items-center justify-center shrink-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+                                </div>
+                                <h3 class="text-base font-extrabold text-slate-800 tracking-tight">Pusat Kendali Administrator</h3>
+                            </div>
+ 
+                            <!-- Quick Link Action Grid (Balanced 2x2 Grid) -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 flex-grow">
+                                <!-- Action 1: Persetujuan Peminjaman -->
+                                <a href="/admin/dashboard" class="group p-6 bg-slate-50 hover:bg-blue-50/50 border border-slate-100 hover:border-blue-100 rounded-[20px] transition-all duration-300 flex flex-col justify-between min-h-[160px] flex-grow">
+                                    <div class="w-11 h-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                        </svg>
+                                    </div>
+                                    <div class="mt-4">
+                                        <h4 class="text-sm font-extrabold text-slate-800 group-hover:text-blue-700 transition-colors">Persetujuan Booking</h4>
+                                        <p class="text-[11px] text-slate-400 font-semibold mt-1 leading-relaxed">Tinjau, setujui, atau tolak pengajuan peminjaman kelas masuk.</p>
+                                    </div>
+                                </a>
+ 
+                                <!-- Action 2: Kelola Ruangan -->
+                                <a href="/admin/rooms" class="group p-6 bg-slate-50 hover:bg-emerald-50/50 border border-slate-100 hover:border-emerald-100 rounded-[20px] transition-all duration-300 flex flex-col justify-between min-h-[160px] flex-grow">
+                                    <div class="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                        </svg>
+                                    </div>
+                                    <div class="mt-4">
+                                        <h4 class="text-sm font-extrabold text-slate-800 group-hover:text-emerald-700 transition-colors">Manajemen Ruangan</h4>
+                                        <p class="text-[11px] text-slate-400 font-semibold mt-1 leading-relaxed">Tambah, edit data kapasitas, fasilitas, & status ruangan.</p>
+                                    </div>
+                                </a>
+ 
+                                <!-- Action 3: Kelola Jadwal Akademik -->
+                                <a href="/admin/schedules" class="group p-6 bg-slate-50 hover:bg-amber-50/50 border border-slate-100 hover:border-amber-100 rounded-[20px] transition-all duration-300 flex flex-col justify-between min-h-[160px] flex-grow">
+                                    <div class="w-11 h-11 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                    </div>
+                                    <div class="mt-4">
+                                        <h4 class="text-sm font-extrabold text-slate-800 group-hover:text-amber-700 transition-colors">Jadwal Akademik</h4>
+                                        <p class="text-[11px] text-slate-400 font-semibold mt-1 leading-relaxed">Atur dan kelola jadwal kuliah tetap BAAK per semester berjalan.</p>
+                                    </div>
+                                </a>
+ 
+                                <!-- Action 4: Riwayat Booking -->
+                                <a href="/history" class="group p-6 bg-slate-50 hover:bg-purple-50/50 border border-slate-100 hover:border-purple-100 rounded-[20px] transition-all duration-300 flex flex-col justify-between min-h-[160px] flex-grow">
+                                    <div class="w-11 h-11 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    </div>
+                                    <div class="mt-4">
+                                        <h4 class="text-sm font-extrabold text-slate-800 group-hover:text-purple-700 transition-colors">Riwayat Peminjaman</h4>
+                                        <p class="text-[11px] text-slate-400 font-semibold mt-1 leading-relaxed">Tinjau sejarah lengkap transaksi peminjaman ruangan yang lampau.</p>
+                                    </div>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Ubah Kata Sandi Card -->
-            <div class="bg-white rounded-[24px] border border-slate-100 p-6 shadow-sm flex flex-col justify-between">
-                <div>
-                    <div class="flex items-center gap-2.5 mb-6 pb-4 border-b border-slate-50 select-none">
-                        <div class="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-500 flex items-center justify-center shrink-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                            </svg>
+        @else
+            <!-- Non-Admin Layout (User/Dosen) -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Detail Profil Akun Card -->
+                <div class="bg-white rounded-[24px] border border-slate-100 p-6 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-2.5 mb-6 pb-4 border-b border-slate-50 select-none">
+                            <div class="w-7 h-7 rounded-lg bg-blue-50 text-blue-500 flex items-center justify-center shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                            </div>
+                            <h3 class="text-base font-extrabold text-slate-800 tracking-tight">Detail Profil Akun</h3>
                         </div>
-                        <h3 class="text-base font-extrabold text-slate-800 tracking-tight">Keamanan & Sandi</h3>
+
+                        <div class="space-y-4">
+                            <!-- Nama Lengkap (Editable) -->
+                            <div class="space-y-1.5">
+                                <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Nama Lengkap</label>
+                                <input type="text" id="input-name" name="name" value="{{ $user->name }}"
+                                    class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-blue-600 focus:bg-white transition-all disabled:opacity-75 disabled:cursor-not-allowed"
+                                    disabled>
+                            </div>
+
+                            <!-- Fakultas (Editable) -->
+                            <div class="space-y-1.5">
+                                <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Fakultas</label>
+                                <input type="text" id="input-faculty" name="faculty" value="{{ $user->faculty }}" placeholder="Masukkan nama fakultas (contoh: Teknik)"
+                                    class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-blue-600 focus:bg-white transition-all disabled:opacity-75 disabled:cursor-not-allowed"
+                                    disabled>
+                            </div>
+
+                            <!-- Program Studi (Editable) -->
+                            <div class="space-y-1.5">
+                                <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Program Studi / Prodi</label>
+                                <input type="text" id="input-study-program" name="study_program" value="{{ $user->study_program }}" placeholder="Masukkan program studi (contoh: Teknologi Informasi)"
+                                    class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-blue-600 focus:bg-white transition-all disabled:opacity-75 disabled:cursor-not-allowed"
+                                    disabled>
+                            </div>
+                            
+                            <!-- NIM / NIDN (Readonly) -->
+                            <div class="space-y-1.5">
+                                <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                    {{ $user->role === 'dosen' ? 'NIDN' : 'NIM' }}
+                                </label>
+                                <input type="text" value="{{ $user->identity_number }}"
+                                    class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-400 focus:outline-none cursor-not-allowed select-none opacity-60"
+                                    disabled readonly>
+                            </div>
+                            
+                            <!-- Email (Readonly) -->
+                            <div class="space-y-1.5">
+                                <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Alamat Email Resmi</label>
+                                <input type="email" value="{{ $user->email }}"
+                                    class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-400 focus:outline-none cursor-not-allowed select-none opacity-60"
+                                    disabled readonly>
+                            </div>
+                        </div>
                     </div>
+                </div>
 
-                    <div class="space-y-4">
-                        <p class="text-xs text-slate-400 font-semibold mb-2 select-none leading-relaxed">Untuk memperbarui kata sandi akun Anda, silakan aktifkan mode edit terlebih dahulu, lalu isi kolom berikut.</p>
-                        
-                        <!-- Password Baru -->
-                        <div class="space-y-1.5">
-                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Password Baru</label>
-                            <input type="password" id="input-password" name="password" placeholder="Biarkan kosong jika tidak diubah"
-                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-blue-600 focus:bg-white transition-all disabled:opacity-75 disabled:cursor-not-allowed"
-                                disabled>
+                <!-- Ubah Kata Sandi Card -->
+                <div class="bg-white rounded-[24px] border border-slate-100 p-6 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-2.5 mb-6 pb-4 border-b border-slate-50 select-none">
+                            <div class="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-500 flex items-center justify-center shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                </svg>
+                            </div>
+                            <h3 class="text-base font-extrabold text-slate-800 tracking-tight">Keamanan & Sandi</h3>
                         </div>
-                        
-                        <!-- Konfirmasi Password -->
-                        <div class="space-y-1.5">
-                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Konfirmasi Password Baru</label>
-                            <input type="password" id="input-password-confirmation" name="password_confirmation" placeholder="Biarkan kosong jika tidak diubah"
-                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-blue-600 focus:bg-white transition-all disabled:opacity-75 disabled:cursor-not-allowed"
-                                disabled>
+
+                        <div class="space-y-4">
+                            <p class="text-xs text-slate-400 font-semibold mb-2 select-none leading-relaxed">Untuk memperbarui kata sandi akun Anda, silakan aktifkan mode edit terlebih dahulu, lalu isi kolom berikut.</p>
+                            
+                            <!-- Password Baru -->
+                            <div class="space-y-1.5">
+                                <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Password Baru</label>
+                                <input type="password" id="input-password" name="password" placeholder="Biarkan kosong jika tidak diubah"
+                                    class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-blue-600 focus:bg-white transition-all disabled:opacity-75 disabled:cursor-not-allowed"
+                                    disabled>
+                            </div>
+                            
+                            <!-- Konfirmasi Password -->
+                            <div class="space-y-1.5">
+                                <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Konfirmasi Password Baru</label>
+                                <input type="password" id="input-password-confirmation" name="password_confirmation" placeholder="Biarkan kosong jika tidak diubah"
+                                    class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-blue-600 focus:bg-white transition-all disabled:opacity-75 disabled:cursor-not-allowed"
+                                    disabled>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
-        </div>
+        @endif
 
         <!-- Save/Cancel Actions (Hidden when not editing) -->
         <div id="save-actions" class="hidden flex gap-3 justify-end pt-2 select-none">
@@ -285,29 +466,44 @@
         const inputPassword = document.getElementById('input-password');
         const inputPasswordConfirmation = document.getElementById('input-password-confirmation');
         
+        const inputAvatar = document.getElementById('input-avatar');
+        const avatarPreview = document.getElementById('avatar-preview');
+        const avatarOverlay = document.getElementById('avatar-overlay');
+        
         let isEditing = false;
+
+        const defaultAvatarSrc = "{{ $user->profile_photo_path ? asset('storage/' . $user->profile_photo_path) : asset('images/profile/ULM PNG.png') }}";
+        const defaultAvatarClass = "{{ $user->profile_photo_path ? 'w-full h-full object-cover' : 'w-16 h-16 object-contain' }}";
 
         function enableEdit() {
             isEditing = true;
             
             // Enable fields
             inputName.removeAttribute('disabled');
-            inputFaculty.removeAttribute('disabled');
-            inputStudyProgram.removeAttribute('disabled');
+            if (inputFaculty) inputFaculty.removeAttribute('disabled');
+            if (inputStudyProgram) inputStudyProgram.removeAttribute('disabled');
             inputPassword.removeAttribute('disabled');
             inputPasswordConfirmation.removeAttribute('disabled');
+            inputAvatar.removeAttribute('disabled');
             
             // Visual feedback transitions (removes disabled bg and adds white bg)
             inputName.classList.remove('bg-slate-50');
             inputName.classList.add('bg-white');
-            inputFaculty.classList.remove('bg-slate-50');
-            inputFaculty.classList.add('bg-white');
-            inputStudyProgram.classList.remove('bg-slate-50');
-            inputStudyProgram.classList.add('bg-white');
+            if (inputFaculty) {
+                inputFaculty.classList.remove('bg-slate-50');
+                inputFaculty.classList.add('bg-white');
+            }
+            if (inputStudyProgram) {
+                inputStudyProgram.classList.remove('bg-slate-50');
+                inputStudyProgram.classList.add('bg-white');
+            }
             inputPassword.classList.remove('bg-slate-50');
             inputPassword.classList.add('bg-white');
             inputPasswordConfirmation.classList.remove('bg-slate-50');
             inputPasswordConfirmation.classList.add('bg-white');
+            
+            // Show avatar upload overlay
+            avatarOverlay.classList.remove('hidden');
             
             // Show save/cancel actions bar
             saveActions.classList.remove('hidden');
@@ -327,22 +523,33 @@
             
             // Disable fields
             inputName.setAttribute('disabled', true);
-            inputFaculty.setAttribute('disabled', true);
-            inputStudyProgram.setAttribute('disabled', true);
+            if (inputFaculty) inputFaculty.setAttribute('disabled', true);
+            if (inputStudyProgram) inputStudyProgram.setAttribute('disabled', true);
             inputPassword.setAttribute('disabled', true);
             inputPasswordConfirmation.setAttribute('disabled', true);
+            inputAvatar.setAttribute('disabled', true);
             
             // Restore default placeholder backgrounds
             inputName.classList.add('bg-slate-50');
             inputName.classList.remove('bg-white');
-            inputFaculty.classList.add('bg-slate-50');
-            inputFaculty.classList.remove('bg-white');
-            inputStudyProgram.classList.add('bg-slate-50');
-            inputStudyProgram.classList.remove('bg-white');
+            if (inputFaculty) {
+                inputFaculty.classList.add('bg-slate-50');
+                inputFaculty.classList.remove('bg-white');
+            }
+            if (inputStudyProgram) {
+                inputStudyProgram.classList.add('bg-slate-50');
+                inputStudyProgram.classList.remove('bg-white');
+            }
             inputPassword.classList.add('bg-slate-50');
             inputPassword.classList.remove('bg-white');
             inputPasswordConfirmation.classList.add('bg-slate-50');
             inputPasswordConfirmation.classList.remove('bg-white');
+            
+            // Hide avatar upload overlay & reset input/preview
+            avatarOverlay.classList.add('hidden');
+            inputAvatar.value = "";
+            avatarPreview.src = defaultAvatarSrc;
+            avatarPreview.className = defaultAvatarClass;
             
             // Hide save actions bar
             saveActions.classList.add('hidden');
@@ -358,8 +565,8 @@
             
             // Reset input values to original
             inputName.value = "{{ $user->name }}";
-            inputFaculty.value = "{{ $user->faculty }}";
-            inputStudyProgram.value = "{{ $user->study_program }}";
+            if (inputFaculty) inputFaculty.value = "{{ $user->faculty }}";
+            if (inputStudyProgram) inputStudyProgram.value = "{{ $user->study_program }}";
             inputPassword.value = "";
             inputPasswordConfirmation.value = "";
         }
@@ -374,6 +581,25 @@
 
         cancelBtn.addEventListener('click', function () {
             disableEdit();
+        });
+
+        // Handle Avatar File Upload Click and Preview
+        avatarOverlay.addEventListener('click', function () {
+            if (isEditing) {
+                inputAvatar.click();
+            }
+        });
+
+        inputAvatar.addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    avatarPreview.src = event.target.result;
+                    avatarPreview.className = "w-full h-full object-cover";
+                };
+                reader.readAsDataURL(file);
+            }
         });
     });
 </script>

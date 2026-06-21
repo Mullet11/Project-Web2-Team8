@@ -30,6 +30,7 @@ Route::middleware('auth')->group(function () {
     
     // Booking Routes
     Route::get('/rooms/{id}', [BookingController::class, 'showRoom']);
+    Route::get('/rooms/{id}/agenda', [BookingController::class, 'viewClassUsed']);
     Route::post('/booking/{id}', [BookingController::class, 'store']);
 
     // History Routes

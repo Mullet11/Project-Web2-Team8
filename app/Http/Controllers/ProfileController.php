@@ -35,11 +35,22 @@ class ProfileController extends Controller
             'faculty' => 'nullable|string|max:255',
             'study_program' => 'nullable|string|max:255',
             'password' => 'nullable|string|min:8|confirmed',
+            'profile_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $user->name = $request->name;
         $user->faculty = $request->faculty;
         $user->study_program = $request->study_program;
+
+        if ($request->hasFile('profile_photo')) {
+            // Delete old photo if exists
+            if ($user->profile_photo_path) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($user->profile_photo_path);
+            }
+            // Store new photo
+            $path = $request->file('profile_photo')->store('profile-photos', 'public');
+            $user->profile_photo_path = $path;
+        }
 
         if ($request->filled('password')) {
             $user->password = $request->password;

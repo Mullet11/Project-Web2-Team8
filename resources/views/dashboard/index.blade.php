@@ -207,7 +207,7 @@
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="rooms-grid">
 
     @foreach ($rooms as $room)
-    <div class="room-card bg-white rounded-[24px] border border-slate-100 hover:-translate-y-1.5 transition-all duration-300 flex flex-col group h-[380px]" data-status="{{ $room->data_status }}" data-building="{{ $room->data_building }}" data-type="{{ $room->data_type }}" data-name="{{ $room->data_name }}" data-campus="{{ $room->campus }}" data-faculty="{{ $room->data_faculty }}" style="display: none;">
+    <div class="room-card bg-white rounded-[24px] border border-slate-100 hover:-translate-y-1.5 transition-all duration-300 flex flex-col group h-[400px]" data-status="{{ $room->data_status }}" data-building="{{ $room->data_building }}" data-type="{{ $room->data_type }}" data-name="{{ $room->data_name }}" data-campus="{{ $room->campus }}" data-faculty="{{ $room->data_faculty }}" style="display: none;">
         <!-- Top Half: Image Placeholder -->
         <div class="h-44 w-full bg-gradient-to-br {{ $room->image_bg_gradient }} rounded-t-[24px] flex items-center justify-center relative overflow-hidden shrink-0 border-b border-slate-100/50">
             <!-- Faculty Badge Overlay -->
@@ -240,10 +240,15 @@
                     {{ $room->badge_text }}
                 </span>
             </div>
-            <!-- Action Button -->
-            <a href="{{ $room->button_url }}" class="w-full py-3 {{ $room->button_class }} text-sm font-bold rounded-xl text-center transition-all duration-200">
-                {{ $room->button_text }}
-            </a>
+            <!-- Action Buttons -->
+            <div class="flex flex-col gap-2 mt-4 shrink-0 select-none">
+                <a href="{{ $room->button_url }}" class="w-full py-2.5 {{ $room->button_class }} text-xs font-bold rounded-xl text-center transition-all duration-200">
+                    {{ $room->button_text }}
+                </a>
+                <a href="/rooms/{{ $room->id }}/agenda" class="block w-full py-2 text-white/80 hover:text-white text-xs font-semibold rounded-xl text-center transition-all duration-200 border border-white/20 hover:border-white/40">
+                    Lihat Agenda Hari Ini
+                </a>
+            </div>
         </div>
     </div>
     @endforeach
