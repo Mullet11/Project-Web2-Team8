@@ -49,5 +49,11 @@ Route::middleware('auth')->group(function () {
         Route::post('/rooms', [AdminController::class, 'storeRoom'])->name('admin.rooms.store');
         Route::put('/rooms/{id}', [AdminController::class, 'updateRoom'])->name('admin.rooms.update');
         Route::delete('/rooms/{id}', [AdminController::class, 'deleteRoom'])->name('admin.rooms.delete');
+
+        // Schedule Management CRUD
+        Route::get('/schedules', [AdminController::class, 'schedules'])->name('admin.schedules');
+        Route::post('/schedules', [AdminController::class, 'storeSchedule'])->name('admin.schedules.store');
+        Route::put('/schedules/{id}', [AdminController::class, 'updateSchedule'])->name('admin.schedules.update');
+        Route::delete('/schedules/{id}', [AdminController::class, 'deleteSchedule'])->name('admin.schedules.delete');
     });
 });

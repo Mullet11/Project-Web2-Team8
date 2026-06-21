@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('room_id')->constrained()->cascadeOnDelete();
             $table->string('title');
             $table->string('lecturer_name')->nullable();
+            $table->string('prodi')->nullable();
             $table->string('day');
             $table->time('start_time');
             $table->time('end_time');

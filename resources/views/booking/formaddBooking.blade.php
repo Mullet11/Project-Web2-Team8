@@ -152,8 +152,8 @@
                     <!-- Tanggal Peminjaman -->
                     <div class="space-y-1.5 sm:col-span-2">
                         <label for="booking-tanggal" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Tanggal Peminjaman</label>
-                        <input type="date" id="booking-tanggal" name="tanggal" required
-                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium cursor-not-allowed text-slate-500">
+                        <input type="date" id="booking-tanggal" name="tanggal" required readonly
+                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-850 font-bold cursor-not-allowed text-slate-500">
                     </div>
 
                     <!-- Waktu Mulai & Waktu Selesai -->
@@ -200,12 +200,9 @@
         // Reset form inputs (except defaults)
         document.getElementById('booking-form').reset();
 
-        // Pre-fill Date input with today's date in YYYY-MM-DD local format
-        const today = new Date();
-        const year = today.getFullYear();
-        const month = String(today.getMonth() + 1).padStart(2, '0');
-        const day = String(today.getDate()).padStart(2, '0');
-        document.getElementById('booking-tanggal').value = `${year}-${month}-${day}`;
+        // Pre-fill Date input with selected date from selector
+        const selectedDate = document.getElementById('booking-date-selector').value;
+        document.getElementById('booking-tanggal').value = selectedDate;
 
         // Set Waktu Mulai (Start Time) to selected slot time
         document.getElementById('booking-waktu-mulai').value = selectedTime;

@@ -8,9 +8,9 @@ use Illuminate\Support\Collection;
 class BookingViewModel
 {
     /**
-     * Generate 8 slots and mark them as tersedia or terpakai based on bookings
+     * Generate 8 slots and mark them as tersedia or terpakai based on bookings and routine schedules
      */
-    public static function generateTimeSlots(Collection $bookings): array
+    public static function generateTimeSlots(Collection $bookings, Collection $routineSchedules = null): array
     {
         $defaultSlots = [
             '08:00', '08:50', '09:40', '10:30', '11:20', '12:10',
@@ -36,15 +36,56 @@ class BookingViewModel
             $status = 'tersedia';
             $matchingBooking = null;
 
-            foreach ($bookings as $booking) {
-                $bookingStart = strtotime($booking->waktu_mulai);
-                $bookingEnd = strtotime($booking->waktu_selesai);
+            // 1. Check routine schedule overlap first
+            if ($routineSchedules) {
+                foreach ($routineSchedules as $schedule) {
+                    $scheduleStart = strtotime($schedule->start_time);
+                    $scheduleEnd = strtotime($schedule->end_time);
 
-                // Check overlap
-                if ($slotStartTime < $bookingEnd && $slotEndTime > $bookingStart) {
-                    $status = $booking->status === 'menunggu' ? 'diproses' : 'terpakai';
-                    $matchingBooking = $booking;
-                    break;
+                    if ($slotStartTime < $scheduleEnd && $slotEndTime > $scheduleStart) {
+                        $status = 'terpakai';
+                        $matchingBooking = [
+                            'nama' => $schedule->lecturer_name ?? 'BAAK Akademik',
+                            'nim' => '-',
+                            'prodi_fakultas' => $schedule->prodi ? $schedule->prodi . ' / ' . $schedule->room->faculty : 'Fakultas ' . $schedule->room->faculty,
+                            'whatsapp' => '', // Hide WA button
+                            'perihal' => $schedule->type === 'fixed_class' ? 'Perkuliahan' : 'Kegiatan Kampus',
+                            'matakuliah' => $schedule->type === 'fixed_class' ? $schedule->title : null,
+                            'dosen' => $schedule->lecturer_name,
+                            'nama_kegiatan' => $schedule->type === 'general' ? $schedule->title : null,
+                            'waktu_mulai' => substr($schedule->start_time, 0, 5),
+                            'waktu_selesai' => substr($schedule->end_time, 0, 5),
+                            'status_booking' => 'disetujui'
+                        ];
+                        break; // Found routine overlap
+                    }
+                }
+            }
+
+            // 2. If no routine schedule overlap, check active student reservations
+            if ($status === 'tersedia') {
+                foreach ($bookings as $booking) {
+                    $bookingStart = strtotime($booking->waktu_mulai);
+                    $bookingEnd = strtotime($booking->waktu_selesai);
+
+                    // Check overlap
+                    if ($slotStartTime < $bookingEnd && $slotEndTime > $bookingStart) {
+                        $status = $booking->status === 'menunggu' ? 'diproses' : 'terpakai';
+                        $matchingBooking = [
+                            'nama' => $booking->nama,
+                            'nim' => $booking->nim,
+                            'prodi_fakultas' => $booking->prodi_fakultas,
+                            'whatsapp' => $booking->whatsapp,
+                            'perihal' => $booking->perihal,
+                            'matakuliah' => $booking->matakuliah,
+                            'dosen' => $booking->dosen,
+                            'nama_kegiatan' => $booking->nama_kegiatan,
+                            'waktu_mulai' => substr($booking->waktu_mulai, 0, 5),
+                            'waktu_selesai' => substr($booking->waktu_selesai, 0, 5),
+                            'status_booking' => $booking->status
+                        ];
+                        break; // Found reservation overlap
+                    }
                 }
             }
 
@@ -52,19 +93,7 @@ class BookingViewModel
                 'time' => $timeStr,
                 'time_range' => $timeStr . ' - ' . date('H:i', $slotEndTime),
                 'status' => $status,
-                'booking' => $matchingBooking ? [
-                    'nama' => $matchingBooking->nama,
-                    'nim' => $matchingBooking->nim,
-                    'prodi_fakultas' => $matchingBooking->prodi_fakultas,
-                    'whatsapp' => $matchingBooking->whatsapp,
-                    'perihal' => $matchingBooking->perihal,
-                    'matakuliah' => $matchingBooking->matakuliah,
-                    'dosen' => $matchingBooking->dosen,
-                    'nama_kegiatan' => $matchingBooking->nama_kegiatan,
-                    'waktu_mulai' => substr($matchingBooking->waktu_mulai, 0, 5),
-                    'waktu_selesai' => substr($matchingBooking->waktu_selesai, 0, 5),
-                    'status_booking' => $matchingBooking->status
-                ] : null
+                'booking' => $matchingBooking
             ];
         }
 

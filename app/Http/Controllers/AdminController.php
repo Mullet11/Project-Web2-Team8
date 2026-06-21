@@ -84,4 +84,89 @@ class AdminController extends Controller
 
         return back()->with('success', 'Ruangan berhasil dihapus!');
     }
+
+    public function schedules()
+    {
+        $schedules = \App\Models\Schedule::with('room')->get();
+        $rooms = Room::orderBy('name', 'asc')->get();
+        return view('admin.schedules', compact('schedules', 'rooms'));
+    }
+
+    public function storeSchedule(Request $request)
+    {
+        $validated = $request->validate([
+            'room_id' => 'required|exists:rooms,id',
+            'title' => 'required|string|max:255',
+            'lecturer_name' => 'nullable|string|max:255',
+            'prodi' => 'nullable|string|max:255',
+            'day' => 'required|string|in:Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu',
+            'start_time' => 'required',
+            'end_time' => 'required',
+            'type' => 'required|string|in:fixed_class,general',
+        ]);
+
+        // Overlap validation check
+        $exists = \App\Models\Schedule::where('room_id', $validated['room_id'])
+            ->where('day', $validated['day'])
+            ->where(function ($query) use ($validated) {
+                $query->where('start_time', '<', $validated['end_time'])
+                      ->where('end_time', '>', $validated['start_time']);
+            })
+            ->exists();
+
+        if ($exists) {
+            return back()->withErrors(['start_time' => 'Jadwal bentrok dengan jadwal rutin lainnya di ruangan tersebut!'])->withInput();
+        }
+
+        \App\Models\Schedule::create($validated);
+
+        return back()->with('success', 'Jadwal/Penguncian berhasil ditambahkan!');
+    }
+
+    public function updateSchedule(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'room_id' => 'required|exists:rooms,id',
+            'title' => 'required|string|max:255',
+            'lecturer_name' => 'nullable|string|max:255',
+            'prodi' => 'nullable|string|max:255',
+            'day' => 'required|string|in:Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu',
+            'start_time' => 'required',
+            'end_time' => 'required',
+            'type' => 'required|string|in:fixed_class,general',
+        ]);
+
+        // Overlap validation check (excluding this schedule)
+        $exists = \App\Models\Schedule::where('room_id', $validated['room_id'])
+            ->where('day', $validated['day'])
+            ->where('id', '!=', $id)
+            ->where(function ($query) use ($validated) {
+                $query->where('start_time', '<', $validated['end_time'])
+                      ->where('end_time', '>', $validated['start_time']);
+            })
+            ->exists();
+
+        if ($exists) {
+            return back()->withErrors(['error' => 'Jadwal bentrok dengan jadwal rutin lainnya di ruangan tersebut!'])->withInput();
+        }
+
+        $schedule = \App\Models\Schedule::findOrFail($id);
+
+        if ($validated['type'] === 'general') {
+            $validated['lecturer_name'] = null;
+            $validated['prodi'] = null;
+        }
+
+        $schedule->update($validated);
+
+        return back()->with('success', 'Jadwal/Penguncian berhasil diperbarui!');
+    }
+
+    public function deleteSchedule($id)
+    {
+        $schedule = \App\Models\Schedule::findOrFail($id);
+        $schedule->delete();
+
+        return back()->with('success', 'Jadwal/Penguncian berhasil dihapus!');
+    }
 }

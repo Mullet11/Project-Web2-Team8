@@ -61,6 +61,46 @@ class HistoryController extends Controller
             'waktu_selesai' => 'required',
         ]);
 
+        // 1. Check reservation overlap (excluding self)
+        $exists = Reservation::where('room_id', $reservation->room_id)
+            ->where('tanggal', $validated['tanggal'])
+            ->where('id', '!=', $id)
+            ->whereIn('status', ['disetujui', 'menunggu'])
+            ->where(function ($query) use ($validated) {
+                $query->where('waktu_mulai', '<', $validated['waktu_selesai'])
+                      ->where('waktu_selesai', '>', $validated['waktu_mulai']);
+            })
+            ->exists();
+
+        if ($exists) {
+            return back()->withErrors(['waktu_mulai' => 'Maaf, waktu tersebut sudah dibooking oleh pengguna lain!'])->withInput();
+        }
+
+        // 2. Check routine schedule overlap
+        $dayOfWeek = date('l', strtotime($validated['tanggal']));
+        $dayMap = [
+            'Monday' => 'Senin',
+            'Tuesday' => 'Selasa',
+            'Wednesday' => 'Rabu',
+            'Thursday' => 'Kamis',
+            'Friday' => 'Jumat',
+            'Saturday' => 'Sabtu',
+            'Sunday' => 'Minggu',
+        ];
+        $indonesianDay = $dayMap[$dayOfWeek] ?? 'Senin';
+
+        $routineExists = \App\Models\Schedule::where('room_id', $reservation->room_id)
+            ->where('day', $indonesianDay)
+            ->where(function ($query) use ($validated) {
+                $query->where('start_time', '<', $validated['waktu_selesai'])
+                      ->where('end_time', '>', $validated['waktu_mulai']);
+            })
+            ->exists();
+
+        if ($routineExists) {
+            return back()->withErrors(['waktu_mulai' => 'Maaf, waktu pemesanan bentrok dengan jadwal kuliah tetap atau penguncian akademik!'])->withInput();
+        }
+
         $reservation->update([
             'nama' => $validated['nama'],
             'nim' => $validated['nim'],

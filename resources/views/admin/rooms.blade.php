@@ -139,15 +139,15 @@
     <div class="w-full bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
         <!-- Desktop Table View -->
         <div class="hidden md:block overflow-x-auto w-full">
-            <table class="w-full text-sm text-left text-slate-500 border-collapse">
+            <table class="w-full table-fixed text-sm text-left text-slate-500 border-collapse">
                 <thead class="text-[10px] text-slate-400 uppercase bg-slate-50/40 border-b border-slate-100 tracking-wider font-black select-none">
                     <tr>
-                        <th class="px-6 py-4">Nama Ruangan</th>
-                        <th class="px-6 py-4">Lokasi Kampus</th>
-                        <th class="px-6 py-4 text-center">Kapasitas</th>
-                        <th class="px-6 py-4">Fasilitas</th>
-                        <th class="px-6 py-4 text-center">Status</th>
-                        <th class="px-6 py-4 text-center">Aksi</th>
+                        <th class="px-6 py-4 w-[20%] min-w-[180px]">Nama Ruangan</th>
+                        <th class="px-6 py-4 w-[15%] min-w-[130px]">Lokasi Kampus</th>
+                        <th class="px-6 py-4 text-center w-[8%] min-w-[80px]">Kapasitas</th>
+                        <th class="px-6 py-4 w-[32%] min-w-[250px]">Fasilitas</th>
+                        <th class="px-6 py-4 text-center w-[10%] min-w-[100px]">Status</th>
+                        <th class="px-6 py-4 text-center w-[15%] min-w-[160px]">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-slate-100">

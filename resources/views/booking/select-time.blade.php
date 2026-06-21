@@ -34,6 +34,21 @@
             </h1>
         </div>
 
+        <!-- Date Selection (ULM Style premium card) -->
+        <div class="bg-slate-50 border border-slate-200/60 p-5 rounded-2xl mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 select-none">
+            <div class="space-y-0.5">
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Tanggal Pemakaian</p>
+                <p class="text-sm font-extrabold text-slate-700" id="formatted-date-label">{{ $formattedDate }}</p>
+            </div>
+            <div class="relative shrink-0">
+                <input type="date" id="booking-date-selector" 
+                    value="{{ $date }}" 
+                    min="{{ date('Y-m-d') }}"
+                    onchange="handleDateChange(this.value)"
+                    class="px-4 py-2.5 bg-white border border-slate-200 focus:border-blue-600 rounded-xl text-xs sm:text-sm font-bold text-slate-700 focus:outline-none transition-colors cursor-pointer shadow-sm">
+            </div>
+        </div>
+
         <!-- Legend and Section Title Row (matches mockup layout) -->
         <div>
             <div class="flex flex-row items-center justify-between gap-4 border-b border-slate-100 pb-3 mb-6">
@@ -494,5 +509,10 @@
         }
     });
     @endif
+
+    function handleDateChange(newDate) {
+        if (!newDate) return;
+        window.location.href = '?date=' + newDate;
+    }
 </script>
 @endsection
