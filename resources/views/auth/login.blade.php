@@ -153,7 +153,7 @@
                             class="block px-4 py-3.5 w-full text-sm text-slate-900 bg-transparent rounded-xl border @error('email') border-rose-500 focus:border-rose-500 @else border-slate-200 focus:border-blue-600 @enderror appearance-none focus:outline-none focus:ring-0 peer transition-all" />
                         <label for="signup_email" 
                             class="absolute text-sm @error('email') text-rose-500 @else text-slate-400 peer-focus:text-blue-600 @enderror duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-3 select-none pointer-events-none">
-                            Email (wajib @mhs.ulm.ac.id)
+                            Email (wajib @mhs.ulm.ac.id atau @ulm.ac.id)
                         </label>
                         @error('email')
                             <p class="mt-1.5 text-xs text-rose-600 font-medium">{{ $message }}</p>
@@ -178,17 +178,7 @@
                         <select id="signup_fakultas" required
                             class="block px-4 py-3.5 w-full text-sm text-slate-900 bg-transparent rounded-xl border @error('prodi_fakultas') border-rose-500 focus:border-rose-500 @else border-slate-200 focus:border-blue-600 @enderror appearance-none focus:outline-none focus:ring-0 peer transition-all cursor-pointer pr-10">
                             <option value="" disabled selected>Pilih Fakultas</option>
-                            <option value="Keguruan dan Ilmu Pendidikan">Keguruan dan Ilmu Pendidikan (FKIP)</option>
-                            <option value="Ekonomi dan Bisnis">Ekonomi dan Bisnis (FEB)</option>
-                            <option value="Hukum">Hukum (FH)</option>
-                            <option value="Ilmu Sosial dan Ilmu Politik">Ilmu Sosial dan Ilmu Politik (FISIP)</option>
-                            <option value="Kedokteran">Kedokteran (FK)</option>
-                            <option value="Kedokteran Gigi">Kedokteran Gigi (FKG)</option>
-                            <option value="Matematika dan Ilmu Pengetahuan Alam">Matematika dan Ilmu Pengetahuan Alam (FMIPA)</option>
-                            <option value="Kehutanan">Kehutanan (Fahutan)</option>
-                            <option value="Pertanian">Pertanian (Faperta)</option>
-                            <option value="Perikanan dan Kelautan">Perikanan dan Kelautan (FPK)</option>
-                            <option value="Teknik">Teknik (FT)</option>
+                            <option value="Teknik">Fakultas Teknik</option>
                         </select>
                         <label for="signup_fakultas" 
                             class="absolute text-sm text-slate-400 peer-focus:text-blue-600 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 left-3 select-none pointer-events-none">
@@ -309,83 +299,6 @@
             const hiddenInput = document.getElementById('signup_prodi_fakultas');
 
             const prodiList = {
-                'Keguruan dan Ilmu Pendidikan': [
-                    'Pendidikan Matematika',
-                    'Pendidikan Kimia',
-                    'Pendidikan Fisika',
-                    'Pendidikan Biologi',
-                    'Pendidikan Komputer',
-                    'Pendidikan IPA',
-                    'Pendidikan IPS',
-                    'Pendidikan Sejarah',
-                    'Pendidikan Pancasila & Kewarganegaraan',
-                    'Pendidikan Ekonomi',
-                    'Pendidikan Sosiologi Antropologi',
-                    'Pendidikan Geografi',
-                    'Pendidikan Bahasa Indonesia',
-                    'Pendidikan Bahasa Inggris',
-                    'Pendidikan Seni Pertunjukan',
-                    'Pendidikan Jasmani',
-                    'Bimbingan Konseling',
-                    'Pendidikan Guru Sekolah Dasar (PGSD)',
-                    'Pendidikan Guru PAUD (PGPAUD)',
-                    'Pendidikan Khusus',
-                    'Teknologi Pendidikan'
-                ],
-                'Ekonomi dan Bisnis': [
-                    'Manajemen',
-                    'Akuntansi',
-                    'Ilmu Ekonomi dan Studi Pembangunan'
-                ],
-                'Hukum': [
-                    'Ilmu Hukum'
-                ],
-                'Ilmu Sosial dan Ilmu Politik': [
-                    'Ilmu Pemerintahan',
-                    'Administrasi Publik',
-                    'Administrasi Bisnis',
-                    'Ilmu Komunikasi',
-                    'Sosiologi',
-                    'Geografi'
-                ],
-                'Kedokteran': [
-                    'Pendidikan Dokter',
-                    'Kesehatan Masyarakat',
-                    'Ilmu Keperawatan',
-                    'Psikologi'
-                ],
-                'Kedokteran Gigi': [
-                    'Kedokteran Gigi'
-                ],
-                'Matematika dan Ilmu Pengetahuan Alam': [
-                    'Matematika',
-                    'Kimia',
-                    'Fisika',
-                    'Biologi',
-                    'Farmasi',
-                    'Ilmu Komputer',
-                    'Statistika'
-                ],
-                'Kehutanan': [
-                    'Kehutanan'
-                ],
-                'Pertanian': [
-                    'Agronomi',
-                    'Agroteknologi',
-                    'Proteksi Tanaman',
-                    'Ilmu Tanah',
-                    'Agribisnis',
-                    'Peternakan',
-                    'Teknik Industri Pertanian'
-                ],
-                'Perikanan dan Kelautan': [
-                    'Budidaya Perairan',
-                    'Manajemen Sumberdaya Perairan',
-                    'Teknologi Hasil Perikanan',
-                    'Pemanfaatan Sumberdaya Perikanan',
-                    'Ilmu Kelautan',
-                    'Agrobisnis Perikanan'
-                ],
                 'Teknik': [
                     'Teknik Sipil',
                     'Teknik Arsitektur',
@@ -435,7 +348,7 @@
                 const oldProdi = parts[0];
                 const oldFakultas = parts[1];
 
-                if (prodiList[oldFakultas]) {
+                if (oldFakultas === 'Teknik') {
                     fakultasSelect.value = oldFakultas;
                     // Trigger change manually
                     fakultasSelect.dispatchEvent(new Event('change'));
