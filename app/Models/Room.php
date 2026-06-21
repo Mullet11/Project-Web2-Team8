@@ -10,6 +10,6 @@ class Room extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'building', 'capacity', 'facilities', 'status'
+        'name', 'campus', 'faculty', 'building', 'capacity', 'facilities', 'status'
     ];
 }

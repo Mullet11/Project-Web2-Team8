@@ -17,14 +17,55 @@ class DashboardViewModel
                 default => 'nonaktif',
             };
 
-            $image_bg_gradient = match ($status) {
-                'available' => 'from-blue-500/10 via-indigo-500/5 to-teal-500/10',
-                default => 'from-slate-100 via-slate-50 to-slate-200/50',
+            // Calculate data_type early
+            $data_type = 'kelas';
+            if (stripos($room->name, 'Lab') !== false) {
+                $data_type = 'lab';
+            } elseif (stripos($room->name, 'Aula') !== false) {
+                $data_type = 'aula';
+            } elseif (stripos($room->name, 'Teater') !== false || stripos($room->name, 'Theater') !== false) {
+                $data_type = 'theater';
+            }
+
+            $type_label = match ($data_type) {
+                'lab' => 'Laboratorium',
+                'aula' => 'Aula',
+                'theater' => 'Theater',
+                default => 'Ruang kelas',
             };
 
-            $content_bg_color = match ($status) {
-                'available' => 'bg-brand-primary',
-                default => 'bg-slate-800',
+            // Dynamic styling based ALWAYS on category (for consistent visual identification, available or not)
+            $content_bg_color = match ($data_type) {
+                'lab' => 'bg-emerald-900',
+                'aula' => 'bg-amber-900',
+                'theater' => 'bg-purple-900',
+                default => 'bg-indigo-900',
+            };
+
+            $subtext_class = match ($data_type) {
+                'lab' => 'text-emerald-100/80',
+                'aula' => 'text-amber-100/80',
+                'theater' => 'text-purple-100/80',
+                default => 'text-indigo-100/80',
+            };
+
+            $image_bg_gradient = match ($data_type) {
+                'lab' => 'from-emerald-500/10 via-teal-500/5 to-cyan-500/10',
+                'aula' => 'from-amber-500/10 via-orange-500/5 to-yellow-500/10',
+                'theater' => 'from-purple-500/10 via-fuchsia-500/5 to-pink-500/10',
+                default => 'from-indigo-500/10 via-blue-500/5 to-teal-500/10',
+            };
+
+            // Status Badge Colors
+            $badge_text_color = match ($status) {
+                'available' => match ($data_type) {
+                    'lab' => 'text-emerald-600',
+                    'aula' => 'text-amber-600',
+                    'theater' => 'text-purple-600',
+                    default => 'text-indigo-600',
+                },
+                'occupied' => 'text-rose-600',
+                default => 'text-slate-500',
             };
 
             $badge_text = match ($status) {
@@ -33,35 +74,51 @@ class DashboardViewModel
                 default => 'Nonaktif',
             };
 
-            $badge_text_color = match ($status) {
-                'available' => 'text-emerald-600',
-                'occupied' => 'text-rose-600',
-                default => 'text-slate-500',
+            // Buttons styled specifically for each category (consistent prominent style)
+            $button_class = match ($data_type) {
+                'lab' => 'bg-white hover:bg-slate-50 text-emerald-700',
+                'aula' => 'bg-white hover:bg-slate-50 text-amber-700',
+                'theater' => 'bg-white hover:bg-slate-50 text-purple-700',
+                default => 'bg-white hover:bg-slate-50 text-indigo-700',
             };
 
-            $button_class = match ($status) {
-                'available' => 'bg-white hover:bg-slate-50 text-brand-primary',
-                default => 'bg-slate-900/50 hover:bg-slate-900 text-slate-300 hover:text-white border border-slate-700',
+            $button_text = 'Lihat Jadwal';
+
+            $category_badge_class = match ($data_type) {
+                'lab' => 'bg-emerald-600 text-white',
+                'aula' => 'bg-amber-500 text-slate-900',
+                'theater' => 'bg-purple-600 text-white',
+                default => 'bg-indigo-600 text-white',
             };
 
-            $button_text = match ($status) {
-                'available' => 'Booking',
-                default => 'Lihat Jadwal',
-            };
+            $location_label = $room->campus;
 
-            $subtext_class = match ($status) {
-                'available' => 'text-teal-100/80',
-                default => 'text-slate-400',
-            };
-
-            $data_building = substr($room->building, -1);
+            $data_building = 'other';
+            if (stripos($room->building, 'Gedung A') !== false) {
+                $data_building = 'A';
+            } elseif (stripos($room->building, 'Gedung Lab') !== false || stripos($room->building, 'Gedung B') !== false) {
+                $data_building = 'B';
+            } elseif (stripos($room->building, 'Gedung Utama') !== false || stripos($room->building, 'Gedung Dekanat FH') !== false) {
+                $data_building = 'C';
+            } elseif (stripos($room->building, 'Gedung IT') !== false || stripos($room->building, 'Gedung Dekanat Baru') !== false) {
+                $data_building = 'D';
+            } elseif (stripos($room->building, 'Gedung FMIPA') !== false) {
+                $data_building = 'E';
+            }
 
             return (object) [
                 'id' => $room->id,
                 'name' => $room->name,
                 'data_name' => strtolower($room->name),
+                'campus' => $room->campus,
+                'faculty' => $room->faculty,
+                'data_faculty' => strtolower($room->faculty),
                 'building' => $room->building,
                 'data_building' => $data_building,
+                'data_type' => $data_type,
+                'type_label' => $type_label,
+                'category_badge_class' => $category_badge_class,
+                'location_label' => $location_label,
                 'capacity' => $room->capacity,
                 'data_status' => $data_status,
                 'image_bg_gradient' => $image_bg_gradient,

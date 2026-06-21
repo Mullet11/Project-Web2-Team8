@@ -210,14 +210,19 @@
         // Set Waktu Mulai (Start Time) to selected slot time
         document.getElementById('booking-waktu-mulai').value = selectedTime;
 
-        // Calculate Waktu Selesai (End Time) as 1.5 hours later
-        if (selectedTime) {
+        // Get pre-selected end time from range selection
+        const selectedSlotInput = document.getElementById('selected-slot-input');
+        const preselectedEndTime = selectedSlotInput ? selectedSlotInput.getAttribute('data-end-time') : null;
+
+        if (preselectedEndTime) {
+            document.getElementById('booking-waktu-selesai').value = preselectedEndTime;
+        } else if (selectedTime) {
             const timeParts = selectedTime.split(':');
             let hours = parseInt(timeParts[0], 10);
             let minutes = parseInt(timeParts[1], 10);
 
-            // Add 1 hour and 30 minutes
-            minutes += 30;
+            // Add 1 hour and 40 minutes (2 SKS)
+            minutes += 40;
             if (minutes >= 60) {
                 minutes -= 60;
                 hours += 1;
@@ -228,6 +233,16 @@
             const endHours = String(hours).padStart(2, '0');
             const endMinutes = String(minutes).padStart(2, '0');
             document.getElementById('booking-waktu-selesai').value = `${endHours}:${endMinutes}`;
+        }
+
+        // Apply max limit constraints based on next occupied slot
+        const limitTime = document.getElementById('selected-slot-input').getAttribute('data-limit-time') || '18:00';
+        const endTimeInput = document.getElementById('booking-waktu-selesai');
+        endTimeInput.max = limitTime;
+
+        const label = document.querySelector('label[for="booking-waktu-selesai"]');
+        if (label) {
+            label.innerHTML = `Waktu Selesai <span class="text-rose-500 font-black text-[10px] uppercase tracking-wider">(Batas Maks: ${limitTime})</span>`;
         }
 
         // Trigger Perihal Fields visibility check
@@ -299,10 +314,15 @@
 
     // Handle Form Submit
     function submitBooking(event) {
-        // We will show the animation and let the form submit naturally
-        // But since standard form submission refreshes the page, we don't need to preventDefault
-        // Just show the success state before it unloads
-        
+        const endTime = document.getElementById('booking-waktu-selesai').value;
+        const limitTime = document.getElementById('selected-slot-input').getAttribute('data-limit-time') || '18:00';
+
+        if (endTime > limitTime) {
+            event.preventDefault();
+            alert(`Waktu selesai tidak boleh melebihi batas pemakaian berikutnya (${limitTime} WIB)!`);
+            return false;
+        }
+
         document.getElementById('booking-form-container').classList.add('hidden');
         document.getElementById('booking-success-state').classList.replace('hidden', 'flex');
         

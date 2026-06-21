@@ -13,17 +13,28 @@ class BookingViewModel
     public static function generateTimeSlots(Collection $bookings): array
     {
         $defaultSlots = [
-            '07:30', '09:00', '10:30', '12:00', 
-            '13:30', '15:00', '16:30', '18:00'
+            '08:00', '08:50', '09:40', '10:30', '11:20', '12:10',
+            '13:00', '13:50', '14:40', '15:30', '16:20', '17:10'
         ];
 
         $slots = [];
 
         foreach ($defaultSlots as $timeStr) {
+            if ($timeStr === '12:10') {
+                $slots[] = [
+                    'time' => $timeStr,
+                    'time_range' => '12:10 - 13:00',
+                    'status' => 'istirahat',
+                    'booking' => null
+                ];
+                continue;
+            }
+
             $slotStartTime = strtotime($timeStr);
-            $slotEndTime = strtotime("+90 minutes", $slotStartTime); // Each slot is 1.5 hours in Naufal's logic
+            $slotEndTime = strtotime("+50 minutes", $slotStartTime); // Each slot is 50 minutes (1 SKS)
             
             $status = 'tersedia';
+            $matchingBooking = null;
 
             foreach ($bookings as $booking) {
                 $bookingStart = strtotime($booking->waktu_mulai);
@@ -32,13 +43,28 @@ class BookingViewModel
                 // Check overlap
                 if ($slotStartTime < $bookingEnd && $slotEndTime > $bookingStart) {
                     $status = $booking->status === 'menunggu' ? 'diproses' : 'terpakai';
+                    $matchingBooking = $booking;
                     break;
                 }
             }
 
             $slots[] = [
                 'time' => $timeStr,
-                'status' => $status
+                'time_range' => $timeStr . ' - ' . date('H:i', $slotEndTime),
+                'status' => $status,
+                'booking' => $matchingBooking ? [
+                    'nama' => $matchingBooking->nama,
+                    'nim' => $matchingBooking->nim,
+                    'prodi_fakultas' => $matchingBooking->prodi_fakultas,
+                    'whatsapp' => $matchingBooking->whatsapp,
+                    'perihal' => $matchingBooking->perihal,
+                    'matakuliah' => $matchingBooking->matakuliah,
+                    'dosen' => $matchingBooking->dosen,
+                    'nama_kegiatan' => $matchingBooking->nama_kegiatan,
+                    'waktu_mulai' => substr($matchingBooking->waktu_mulai, 0, 5),
+                    'waktu_selesai' => substr($matchingBooking->waktu_selesai, 0, 5),
+                    'status_booking' => $matchingBooking->status
+                ] : null
             ];
         }
 
