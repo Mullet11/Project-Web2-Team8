@@ -1,148 +1,369 @@
 @extends('layouts.app')
 @section('title', 'Profil Saya - Smart Class Booking')
 @section('content')
+
 <!-- Page Header -->
-<div class="mb-8">
-    <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Profil Saya</h1>
-    <p class="text-sm text-slate-500 mt-1">Kelola informasi pribadi dan keamanan akun Anda.</p>
+<div class="mb-8 select-none">
+    <h1 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-slate-900 to-slate-700 tracking-tight">Profil Saya</h1>
+    <p class="text-sm text-slate-500 mt-1">Kelola detail informasi profil akademis dan keamanan akun Anda.</p>
 </div>
 
 @if(session('success'))
-    <div class="mb-4 bg-emerald-100 border border-emerald-400 text-emerald-700 px-4 py-3 rounded-xl relative">
-        <span class="block sm:inline">{{ session('success') }}</span>
+    <div class="mb-6 bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-2xl relative flex items-center gap-3 shadow-sm select-none">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span class="text-sm font-semibold">{{ session('success') }}</span>
     </div>
 @endif
 
 @if($errors->any())
-    <div class="mb-4 bg-rose-100 border border-rose-400 text-rose-700 px-4 py-3 rounded-xl relative">
-        <ul>
+    <div class="mb-6 bg-rose-50 border border-rose-200 text-rose-700 px-4 py-3 rounded-2xl relative shadow-sm select-none">
+        <div class="flex items-center gap-3 mb-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-rose-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <span class="text-sm font-bold">Terjadi Kesalahan Validasi:</span>
+        </div>
+        <ul class="list-disc list-inside text-xs font-semibold space-y-0.5 text-rose-600/90 pl-1">
             @foreach($errors->all() as $error)
-                <li>- {{ $error }}</li>
+                <li>{{ $error }}</li>
             @endforeach
         </ul>
     </div>
 @endif
 
-<!-- ========== CONTENT ========== -->
-<div class="grid grid-cols-1 gap-6">
-    <!-- Personal Info -->
-    <div class="space-y-6">
-        <!-- Personal Information Card -->
-        <div class="bg-white rounded-[24px] border border-slate-100 p-6">
-            <div class="flex items-center justify-between mb-6">
-                <div>
-
+<!-- ========== CONTENT STACK ========== -->
+<div class="space-y-6">
+    
+    <!-- 1. Profile Identity Header Card (Full Width) -->
+    <div class="bg-white rounded-[24px] border border-slate-100 p-6 shadow-sm hover:shadow-md transition-shadow duration-300 relative overflow-hidden">
+        <!-- Decorative top accent bar -->
+        <div class="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500"></div>
+        
+        <div class="flex flex-col md:flex-row items-center md:items-start justify-between gap-6 mt-2">
+            <div class="flex flex-col md:flex-row items-center gap-5">
+                <!-- Avatar (ULM Logo in clean frame, guaranteed circle/square ratio) -->
+                <div class="rounded-2xl border-4 border-slate-50 bg-slate-50/50 shadow-sm overflow-hidden flex items-center justify-center shrink-0 select-none" style="width: 96px; height: 96px;">
+                    <img src="{{ asset('images/profile/ULM PNG.png') }}" alt="Logo ULM" class="w-16 h-16 object-contain">
                 </div>
-                <button type="button" id="toggle-edit-btn" class="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-600 text-xs font-bold rounded-xl transition-all duration-200 cursor-pointer">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                    </svg>
-                    Edit Profil
-                </button>
+                <!-- Identity Info -->
+                <div class="text-center md:text-left">
+                    <div class="flex flex-col md:flex-row items-center gap-2.5">
+                        <h2 class="text-2xl font-black text-slate-800 tracking-tight leading-none">{{ $user->name }}</h2>
+                        @if($user->role === 'admin')
+                            <span class="px-2.5 py-1 bg-indigo-50 text-indigo-600 text-[10px] font-black rounded-md tracking-wider uppercase border border-indigo-100 select-none">
+                                Administrator
+                            </span>
+                        @elseif($user->role === 'dosen')
+                            <span class="px-2.5 py-1 bg-emerald-50 text-emerald-600 text-[10px] font-black rounded-md tracking-wider uppercase border border-emerald-100 select-none">
+                                Dosen ULM
+                            </span>
+                        @else
+                            <span class="px-2.5 py-1 bg-blue-50 text-blue-600 text-[10px] font-black rounded-md tracking-wider uppercase border border-blue-100 select-none">
+                                Mahasiswa ULM
+                            </span>
+                        @endif
+                    </div>
+                    <div class="mt-3.5 flex flex-wrap justify-center md:justify-start items-center gap-x-4 gap-y-1.5 text-xs font-semibold text-slate-500 select-none">
+                        <span class="flex items-center gap-1.5">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2" />
+                            </svg>
+                            {{ $user->role === 'dosen' ? 'NIDN' : 'NIM' }}: {{ $user->identity_number }}
+                        </span>
+                        <span class="hidden md:inline text-slate-300">&bull;</span>
+                        <span class="flex items-center gap-1.5">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                            {{ $user->email }}
+                        </span>
+                        @if($user->faculty || $user->study_program)
+                            <span class="hidden md:inline text-slate-300">&bull;</span>
+                            <span class="flex items-center gap-1.5">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                                </svg>
+                                {{ $user->study_program ?? '-' }} &bull; {{ $user->faculty ?? '-' }}
+                            </span>
+                        @endif
+                    </div>
+                </div>
             </div>
-
-            <form id="profile-form" action="/profile" method="POST" class="space-y-5">
-                @csrf
-                @method('PUT')
-
-                <!-- Avatar Placeholder - Centered -->
-                <div class="flex flex-col items-center py-6 mb-2">
-                    <div class="relative group cursor-pointer w-48 h-48" style="width: 200px; height: 200px;">
-                        <!-- Circle with photo -->
-                        <div class="w-48 h-48 rounded-full ring-4 ring-blue-100 group-hover:ring-blue-200 transition-all overflow-hidden" style="width: 200px; height: 200px;">
-                            <img src="{{ asset('images/profile/ULM PNG.png') }}" alt="Foto Profil"
-                                class="w-full h-full object-cover">
-                        </div>
-                        <!-- Camera overlay on hover -->
-                        <div class="absolute inset-0 rounded-full bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-
-                        </div>
-
-                           </div>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                    <!-- Nama Lengkap -->
-                    <div class="space-y-1.5">
-                        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Nama Lengkap</label>
-                        <input type="text" id="input-name" value="{{ $user->name }}"
-                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-blue-600 focus:bg-white transition-all disabled:opacity-60 disabled:cursor-not-allowed"
-                            disabled>
-                    </div>
-                    <!-- NIM -->
-                    <div class="space-y-1.5">
-                        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">NIM / NIDN</label>
-                        <input type="text" id="input-nim" value="{{ $user->identity_number }}"
-                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-blue-600 focus:bg-white transition-all disabled:opacity-60 disabled:cursor-not-allowed"
-                            disabled>
-                    </div>
-                    <!-- Email -->
-                    <div class="space-y-1.5 sm:col-span-2">
-                        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Email</label>
-                        <input type="email" id="input-email" value="{{ $user->email }}"
-                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-blue-600 focus:bg-white transition-all disabled:opacity-60 disabled:cursor-not-allowed"
-                            disabled>
-                    </div>
-
-                    <!-- Password Baru -->
-                    <div class="space-y-1.5">
-                        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Password Baru (Opsional)</label>
-                        <input type="password" id="input-password" name="password" placeholder="Biarkan kosong jika tidak diubah"
-                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-blue-600 focus:bg-white transition-all disabled:opacity-60 disabled:cursor-not-allowed"
-                            disabled>
-                    </div>
-                    <!-- Konfirmasi Password -->
-                    <div class="space-y-1.5">
-                        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">Konfirmasi Password Baru</label>
-                        <input type="password" id="input-password-confirmation" name="password_confirmation" placeholder="Biarkan kosong jika tidak diubah"
-                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-blue-600 focus:bg-white transition-all disabled:opacity-60 disabled:cursor-not-allowed"
-                            disabled>
-                    </div>
-                </div>
-                <!-- Save Button (Hidden when not editing) -->
-                <div id="save-actions" class="hidden pt-2 flex gap-3">
-                    <button type="button" id="cancel-edit-btn" class="px-6 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-600 text-sm font-bold rounded-xl transition-all duration-200 cursor-pointer">
-                        Batal
-                    </button>
-                    <button type="submit" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl transition-all duration-200 cursor-pointer">
-                        Simpan Perubahan
-                    </button>
-                </div>
-            </form>
+            
+            <!-- Toggle Edit Button (Unique ID, has click listener bound in JS) -->
+            <button type="button" id="toggle-edit-btn" class="flex items-center gap-1.5 px-4 py-2.5 bg-blue-50 hover:bg-blue-100 text-blue-600 text-xs font-bold rounded-xl transition-all duration-200 cursor-pointer shadow-sm shadow-blue-500/5 select-none shrink-0 self-center md:self-start">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+                <span>Edit Profil</span>
+            </button>
         </div>
     </div>
+
+    <!-- 2. Booking Statistics Grid (3 Columns) -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 select-none">
+        <!-- Total Bookings -->
+        <div class="bg-white rounded-[20px] border border-slate-100 p-5 shadow-sm flex items-center justify-between group hover:border-blue-100 transition-colors duration-200">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                        {{ $user->role === 'admin' ? 'Total Peminjaman' : 'Peminjaman Saya' }}
+                    </p>
+                    <p class="text-sm font-extrabold text-slate-700 mt-0.5">Semua Pengajuan</p>
+                </div>
+            </div>
+            <span class="text-3xl font-black text-blue-600 tracking-tight">{{ $totalBookings }}</span>
+        </div>
+
+        <!-- Pending Bookings -->
+        <div class="bg-white rounded-[20px] border border-slate-100 p-5 shadow-sm flex items-center justify-between group hover:border-amber-100 transition-colors duration-200">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                        {{ $user->role === 'admin' ? 'Menunggu Konfirmasi' : 'Dalam Proses' }}
+                    </p>
+                    <p class="text-sm font-extrabold text-slate-700 mt-0.5">Butuh Konfirmasi</p>
+                </div>
+            </div>
+            <span class="text-3xl font-black text-amber-600 tracking-tight">{{ $pendingBookings }}</span>
+        </div>
+
+        <!-- Approved Bookings -->
+        <div class="bg-white rounded-[20px] border border-slate-100 p-5 shadow-sm flex items-center justify-between group hover:border-emerald-100 transition-colors duration-200">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                        {{ $user->role === 'admin' ? 'Persetujuan Aktif' : 'Disetujui' }}
+                    </p>
+                    <p class="text-sm font-extrabold text-slate-700 mt-0.5">Reservasi Aktif</p>
+                </div>
+            </div>
+            <span class="text-3xl font-black text-emerald-600 tracking-tight">{{ $approvedBookings }}</span>
+        </div>
+    </div>
+
+    <!-- 3. Form Section (Side-by-Side Cards) -->
+    <form id="profile-form" action="/profile" method="POST" class="space-y-6">
+        @csrf
+        @method('PUT')
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            
+            <!-- Detail Profil Akun Card -->
+            <div class="bg-white rounded-[24px] border border-slate-100 p-6 shadow-sm flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center gap-2.5 mb-6 pb-4 border-b border-slate-50 select-none">
+                        <div class="w-7 h-7 rounded-lg bg-blue-50 text-blue-500 flex items-center justify-center shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-base font-extrabold text-slate-800 tracking-tight">Detail Profil Akun</h3>
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- Nama Lengkap (Editable) -->
+                        <div class="space-y-1.5">
+                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Nama Lengkap</label>
+                            <input type="text" id="input-name" name="name" value="{{ $user->name }}"
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-blue-600 focus:bg-white transition-all disabled:opacity-75 disabled:cursor-not-allowed"
+                                disabled>
+                        </div>
+
+                        <!-- Fakultas (Editable) -->
+                        <div class="space-y-1.5">
+                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Fakultas</label>
+                            <input type="text" id="input-faculty" name="faculty" value="{{ $user->faculty }}" placeholder="Masukkan nama fakultas (contoh: Teknik)"
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-blue-600 focus:bg-white transition-all disabled:opacity-75 disabled:cursor-not-allowed"
+                                disabled>
+                        </div>
+
+                        <!-- Program Studi (Editable) -->
+                        <div class="space-y-1.5">
+                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Program Studi / Prodi</label>
+                            <input type="text" id="input-study-program" name="study_program" value="{{ $user->study_program }}" placeholder="Masukkan program studi (contoh: Teknologi Informasi)"
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-blue-600 focus:bg-white transition-all disabled:opacity-75 disabled:cursor-not-allowed"
+                                disabled>
+                        </div>
+                        
+                        <!-- NIM / NIDN (Readonly) -->
+                        <div class="space-y-1.5">
+                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">{{ $user->role === 'dosen' ? 'NIDN' : 'NIM' }}</label>
+                            <input type="text" value="{{ $user->identity_number }}"
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-400 focus:outline-none cursor-not-allowed select-none opacity-60"
+                                disabled readonly>
+                        </div>
+                        
+                        <!-- Email (Readonly) -->
+                        <div class="space-y-1.5">
+                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Alamat Email Resmi</label>
+                            <input type="email" value="{{ $user->email }}"
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-400 focus:outline-none cursor-not-allowed select-none opacity-60"
+                                disabled readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ubah Kata Sandi Card -->
+            <div class="bg-white rounded-[24px] border border-slate-100 p-6 shadow-sm flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center gap-2.5 mb-6 pb-4 border-b border-slate-50 select-none">
+                        <div class="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-500 flex items-center justify-center shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-base font-extrabold text-slate-800 tracking-tight">Keamanan & Sandi</h3>
+                    </div>
+
+                    <div class="space-y-4">
+                        <p class="text-xs text-slate-400 font-semibold mb-2 select-none leading-relaxed">Untuk memperbarui kata sandi akun Anda, silakan aktifkan mode edit terlebih dahulu, lalu isi kolom berikut.</p>
+                        
+                        <!-- Password Baru -->
+                        <div class="space-y-1.5">
+                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Password Baru</label>
+                            <input type="password" id="input-password" name="password" placeholder="Biarkan kosong jika tidak diubah"
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-blue-600 focus:bg-white transition-all disabled:opacity-75 disabled:cursor-not-allowed"
+                                disabled>
+                        </div>
+                        
+                        <!-- Konfirmasi Password -->
+                        <div class="space-y-1.5">
+                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Konfirmasi Password Baru</label>
+                            <input type="password" id="input-password-confirmation" name="password_confirmation" placeholder="Biarkan kosong jika tidak diubah"
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-700 focus:outline-none focus:border-blue-600 focus:bg-white transition-all disabled:opacity-75 disabled:cursor-not-allowed"
+                                disabled>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+        <!-- Save/Cancel Actions (Hidden when not editing) -->
+        <div id="save-actions" class="hidden flex gap-3 justify-end pt-2 select-none">
+            <button type="button" id="cancel-edit-btn" class="px-6 py-3 bg-slate-100 hover:bg-slate-200 text-slate-600 text-sm font-extrabold rounded-xl transition-all duration-200 cursor-pointer">
+                Batal
+            </button>
+            <button type="submit" class="px-7 py-3 bg-blue-600 hover:bg-blue-700 text-white text-sm font-extrabold rounded-xl shadow-md shadow-blue-600/15 hover:shadow-lg transition-all duration-200 cursor-pointer">
+                Simpan Perubahan
+            </button>
+        </div>
+    </form>
+    
 </div>
 @endsection
+
 @section('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const toggleBtn = document.getElementById('toggle-edit-btn');
         const cancelBtn = document.getElementById('cancel-edit-btn');
         const saveActions = document.getElementById('save-actions');
-        const inputs = document.querySelectorAll('#profile-form input');
+        
+        const inputName = document.getElementById('input-name');
+        const inputFaculty = document.getElementById('input-faculty');
+        const inputStudyProgram = document.getElementById('input-study-program');
+        const inputPassword = document.getElementById('input-password');
+        const inputPasswordConfirmation = document.getElementById('input-password-confirmation');
+        
         let isEditing = false;
+
         function enableEdit() {
             isEditing = true;
-            inputs.forEach(input => input.removeAttribute('disabled'));
+            
+            // Enable fields
+            inputName.removeAttribute('disabled');
+            inputFaculty.removeAttribute('disabled');
+            inputStudyProgram.removeAttribute('disabled');
+            inputPassword.removeAttribute('disabled');
+            inputPasswordConfirmation.removeAttribute('disabled');
+            
+            // Visual feedback transitions (removes disabled bg and adds white bg)
+            inputName.classList.remove('bg-slate-50');
+            inputName.classList.add('bg-white');
+            inputFaculty.classList.remove('bg-slate-50');
+            inputFaculty.classList.add('bg-white');
+            inputStudyProgram.classList.remove('bg-slate-50');
+            inputStudyProgram.classList.add('bg-white');
+            inputPassword.classList.remove('bg-slate-50');
+            inputPassword.classList.add('bg-white');
+            inputPasswordConfirmation.classList.remove('bg-slate-50');
+            inputPasswordConfirmation.classList.add('bg-white');
+            
+            // Show save/cancel actions bar
             saveActions.classList.remove('hidden');
+            
+            // Update Toggle Button label to cancel state
+            toggleBtn.className = "flex items-center gap-1.5 px-3.5 py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold rounded-xl transition-all duration-200 cursor-pointer shadow-sm shadow-rose-500/5";
             toggleBtn.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
-                Batalkan
+                <span>Batalkan</span>
             `;
         }
+
         function disableEdit() {
             isEditing = false;
-            inputs.forEach(input => input.setAttribute('disabled', true));
+            
+            // Disable fields
+            inputName.setAttribute('disabled', true);
+            inputFaculty.setAttribute('disabled', true);
+            inputStudyProgram.setAttribute('disabled', true);
+            inputPassword.setAttribute('disabled', true);
+            inputPasswordConfirmation.setAttribute('disabled', true);
+            
+            // Restore default placeholder backgrounds
+            inputName.classList.add('bg-slate-50');
+            inputName.classList.remove('bg-white');
+            inputFaculty.classList.add('bg-slate-50');
+            inputFaculty.classList.remove('bg-white');
+            inputStudyProgram.classList.add('bg-slate-50');
+            inputStudyProgram.classList.remove('bg-white');
+            inputPassword.classList.add('bg-slate-50');
+            inputPassword.classList.remove('bg-white');
+            inputPasswordConfirmation.classList.add('bg-slate-50');
+            inputPasswordConfirmation.classList.remove('bg-white');
+            
+            // Hide save actions bar
             saveActions.classList.add('hidden');
+            
+            // Restore Toggle Button label to default edit state
+            toggleBtn.className = "flex items-center gap-1.5 px-4 py-2.5 bg-blue-50 hover:bg-blue-100 text-blue-600 text-xs font-bold rounded-xl transition-all duration-200 cursor-pointer shadow-sm shadow-blue-500/5";
             toggleBtn.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                 </svg>
-                Edit Profil
+                <span>Edit Profil</span>
             `;
+            
+            // Reset input values to original
+            inputName.value = "{{ $user->name }}";
+            inputFaculty.value = "{{ $user->faculty }}";
+            inputStudyProgram.value = "{{ $user->study_program }}";
+            inputPassword.value = "";
+            inputPasswordConfirmation.value = "";
         }
+
         toggleBtn.addEventListener('click', function () {
             if (isEditing) {
                 disableEdit();
@@ -150,6 +371,7 @@
                 enableEdit();
             }
         });
+
         cancelBtn.addEventListener('click', function () {
             disableEdit();
         });

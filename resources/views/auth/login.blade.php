@@ -153,7 +153,7 @@
                             class="block px-4 py-3.5 w-full text-sm text-slate-900 bg-transparent rounded-xl border @error('email') border-rose-500 focus:border-rose-500 @else border-slate-200 focus:border-blue-600 @enderror appearance-none focus:outline-none focus:ring-0 peer transition-all" />
                         <label for="signup_email" 
                             class="absolute text-sm @error('email') text-rose-500 @else text-slate-400 peer-focus:text-blue-600 @enderror duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-3 select-none pointer-events-none">
-                            Email (wajib @mhs.ulm.ac.id)
+                            Email (wajib @mhs.ulm.ac.id atau @ulm.ac.id)
                         </label>
                         @error('email')
                             <p class="mt-1.5 text-xs text-rose-600 font-medium">{{ $message }}</p>
