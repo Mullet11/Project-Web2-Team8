@@ -35,7 +35,7 @@ return new class extends Migration
             $table->time('waktu_selesai');
             
             // Status & Catatan
-            $table->enum('status', ['menunggu', 'disetujui', 'dibatalkan', 'selesai'])->default('menunggu');
+            $table->enum('status', ['menunggu', 'disetujui', 'dibatalkan', 'selesai', 'ditolak'])->default('menunggu');
             $table->text('alasan_batal')->nullable();
             
             $table->timestamps();

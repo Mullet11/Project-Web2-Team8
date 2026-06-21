@@ -26,6 +26,7 @@ class User extends Authenticatable
         'password',
         'faculty',
         'study_program',
+        'profile_photo_path',
     ];
 
     /**
