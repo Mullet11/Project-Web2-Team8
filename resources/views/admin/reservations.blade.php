@@ -127,10 +127,36 @@
                                 {{ $res->status }}
                             </span>
                         </td>
-                        <td class="px-6 py-4 text-center">
-                            <a href="/history/detail/{{ $res->id }}" class="inline-flex items-center justify-center px-4.5 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-600 text-xs font-black rounded-xl border border-blue-200/50 transition-all duration-200 cursor-pointer text-decoration-none">
-                                Detail
-                            </a>
+                        <td class="px-6 py-4 text-center whitespace-nowrap">
+                            <div class="relative inline-block" id="res-dropdown-wrap-{{ $res->id }}">
+                                <!-- Tombol Pilih -->
+                                <button
+                                    type="button"
+                                    onclick="toggleResDropdown({{ $res->id }})"
+                                    class="inline-flex items-center gap-1.5 px-4 py-1.5 bg-slate-700 hover:bg-slate-800 text-white text-xs font-bold rounded-xl transition-all cursor-pointer select-none shadow-sm"
+                                >
+                                    <span>Pilih</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 transition-transform duration-200" id="res-chevron-{{ $res->id }}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+
+                                <!-- Dropdown Menu -->
+                                <div
+                                    id="res-dropdown-{{ $res->id }}"
+                                    class="absolute right-0 z-50 mt-2 w-36 bg-white border border-slate-100 rounded-2xl shadow-xl opacity-0 invisible scale-95 transition-all duration-200 origin-top-right"
+                                >
+                                    <div class="p-1.5">
+                                        <a href="/history/detail/{{ $res->id }}" class="flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs font-bold text-blue-700 hover:bg-blue-50 transition-colors cursor-pointer">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                            </svg>
+                                            Lihat Detail
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                     @empty
@@ -167,6 +193,47 @@
 
 @section('scripts')
 <script>
+    // --- Reservation Log Dropdown Logic ---
+    let activeResDropdownId = null;
+
+    function toggleResDropdown(id) {
+        if (activeResDropdownId !== null && activeResDropdownId !== id) {
+            closeResDropdown(activeResDropdownId);
+        }
+        const menu = document.getElementById('res-dropdown-' + id);
+        const chevron = document.getElementById('res-chevron-' + id);
+        const isOpen = !menu.classList.contains('invisible');
+
+        if (isOpen) {
+            closeResDropdown(id);
+        } else {
+            menu.classList.remove('opacity-0', 'invisible', 'scale-95');
+            menu.classList.add('opacity-100', 'visible', 'scale-100');
+            chevron.classList.add('rotate-180');
+            activeResDropdownId = id;
+        }
+    }
+
+    function closeResDropdown(id) {
+        const menu = document.getElementById('res-dropdown-' + id);
+        const chevron = document.getElementById('res-chevron-' + id);
+        if (menu) {
+            menu.classList.add('opacity-0', 'invisible', 'scale-95');
+            menu.classList.remove('opacity-100', 'visible', 'scale-100');
+        }
+        if (chevron) chevron.classList.remove('rotate-180');
+        if (activeResDropdownId === id) activeResDropdownId = null;
+    }
+
+    document.addEventListener('click', function(e) {
+        if (activeResDropdownId !== null) {
+            const wrap = document.getElementById('res-dropdown-wrap-' + activeResDropdownId);
+            if (wrap && !wrap.contains(e.target)) {
+                closeResDropdown(activeResDropdownId);
+            }
+        }
+    });
+
     document.addEventListener('DOMContentLoaded', function() {
         const searchInput = document.getElementById('search-input');
         const tabs = document.querySelectorAll('.status-tab');
