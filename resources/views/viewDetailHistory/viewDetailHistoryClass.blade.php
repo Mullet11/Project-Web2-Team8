@@ -192,8 +192,8 @@
     <div class="lg:col-span-5 flex flex-col gap-6">
         <!-- Room Info Card (Visual representation of room being booked) -->
         <div class="bg-white rounded-[28px] border border-slate-100 p-6 shadow-sm flex items-center gap-5">
-            <div class="w-20 h-20 bg-slate-50 border border-slate-100 rounded-2xl p-3 flex items-center justify-center shrink-0">
-                <img src="{{ asset('images/profile/ULM PNG.png') }}" alt="ULM Logo" class="max-h-full max-w-full object-contain filter drop-shadow-sm">
+            <div class="w-20 h-20 bg-slate-50 border border-slate-100 rounded-2xl flex items-center justify-center shrink-0 overflow-hidden">
+                <img src="{{ $booking['image_url'] }}" alt="{{ $booking['room_name'] }}" class="w-full h-full object-cover">
             </div>
             <div class="space-y-1 overflow-hidden select-none">
                 <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Ruangan Dipesan</span>
