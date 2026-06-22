@@ -51,14 +51,14 @@
         <div class="lg:col-span-3 md:col-span-6 col-span-12 space-y-2">
             <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
                 <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-                Lokasi Kampus
+                Lokasi
             </label>
             <!-- Dropdown Campus Filter (Premium Custom Select) -->
             <div class="relative w-full" id="campus-dropdown">
                 <button type="button" id="campus-dropdown-button" class="w-full flex items-center justify-between px-4 py-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-xs sm:text-sm font-bold text-slate-650 transition-all cursor-pointer focus:outline-none focus:ring-4 focus:ring-blue-600/5 min-w-0 overflow-hidden" aria-haspopup="listbox" aria-expanded="false">
                     <span class="flex items-center gap-2 min-w-0" id="campus-selected-label">
                         <span class="w-2 h-2 rounded-full bg-slate-400 shrink-0"></span>
-                        <span class="truncate">Pilih Lokasi Kampus</span>
+                        <span class="truncate">Pilih Lokasi</span>
                     </span>
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-400 transition-transform duration-300 pointer-events-none shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
@@ -70,15 +70,15 @@
                     <div class="p-1.5 space-y-0.5">
                         <div class="campus-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-600 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="">
                             <span class="w-2 h-2 rounded-full bg-slate-400"></span>
-                            Pilih Lokasi Kampus
+                            Pilih Lokasi
                         </div>
                         <div class="campus-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-600 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="Kampus Banjarmasin">
                             <span class="w-2 h-2 rounded-full bg-blue-500"></span>
-                            Kampus Banjarmasin
+                            Banjarmasin
                         </div>
                         <div class="campus-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-600 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="Kampus Banjarbaru">
                             <span class="w-2 h-2 rounded-full bg-amber-500"></span>
-                            Kampus Banjarbaru
+                            Banjarbaru
                         </div>
                     </div>
                 </div>

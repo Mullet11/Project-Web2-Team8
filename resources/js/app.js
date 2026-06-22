@@ -193,12 +193,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (facultyMenu) {
             const facultyOptions = facultyMenu.querySelectorAll('.faculty-option');
             facultyOptions.forEach(opt => {
-                const val = opt.getAttribute('data-value');
-                if (val === '' || allowedFaculties.has(val.toLowerCase())) {
-                    opt.style.display = '';
-                } else {
-                    opt.style.display = 'none';
-                }
+                // Keep all faculty options visible (as requested, matching sign up options)
+                opt.style.display = '';
             });
         }
     }
@@ -590,7 +586,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (campusSelectedLabel) {
                 campusSelectedLabel.innerHTML = `
                     <span class="w-2 h-2 rounded-full bg-slate-400 shrink-0"></span>
-                    <span class="truncate">Pilih Lokasi Kampus</span>
+                    <span class="truncate">Pilih Lokasi</span>
                 `;
             }
 

@@ -107,12 +107,12 @@
             <div class="md:col-span-4 space-y-2">
                 <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
                     <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-                    Lokasi Kampus
+                    Lokasi
                 </label>
                 <select id="filter-campus" onchange="applyFilters()" class="w-full px-4 py-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-xs sm:text-sm font-bold text-slate-650 focus:outline-none transition-colors cursor-pointer">
-                    <option value="">Semua Lokasi Kampus</option>
-                    <option value="Kampus Banjarmasin">Kampus Banjarmasin</option>
-                    <option value="Kampus Banjarbaru">Kampus Banjarbaru</option>
+                    <option value="">Semua Lokasi</option>
+                    <option value="Kampus Banjarmasin">Banjarmasin</option>
+                    <option value="Kampus Banjarbaru">Banjarbaru</option>
                 </select>
             </div>
         </div>
