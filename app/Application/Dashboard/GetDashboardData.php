@@ -9,8 +9,6 @@ class GetDashboardData
 {
     /**
      * Mengambil daftar ruangan untuk dashboard
-     * 
-     * @return Collection
      */
     public function execute(): Collection
     {

@@ -2,10 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
-
 use App\Models\User;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
@@ -15,20 +13,37 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Akun Admin
+        // 1. Akun Admin
         User::create([
-            'name' => 'Admin Utama',
+            'name' => 'Administrator',
             'identity_number' => 'admin123',
+            'email' => 'admin@smartclass.com',
+            'password' => 'password123',
             'role' => 'admin',
-            'password' => Hash::make('password123'),
         ]);
 
-        // Akun User/Mahasiswa
+        // 2. Akun Mahasiswa
         User::create([
-            'name' => 'Rakha Mahasiswa',
+            'name' => 'Mahasiswa Test',
             'identity_number' => '123456789',
-            'role' => 'user',
-            'password' => Hash::make('password123'),
+            'email' => 'mhs@mhs.ulm.ac.id',
+            'whatsapp' => '081234567891',
+            'password' => 'password123',
+            'role' => 'mahasiswa',
+            'faculty' => 'Teknik',
+            'study_program' => 'Teknologi Informasi',
+        ]);
+
+        // 3. Akun Dosen
+        User::create([
+            'name' => 'Dosen Test',
+            'identity_number' => '987654321',
+            'email' => 'dosen@ulm.ac.id',
+            'whatsapp' => '081234567892',
+            'password' => 'password123',
+            'role' => 'dosen',
+            'faculty' => 'Teknik',
+            'study_program' => 'Teknologi Informasi',
         ]);
     }
 }

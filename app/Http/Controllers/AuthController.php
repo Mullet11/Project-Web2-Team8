@@ -4,10 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Application\Auth\LoginUser;
 use App\Http\Requests\LoginRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use App\Models\User;
 
 class AuthController extends Controller
 {
@@ -24,6 +23,7 @@ class AuthController extends Controller
             if (Auth::user()->role === 'admin') {
                 return redirect()->route('admin.dashboard');
             }
+
             return redirect()->route('dashboard');
         }
 
@@ -44,7 +44,7 @@ class AuthController extends Controller
 
     public function showRegister()
     {
-        return view('auth.register');
+        return view('auth.login', ['is_signup' => true]);
     }
 
     public function register(Request $request)
@@ -52,22 +52,37 @@ class AuthController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'identity_number' => 'required|string|max:255|unique:users',
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users', 'regex:/^[a-zA-Z0-9._%+-]+@mhs\.ulm\.ac\.id$/'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'whatsapp' => 'required|string|max:255',
+            'faculty' => 'required|string|max:255',
+            'study_program' => 'required|string|max:255',
             'password' => 'required|string|min:8|confirmed',
-        ], [
-            'email.regex' => 'Email harus menggunakan domain @mhs.ulm.ac.id untuk mendaftar sebagai mahasiswa.'
         ]);
+
+        $email = $validated['email'];
+
+        // Automatically determine role based on email domain
+        if (str_ends_with($email, '@mhs.ulm.ac.id')) {
+            $role = 'mahasiswa';
+        } elseif (str_ends_with($email, '@ulm.ac.id')) {
+            $role = 'dosen';
+        } else {
+            return back()->withErrors([
+                'email' => 'Email harus menggunakan domain resmi @mhs.ulm.ac.id (untuk mahasiswa) atau @ulm.ac.id (untuk dosen).',
+            ])->withInput();
+        }
 
         $user = User::create([
             'name' => $validated['name'],
             'identity_number' => $validated['identity_number'],
-            'email' => $validated['email'],
+            'email' => $email,
+            'whatsapp' => $validated['whatsapp'],
+            'faculty' => $validated['faculty'],
+            'study_program' => $validated['study_program'],
+            'role' => $role,
             'password' => $validated['password'],
-            'role' => 'mahasiswa',
         ]);
 
-        Auth::login($user);
-
-        return redirect()->route('dashboard');
+        return redirect('/login?registered=1');
     }
 }

@@ -68,6 +68,7 @@
                     <div class="space-y-1.5">
                         <label for="booking-nama" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Nama Lengkap</label>
                         <input type="text" id="booking-nama" name="nama" required placeholder="Masukkan nama lengkap"
+                            value="{{ old('nama', auth()->user()->name ?? '') }}"
                             class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium placeholder:text-slate-400/80">
                     </div>
 
@@ -75,6 +76,7 @@
                     <div class="space-y-1.5">
                         <label for="booking-nim" class="text-xs font-bold text-slate-500 uppercase tracking-wider">NIM</label>
                         <input type="text" id="booking-nim" name="nim" required placeholder="Masukkan NIM Anda"
+                            value="{{ old('nim', auth()->user()->identity_number ?? '') }}"
                             class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium placeholder:text-slate-400/80">
                     </div>
 
@@ -82,6 +84,7 @@
                     <div class="space-y-1.5">
                         <label for="booking-prodi" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Prodi / Fakultas</label>
                         <input type="text" id="booking-prodi" name="prodi_fakultas" required placeholder="Teknologi Informasi / Teknik"
+                            value="{{ old('prodi_fakultas', auth()->user()->study_program ? auth()->user()->study_program . ' / ' . auth()->user()->faculty : '') }}"
                             class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium placeholder:text-slate-400/80">
                     </div>
 
@@ -89,6 +92,7 @@
                     <div class="space-y-1.5">
                         <label for="booking-whatsapp" class="text-xs font-bold text-slate-500 uppercase tracking-wider">No. WhatsApp Aktif</label>
                         <input type="tel" id="booking-whatsapp" name="whatsapp" required placeholder="Contoh: 08123456789"
+                            value="{{ old('whatsapp', auth()->user()->whatsapp ?? '') }}"
                             class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium placeholder:text-slate-400/80">
                     </div>
 
@@ -111,9 +115,6 @@
                             <select id="booking-dosen" name="dosen" required
                                 class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium appearance-none cursor-pointer pr-10">
                                 <option value="" disabled selected>Pilih Dosen Pengampu</option>
-                                <option value="Dr. H. Andi Wijaya, M.T.">Dr. H. Andi Wijaya, M.T.</option>
-                                <option value="Rina Setyawati, M.Kom.">Rina Setyawati, M.Kom.</option>
-                                <option value="Dr. Ir. H. M. Ismail, M.T.">Dr. Ir. H. M. Ismail, M.T.</option>
                             </select>
                             <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-450">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
@@ -128,9 +129,6 @@
                             <select id="booking-matakuliah" name="matakuliah" required
                                 class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium appearance-none cursor-pointer pr-10">
                                 <option value="" disabled selected>Pilih Mata Kuliah</option>
-                                <option value="Praktikum Jaringan Komputer">Praktikum Jaringan Komputer</option>
-                                <option value="Keamanan Sistem Informasi">Keamanan Sistem Informasi</option>
-                                <option value="Pemrograman Web II">Pemrograman Web II</option>
                             </select>
                             <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-450">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
@@ -152,8 +150,8 @@
                     <!-- Tanggal Peminjaman -->
                     <div class="space-y-1.5 sm:col-span-2">
                         <label for="booking-tanggal" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Tanggal Peminjaman</label>
-                        <input type="date" id="booking-tanggal" name="tanggal" required
-                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium cursor-not-allowed text-slate-500">
+                        <input type="date" id="booking-tanggal" name="tanggal" required readonly
+                            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-850 font-bold cursor-not-allowed text-slate-500">
                     </div>
 
                     <!-- Waktu Mulai & Waktu Selesai -->
@@ -200,24 +198,26 @@
         // Reset form inputs (except defaults)
         document.getElementById('booking-form').reset();
 
-        // Pre-fill Date input with today's date in YYYY-MM-DD local format
-        const today = new Date();
-        const year = today.getFullYear();
-        const month = String(today.getMonth() + 1).padStart(2, '0');
-        const day = String(today.getDate()).padStart(2, '0');
-        document.getElementById('booking-tanggal').value = `${year}-${month}-${day}`;
+        // Pre-fill Date input with selected date from selector
+        const selectedDate = document.getElementById('booking-date-selector').value;
+        document.getElementById('booking-tanggal').value = selectedDate;
 
         // Set Waktu Mulai (Start Time) to selected slot time
         document.getElementById('booking-waktu-mulai').value = selectedTime;
 
-        // Calculate Waktu Selesai (End Time) as 1.5 hours later
-        if (selectedTime) {
+        // Get pre-selected end time from range selection
+        const selectedSlotInput = document.getElementById('selected-slot-input');
+        const preselectedEndTime = selectedSlotInput ? selectedSlotInput.getAttribute('data-end-time') : null;
+
+        if (preselectedEndTime) {
+            document.getElementById('booking-waktu-selesai').value = preselectedEndTime;
+        } else if (selectedTime) {
             const timeParts = selectedTime.split(':');
             let hours = parseInt(timeParts[0], 10);
             let minutes = parseInt(timeParts[1], 10);
 
-            // Add 1 hour and 30 minutes
-            minutes += 30;
+            // Add 1 hour and 40 minutes (2 SKS)
+            minutes += 40;
             if (minutes >= 60) {
                 minutes -= 60;
                 hours += 1;
@@ -230,8 +230,21 @@
             document.getElementById('booking-waktu-selesai').value = `${endHours}:${endMinutes}`;
         }
 
+        // Apply max limit constraints based on next occupied slot
+        const limitTime = document.getElementById('selected-slot-input').getAttribute('data-limit-time') || '18:00';
+        const endTimeInput = document.getElementById('booking-waktu-selesai');
+        endTimeInput.max = limitTime;
+
+        const label = document.querySelector('label[for="booking-waktu-selesai"]');
+        if (label) {
+            label.innerHTML = `Waktu Selesai <span class="text-rose-500 font-black text-[10px] uppercase tracking-wider">(Batas Maks: ${limitTime})</span>`;
+        }
+
         // Trigger Perihal Fields visibility check
         togglePerihalFields();
+
+        // Update dynamic lecturers and courses list
+        updateDosenDanMatakuliah();
 
         // Animate modal entry
         modal.classList.remove('pointer-events-none', 'opacity-0');
@@ -299,14 +312,79 @@
 
     // Handle Form Submit
     function submitBooking(event) {
-        // We will show the animation and let the form submit naturally
-        // But since standard form submission refreshes the page, we don't need to preventDefault
-        // Just show the success state before it unloads
-        
+        const endTime = document.getElementById('booking-waktu-selesai').value;
+        const limitTime = document.getElementById('selected-slot-input').getAttribute('data-limit-time') || '18:00';
+
+        if (endTime > limitTime) {
+            event.preventDefault();
+            alert(`Waktu selesai tidak boleh melebihi batas pemakaian berikutnya (${limitTime} WIB)!`);
+            return false;
+        }
+
         document.getElementById('booking-form-container').classList.add('hidden');
         document.getElementById('booking-success-state').classList.replace('hidden', 'flex');
         
         // Let the form submit
         return true;
     }
+
+    // Dynamic Database-driven Lecturer & Course Lists
+    const databaseSchedules = @json($schedulesList ?? []);
+
+    function updateDosenDanMatakuliah() {
+        const prodiInput = document.getElementById('booking-prodi');
+        if (!prodiInput) return;
+
+        const val = prodiInput.value || '';
+        const prodiName = val.split(' / ')[0].trim().toLowerCase();
+
+        const dosenSelect = document.getElementById('booking-dosen');
+        const matakuliahSelect = document.getElementById('booking-matakuliah');
+
+        if (!dosenSelect || !matakuliahSelect) return;
+
+        let filtered = [];
+        if (prodiName) {
+            filtered = databaseSchedules.filter(item => 
+                item.prodi && item.prodi.toLowerCase() === prodiName
+            );
+        }
+
+        const schedulesToUse = filtered.length > 0 ? filtered : databaseSchedules;
+
+        const uniqueLecturers = [...new Set(schedulesToUse.map(item => item.lecturer_name).filter(name => name))].sort();
+        const uniqueCourses = [...new Set(schedulesToUse.map(item => item.title).filter(title => title))].sort();
+
+        const oldDosen = dosenSelect.value;
+        dosenSelect.innerHTML = '<option value="" disabled selected>Pilih Dosen Pengampu</option>';
+        uniqueLecturers.forEach(lecturer => {
+            const opt = document.createElement('option');
+            opt.value = lecturer;
+            opt.textContent = lecturer;
+            dosenSelect.appendChild(opt);
+        });
+        if (uniqueLecturers.includes(oldDosen)) {
+            dosenSelect.value = oldDosen;
+        }
+
+        const oldMatakuliah = matakuliahSelect.value;
+        matakuliahSelect.innerHTML = '<option value="" disabled selected>Pilih Mata Kuliah</option>';
+        uniqueCourses.forEach(course => {
+            const opt = document.createElement('option');
+            opt.value = course;
+            opt.textContent = course;
+            matakuliahSelect.appendChild(opt);
+        });
+        if (uniqueCourses.includes(oldMatakuliah)) {
+            matakuliahSelect.value = oldMatakuliah;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const prodiInput = document.getElementById('booking-prodi');
+        if (prodiInput) {
+            prodiInput.addEventListener('input', updateDosenDanMatakuliah);
+            updateDosenDanMatakuliah();
+        }
+    });
 </script>

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Room;
 use App\Models\Reservation;
+use App\Models\Room;
+use App\Models\Schedule;
 use App\ViewModels\BookingViewModel;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class BookingController extends Controller
@@ -13,42 +15,149 @@ class BookingController extends Controller
     public function showRoom($id)
     {
         $room = Room::findOrFail($id);
-        
+
         $roomData = [
             'name' => $room->name,
-            'building' => $room->building,
+            'campus' => $room->campus,
             'capacity' => $room->capacity,
-            'type' => $room->facilities ?? 'Ruang Kelas',
-            'status' => $room->status === 'available' ? 'tersedia' : 'terpakai'
+            'facilities' => $room->facilities,
+            'status' => $room->status === 'available' ? 'tersedia' : 'terpakai',
         ];
 
-        if ($room->status === 'occupied') {
-            $schedules = Reservation::where('room_id', $room->id)
-                            ->where('tanggal', date('Y-m-d'))
-                            ->whereIn('status', ['disetujui'])
-                            ->orderBy('waktu_mulai')
-                            ->get();
-                            
-            $formattedSchedules = BookingViewModel::formatSchedules($schedules);
-            
-            return view('viewClass.viewClassUsed', [
-                'id' => $room->id,
-                'room' => $roomData,
-                'schedules' => $formattedSchedules
-            ]);
+        $date = request()->query('date', date('Y-m-d'));
+        if (strtotime($date) < strtotime(date('Y-m-d'))) {
+            $date = date('Y-m-d');
         }
 
+        $dayOfWeek = date('l', strtotime($date));
+        $dayMap = [
+            'Monday' => 'Senin',
+            'Tuesday' => 'Selasa',
+            'Wednesday' => 'Rabu',
+            'Thursday' => 'Kamis',
+            'Friday' => 'Jumat',
+            'Saturday' => 'Sabtu',
+            'Sunday' => 'Minggu',
+        ];
+        $indonesianDay = $dayMap[$dayOfWeek] ?? 'Senin';
+
         $todayBookings = Reservation::where('room_id', $room->id)
-                            ->where('tanggal', date('Y-m-d'))
-                            ->whereIn('status', ['disetujui', 'menunggu'])
-                            ->get();
-                            
-        $slots = BookingViewModel::generateTimeSlots($todayBookings);
+            ->where('tanggal', $date)
+            ->whereIn('status', ['disetujui', 'menunggu'])
+            ->get();
+
+        $routineSchedules = Schedule::with('room')
+            ->where('room_id', $room->id)
+            ->where('day', $indonesianDay)
+            ->get();
+
+        $slots = BookingViewModel::generateTimeSlots($todayBookings, $routineSchedules);
+
+        $formattedDate = Carbon::parse($date)->locale('id')->translatedFormat('l, d F Y');
+
+        $schedulesList = Schedule::select('prodi', 'title', 'lecturer_name')
+            ->whereNotNull('prodi')
+            ->where('prodi', '!=', '')
+            ->distinct()
+            ->get();
 
         return view('booking.select-time', [
             'id' => $room->id,
             'room' => $roomData,
-            'slots' => $slots
+            'slots' => $slots,
+            'date' => $date,
+            'formattedDate' => $formattedDate,
+            'schedulesList' => $schedulesList,
+        ]);
+    }
+
+    public function viewClassUsed($id)
+    {
+        $room = Room::findOrFail($id);
+
+        $today = date('Y-m-d');
+        $dayOfWeek = date('l', strtotime($today));
+        $dayMap = [
+            'Monday' => 'Senin',
+            'Tuesday' => 'Selasa',
+            'Wednesday' => 'Rabu',
+            'Thursday' => 'Kamis',
+            'Friday' => 'Jumat',
+            'Saturday' => 'Sabtu',
+            'Sunday' => 'Minggu',
+        ];
+        $indonesianDay = $dayMap[$dayOfWeek] ?? 'Senin';
+
+        // Get approved reservations for today
+        $todayBookings = Reservation::where('room_id', $room->id)
+            ->where('tanggal', $today)
+            ->where('status', 'disetujui')
+            ->get();
+
+        // Get routine academic schedules for today
+        $routineSchedules = Schedule::with('room')
+            ->where('room_id', $room->id)
+            ->where('day', $indonesianDay)
+            ->get();
+
+        // Merge into standard objects
+        $events = collect();
+
+        foreach ($todayBookings as $res) {
+            $events->push((object) [
+                'waktu_mulai' => $res->waktu_mulai,
+                'waktu_selesai' => $res->waktu_selesai,
+                'perihal' => $res->perihal,
+                'matakuliah' => $res->matakuliah,
+                'nama_kegiatan' => $res->nama_kegiatan,
+                'dosen' => $res->dosen,
+                'nama' => $res->nama,
+                'prodi_fakultas' => $res->prodi_fakultas,
+                'whatsapp' => $res->whatsapp,
+            ]);
+        }
+
+        foreach ($routineSchedules as $sched) {
+            $events->push((object) [
+                'waktu_mulai' => $sched->start_time,
+                'waktu_selesai' => $sched->end_time,
+                'perihal' => $sched->type === 'fixed_class' ? 'Perkuliahan' : 'Kegiatan Kampus',
+                'matakuliah' => $sched->type === 'fixed_class' ? $sched->title : null,
+                'nama_kegiatan' => $sched->type === 'general' ? $sched->title : null,
+                'dosen' => $sched->lecturer_name,
+                'nama' => $sched->lecturer_name ?? 'BAAK Akademik',
+                'prodi_fakultas' => $sched->prodi ? $sched->prodi.' / '.($sched->room->faculty ?? '') : 'Fakultas '.($sched->room->faculty ?? ''),
+                'whatsapp' => '',
+            ]);
+        }
+
+        // Sort events chronologically by waktu_mulai
+        $sortedEvents = $events->sortBy('waktu_mulai');
+
+        // Format schedules using BookingViewModel helper
+        $formattedSchedules = BookingViewModel::formatSchedules($sortedEvents);
+
+        // Determine room type label from building column
+        $data_type = $room->building ?? 'kelas';
+
+        $type_label = match ($data_type) {
+            'lab' => 'Laboratorium',
+            'aula' => 'Aula',
+            'theater' => 'Theater',
+            default => 'Ruang kelas',
+        };
+
+        $roomData = [
+            'id' => $room->id,
+            'name' => $room->name,
+            'campus' => $room->campus,
+            'capacity' => $room->capacity,
+            'type' => $type_label,
+        ];
+
+        return view('viewClass.viewClassUsed', [
+            'room' => $roomData,
+            'schedules' => $formattedSchedules,
         ]);
     }
 
@@ -67,15 +176,44 @@ class BookingController extends Controller
 
         $exists = Reservation::where('room_id', $id)
             ->where('tanggal', $validated['tanggal'])
-            ->where('waktu_mulai', $validated['waktu_mulai'])
             ->whereIn('status', ['disetujui', 'menunggu'])
+            ->where(function ($query) use ($validated) {
+                $query->where('waktu_mulai', '<', $validated['waktu_selesai'])
+                    ->where('waktu_selesai', '>', $validated['waktu_mulai']);
+            })
             ->exists();
 
         if ($exists) {
             return back()->withErrors(['waktu_mulai' => 'Maaf, jadwal ini baru saja dibooking pengguna lain! Silakan pilih jam lain.'])->withInput();
         }
 
-        $no_booking = 'SBC-' . date('Ymd') . '-' . str_pad(rand(1, 999), 3, '0', STR_PAD_LEFT);
+        // Get day of week in Indonesian
+        $dayOfWeek = date('l', strtotime($validated['tanggal']));
+        $dayMap = [
+            'Monday' => 'Senin',
+            'Tuesday' => 'Selasa',
+            'Wednesday' => 'Rabu',
+            'Thursday' => 'Kamis',
+            'Friday' => 'Jumat',
+            'Saturday' => 'Sabtu',
+            'Sunday' => 'Minggu',
+        ];
+        $indonesianDay = $dayMap[$dayOfWeek] ?? 'Senin';
+
+        // Check if overlaps with routine academic schedules / lockouts
+        $routineExists = Schedule::where('room_id', $id)
+            ->where('day', $indonesianDay)
+            ->where(function ($query) use ($validated) {
+                $query->where('start_time', '<', $validated['waktu_selesai'])
+                    ->where('end_time', '>', $validated['waktu_mulai']);
+            })
+            ->exists();
+
+        if ($routineExists) {
+            return back()->withErrors(['waktu_mulai' => 'Maaf, waktu pemesanan bentrok dengan jadwal kuliah tetap atau penguncian akademik!'])->withInput();
+        }
+
+        $no_booking = 'SBC-'.date('Ymd').'-'.str_pad(rand(1, 999), 3, '0', STR_PAD_LEFT);
 
         Reservation::create([
             'no_booking' => $no_booking,
@@ -92,7 +230,7 @@ class BookingController extends Controller
             'tanggal' => $validated['tanggal'],
             'waktu_mulai' => $validated['waktu_mulai'],
             'waktu_selesai' => $validated['waktu_selesai'],
-            'status' => 'menunggu'
+            'status' => 'menunggu',
         ]);
 
         return redirect('/history')->with('success', 'Booking berhasil dibuat!');

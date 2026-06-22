@@ -15,13 +15,13 @@
     @vite(['resources/css/app.css', 'resources/css/auth/login.css', 'resources/js/app.js'])
 
 </head>
-<body class="bg-white text-slate-800 font-sans min-h-screen antialiased flex">
+<body class="bg-white text-slate-800 font-sans min-h-screen lg:h-screen lg:overflow-hidden antialiased flex">
 
     <!-- Container Utama: Auto Active jika ada error di registrasi/Sign Up atau baru register -->
-    <div id="auth-container" class="flex-grow flex flex-col lg:flex-row p-4 min-h-screen relative overflow-hidden bg-white @if($errors->has('name') || old('is_signup') || request()->has('registered')) active @endif">
+    <div id="auth-container" class="flex-grow flex flex-col lg:flex-row p-4 min-h-screen lg:h-full lg:min-h-0 relative overflow-hidden bg-white @if($errors->has('name') || old('is_signup') || request()->has('registered') || isset($is_signup)) active @endif">
         
         <!-- ==================== LEFT COLUMN: SIGN IN FORM ==================== -->
-        <div id="signin-wrapper" class="w-full lg:w-1/2 flex flex-col justify-between p-6 sm:p-12 lg:p-16 h-full min-h-[85vh] lg:min-h-0">
+        <div id="signin-wrapper" class="w-full lg:w-1/2 flex flex-col justify-between p-6 sm:p-12 lg:p-16 h-full min-h-[85vh] lg:min-h-0 lg:overflow-y-auto">
             <!-- Logo Section -->
             <div class="flex items-center gap-2">
                 <div class="relative w-8 h-8 flex items-center justify-center">
@@ -100,7 +100,7 @@
         </div>
 
         <!-- ==================== RIGHT COLUMN: SIGN UP FORM ==================== -->
-        <div id="signup-wrapper" class="w-full lg:w-1/2 flex flex-col justify-between p-6 sm:p-12 lg:p-16 h-full min-h-[85vh] lg:min-h-0">
+        <div id="signup-wrapper" class="w-full lg:w-1/2 flex flex-col justify-between p-6 sm:p-12 lg:p-16 h-full min-h-[85vh] lg:min-h-0 lg:overflow-y-auto">
             <!-- Logo Section -->
             <div class="flex items-center gap-2">
                 <div class="relative w-8 h-8 flex items-center justify-center">
@@ -153,12 +153,76 @@
                             class="block px-4 py-3.5 w-full text-sm text-slate-900 bg-transparent rounded-xl border @error('email') border-rose-500 focus:border-rose-500 @else border-slate-200 focus:border-blue-600 @enderror appearance-none focus:outline-none focus:ring-0 peer transition-all" />
                         <label for="signup_email" 
                             class="absolute text-sm @error('email') text-rose-500 @else text-slate-400 peer-focus:text-blue-600 @enderror duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-3 select-none pointer-events-none">
-                            Email (wajib @mhs.ulm.ac.id)
+                            Email (wajib @mhs.ulm.ac.id atau @ulm.ac.id)
                         </label>
                         @error('email')
                             <p class="mt-1.5 text-xs text-rose-600 font-medium">{{ $message }}</p>
                         @enderror
                     </div>
+
+                    <!-- WhatsApp Floating Input -->
+                    <div class="relative">
+                        <input type="tel" id="signup_whatsapp" name="whatsapp" value="{{ old('whatsapp') }}" required placeholder=" " 
+                            class="block px-4 py-3.5 w-full text-sm text-slate-900 bg-transparent rounded-xl border @error('whatsapp') border-rose-500 focus:border-rose-500 @else border-slate-200 focus:border-blue-600 @enderror appearance-none focus:outline-none focus:ring-0 peer transition-all" />
+                        <label for="signup_whatsapp" 
+                            class="absolute text-sm @error('whatsapp') text-rose-500 @else text-slate-400 peer-focus:text-blue-600 @enderror duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-3 select-none pointer-events-none">
+                            Nomor WhatsApp Aktif
+                        </label>
+                        @error('whatsapp')
+                            <p class="mt-1.5 text-xs text-rose-600 font-medium">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Fakultas Dropdown -->
+                    <div class="relative">
+                        <select id="signup_fakultas" name="faculty" required
+                            class="block px-4 py-3.5 w-full text-sm text-slate-900 bg-transparent rounded-xl border @error('faculty') border-rose-500 focus:border-rose-500 @else border-slate-200 focus:border-blue-600 @enderror appearance-none focus:outline-none focus:ring-0 peer transition-all cursor-pointer pr-10">
+                            <option value="" disabled selected>Pilih Fakultas</option>
+                            <option value="Keguruan dan Ilmu Pendidikan" {{ old('faculty') == 'Keguruan dan Ilmu Pendidikan' ? 'selected' : '' }}>Keguruan dan Ilmu Pendidikan (FKIP)</option>
+                            <option value="Ekonomi dan Bisnis" {{ old('faculty') == 'Ekonomi dan Bisnis' ? 'selected' : '' }}>Ekonomi dan Bisnis (FEB)</option>
+                            <option value="Hukum" {{ old('faculty') == 'Hukum' ? 'selected' : '' }}>Hukum (FH)</option>
+                            <option value="Ilmu Sosial dan Ilmu Politik" {{ old('faculty') == 'Ilmu Sosial dan Ilmu Politik' ? 'selected' : '' }}>Ilmu Sosial dan Ilmu Politik (FISIP)</option>
+                            <option value="Kedokteran" {{ old('faculty') == 'Kedokteran' ? 'selected' : '' }}>Kedokteran (FK)</option>
+                            <option value="Kedokteran Gigi" {{ old('faculty') == 'Kedokteran Gigi' ? 'selected' : '' }}>Kedokteran Gigi (FKG)</option>
+                            <option value="Matematika dan Ilmu Pengetahuan Alam" {{ old('faculty') == 'Matematika dan Ilmu Pengetahuan Alam' ? 'selected' : '' }}>Matematika dan Ilmu Pengetahuan Alam (FMIPA)</option>
+                            <option value="Kehutanan" {{ old('faculty') == 'Kehutanan' ? 'selected' : '' }}>Kehutanan (Fahutan)</option>
+                            <option value="Pertanian" {{ old('faculty') == 'Pertanian' ? 'selected' : '' }}>Pertanian (Faperta)</option>
+                            <option value="Perikanan dan Kelautan" {{ old('faculty') == 'Perikanan dan Kelautan' ? 'selected' : '' }}>Perikanan dan Kelautan (FPK)</option>
+                            <option value="Teknik" {{ old('faculty') == 'Teknik' ? 'selected' : '' }}>Teknik (FT)</option>
+                        </select>
+                        <label for="signup_fakultas" 
+                            class="absolute text-sm text-slate-400 peer-focus:text-blue-600 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 left-3 select-none pointer-events-none">
+                            Fakultas
+                        </label>
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-slate-400">
+                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+                    </div>
+                    @error('faculty')
+                        <p class="mt-1.5 text-xs text-rose-600 font-medium">{{ $message }}</p>
+                    @enderror
+
+                    <!-- Program Studi Dropdown -->
+                    <div class="relative">
+                        <select id="signup_prodi" name="study_program" required disabled
+                            class="block px-4 py-3.5 w-full text-sm text-slate-900 bg-transparent rounded-xl border @error('study_program') border-rose-500 focus:border-rose-500 @else border-slate-200 focus:border-blue-600 @enderror appearance-none focus:outline-none focus:ring-0 peer transition-all cursor-pointer pr-10 disabled:opacity-60 disabled:cursor-not-allowed">
+                            <option value="" disabled selected>Pilih Program Studi</option>
+                        </select>
+                        <label for="signup_prodi" 
+                            class="absolute text-sm text-slate-400 peer-focus:text-blue-600 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 left-3 select-none pointer-events-none">
+                            Program Studi
+                        </label>
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-4 pointer-events-none text-slate-400">
+                            <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </div>
+                    </div>
+                    @error('study_program')
+                        <p class="mt-1.5 text-xs text-rose-600 font-medium">{{ $message }}</p>
+                    @enderror
 
                     <!-- Password Floating Input -->
                     <div class="relative">
@@ -215,16 +279,16 @@
 
         <!-- ==================== ABSOLUTE FLOATING IMAGE CARD (Desktop Only) ==================== -->
         <div id="sliding-card" class="hidden lg:block absolute top-4 bottom-4 w-[42%] rounded-[32px] bg-gradient-to-br from-blue-700 via-blue-600 to-indigo-900 overflow-hidden z-20">
-            <!-- Abstract Glass Circle Overlays -->
-            <div class="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
-            <div class="absolute bottom-1/4 left-0 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl"></div>
             
-            <!-- Centered Artwork Label -->
-            <div class="w-full h-full flex flex-col justify-end p-12 relative">
-                <div class="relative z-10 text-white/40 font-semibold text-sm tracking-widest uppercase">
-                    [ Area Gambar / Artwork Placeholder ]
-                </div>
-            </div>
+            <!-- Background Animation GIF -->
+            <img src="{{ asset('video/giflogin.gif') }}" class="absolute inset-0 w-full h-full object-cover" alt="Auth Background Animation">
+
+            <!-- Premium Dark Gradient Overlay (Menjaga agar teks di atasnya tetap terbaca) -->
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/50 via-transparent to-transparent z-10"></div>
+
+            <!-- Abstract Glass Circle Overlays -->
+            <div class="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl z-10"></div>
+            <div class="absolute bottom-1/4 left-0 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl z-10"></div>
         </div>
 
     </div>
@@ -239,5 +303,133 @@
         </div>
     </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const fakultasSelect = document.getElementById('signup_fakultas');
+            const prodiSelect = document.getElementById('signup_prodi');
+
+            const prodiList = {
+                'Keguruan dan Ilmu Pendidikan': [
+                    'Pendidikan Matematika',
+                    'Pendidikan Kimia',
+                    'Pendidikan Fisika',
+                    'Pendidikan Biologi',
+                    'Pendidikan Komputer',
+                    'Pendidikan IPA',
+                    'Pendidikan IPS',
+                    'Pendidikan Sejarah',
+                    'Pendidikan Pancasila & Kewarganegaraan',
+                    'Pendidikan Ekonomi',
+                    'Pendidikan Sosiologi Antropologi',
+                    'Pendidikan Geografi',
+                    'Pendidikan Bahasa Indonesia',
+                    'Pendidikan Bahasa Inggris',
+                    'Pendidikan Seni Pertunjukan',
+                    'Pendidikan Jasmani',
+                    'Bimbingan Konseling',
+                    'Pendidikan Guru Sekolah Dasar (PGSD)',
+                    'Pendidikan Guru PAUD (PGPAUD)',
+                    'Pendidikan Khusus',
+                    'Teknologi Pendidikan'
+                ],
+                'Ekonomi dan Bisnis': [
+                    'Manajemen',
+                    'Akuntansi',
+                    'Ilmu Ekonomi dan Studi Pembangunan'
+                ],
+                'Hukum': [
+                    'Ilmu Hukum'
+                ],
+                'Ilmu Sosial dan Ilmu Politik': [
+                    'Ilmu Pemerintahan',
+                    'Administrasi Publik',
+                    'Administrasi Bisnis',
+                    'Ilmu Komunikasi',
+                    'Sosiologi',
+                    'Geografi'
+                ],
+                'Kedokteran': [
+                    'Pendidikan Dokter',
+                    'Kesehatan Masyarakat',
+                    'Ilmu Keperawatan',
+                    'Psikologi'
+                ],
+                'Kedokteran Gigi': [
+                    'Kedokteran Gigi'
+                ],
+                'Matematika dan Ilmu Pengetahuan Alam': [
+                    'Matematika',
+                    'Kimia',
+                    'Fisika',
+                    'Biologi',
+                    'Farmasi',
+                    'Ilmu Komputer',
+                    'Statistika'
+                ],
+                'Kehutanan': [
+                    'Kehutanan'
+                ],
+                'Pertanian': [
+                    'Agronomi',
+                    'Agroteknologi',
+                    'Proteksi Tanaman',
+                    'Ilmu Tanah',
+                    'Agribisnis',
+                    'Peternakan',
+                    'Teknik Industri Pertanian'
+                ],
+                'Perikanan dan Kelautan': [
+                    'Budidaya Perairan',
+                    'Manajemen Sumberdaya Perairan',
+                    'Teknologi Hasil Perikanan',
+                    'Pemanfaatan Sumberdaya Perikanan',
+                    'Ilmu Kelautan',
+                    'Agrobisnis Perikanan'
+                ],
+                'Teknik': [
+                    'Teknik Sipil',
+                    'Teknik Arsitektur',
+                    'Teknik Pertambangan',
+                    'Teknik Kimia',
+                    'Teknik Lingkungan',
+                    'Teknik Mesin',
+                    'Teknologi Informasi',
+                    'Teknik Geologi',
+                    'Rekayasa Elektro',
+                    'Rekayasa Sistem Komputer'
+                ]
+            };
+
+            fakultasSelect.addEventListener('change', () => {
+                const selectedFakultas = fakultasSelect.value;
+                prodiSelect.innerHTML = '<option value="" disabled selected>Pilih Program Studi</option>';
+                
+                if (prodiList[selectedFakultas]) {
+                    prodiSelect.disabled = false;
+                    prodiList[selectedFakultas].forEach(prodi => {
+                        const option = document.createElement('option');
+                        option.value = prodi;
+                        option.textContent = prodi;
+                        prodiSelect.appendChild(option);
+                    });
+                } else {
+                    prodiSelect.disabled = true;
+                }
+            });
+
+            // Pre-fill if validation failed and old input exists
+            const oldFaculty = "{{ old('faculty') }}";
+            const oldStudyProgram = "{{ old('study_program') }}";
+
+            if (oldFaculty) {
+                fakultasSelect.value = oldFaculty;
+                // Trigger change manually to populate study programs list
+                fakultasSelect.dispatchEvent(new Event('change'));
+                if (oldStudyProgram) {
+                    prodiSelect.value = oldStudyProgram;
+                }
+            }
+        });
+    </script>
 </body>
 </html>

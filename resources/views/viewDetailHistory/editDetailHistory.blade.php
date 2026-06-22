@@ -3,22 +3,21 @@
 @section('title', 'Edit Booking - Smart Class Booking')
 
 @section('content')
-<!-- Header Banner / Back Button (Matches brand style) -->
-<div class="relative w-full h-32 bg-gradient-to-r from-blue-500/10 via-indigo-500/5 to-blue-600/10 -mt-20 lg:-mt-8 -mx-4 sm:-mx-6 lg:-mx-8 w-[calc(100%+2rem)] sm:w-[calc(100%+3rem)] lg:w-[calc(100%+4rem)] rounded-none border-b border-blue-100/30 mb-8 flex items-center justify-center overflow-hidden select-none">
-    <div class="w-full max-w-[1440px] px-4 sm:px-6 lg:px-10 flex items-center justify-between">
-        <div class="flex items-center gap-5">
-            <!-- Back button to detail -->
-            <a href="/history/detail/{{ $booking['id'] }}" class="w-10 h-10 rounded-full bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center shadow-lg transition-transform hover:scale-105 cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-                </svg>
-            </a>
-            <div class="space-y-0.5">
-                <h1 class="text-2xl font-black text-slate-900 tracking-tight">Edit Peminjaman</h1>
-                <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Nomor Booking: {{ $booking['no_booking'] }}</p>
-            </div>
+<!-- Page Header -->
+<div class="mb-8 select-none flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div class="flex items-center gap-4">
+        <a href="/history/detail/{{ $booking['id'] }}" class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-500 hover:text-slate-700 transition-colors shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+        </a>
+        <div>
+            <h1 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-slate-900 to-slate-700 tracking-tight">Edit Booking</h1>
+            <p class="text-sm text-slate-500 mt-1">Nomor Booking: {{ $booking['no_booking'] }}</p>
         </div>
-        <!-- Dynamic Status Badge -->
+    </div>
+    <!-- Dynamic Status Badge -->
+    <div class="flex items-center shrink-0">
         <span class="px-4 py-2 bg-slate-100 border border-slate-200 text-slate-600 text-xs font-black rounded-xl select-none shrink-0 tracking-wider uppercase">
             {{ $booking['status'] }}
         </span>
@@ -30,10 +29,8 @@
     <div class="bg-white rounded-[32px] border border-slate-100 shadow-sm overflow-hidden grid grid-cols-1 lg:grid-cols-2">
         
         <!-- LEFT COLUMN: Only Room Image (Visible only on lg screen sizes) -->
-        <div class="hidden lg:flex items-center justify-center p-12 bg-slate-50 border-r border-slate-100 select-none min-h-[500px]">
-            <div class="w-full h-full flex items-center justify-center">
-                <img src="{{ asset('images/profile/ULM PNG.png') }}" alt="ULM Logo Placeholder" class="max-h-[80%] max-w-[80%] object-contain filter drop-shadow-md">
-            </div>
+        <div class="hidden lg:block relative bg-slate-50 border-r border-slate-100 select-none min-h-[500px]">
+            <img src="{{ $booking['image_url'] }}" alt="{{ $booking['room_name'] }}" class="absolute inset-0 w-full h-full object-cover">
         </div>
 
         <!-- RIGHT COLUMN: Booking Form Container -->
@@ -95,9 +92,6 @@
                             <select id="booking-dosen" name="dosen"
                                 class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium appearance-none cursor-pointer pr-10">
                                 <option value="" disabled>Pilih Dosen Pengampu</option>
-                                <option value="Dr. H. Andi Wijaya, M.T." {{ ($booking['dosen'] ?? '') === 'Dr. H. Andi Wijaya, M.T.' ? 'selected' : '' }}>Dr. H. Andi Wijaya, M.T.</option>
-                                <option value="Rina Setyawati, M.Kom." {{ ($booking['dosen'] ?? '') === 'Rina Setyawati, M.Kom.' ? 'selected' : '' }}>Rina Setyawati, M.Kom.</option>
-                                <option value="Dr. Ir. H. M. Ismail, M.T." {{ ($booking['dosen'] ?? '') === 'Dr. Ir. H. M. Ismail, M.T.' ? 'selected' : '' }}>Dr. Ir. H. M. Ismail, M.T.</option>
                             </select>
                             <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-450">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
@@ -112,9 +106,6 @@
                             <select id="booking-matakuliah" name="matakuliah"
                                 class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium appearance-none cursor-pointer pr-10">
                                 <option value="" disabled>Pilih Mata Kuliah</option>
-                                <option value="Praktikum Jaringan Komputer" {{ ($booking['matakuliah'] ?? '') === 'Praktikum Jaringan Komputer' ? 'selected' : '' }}>Praktikum Jaringan Komputer</option>
-                                <option value="Keamanan Sistem Informasi" {{ ($booking['matakuliah'] ?? '') === 'Keamanan Sistem Informasi' ? 'selected' : '' }}>Keamanan Sistem Informasi</option>
-                                <option value="Pemrograman Web II" {{ ($booking['matakuliah'] ?? '') === 'Pemrograman Web II' ? 'selected' : '' }}>Pemrograman Web II</option>
                             </select>
                             <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-450">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
@@ -184,9 +175,72 @@
 
 @section('scripts')
 <script>
+    // Dynamic Database-driven Lecturer & Course Lists
+    const databaseSchedules = @json($schedulesList ?? []);
+    const savedDosen = "{{ $booking['dosen'] ?? '' }}";
+    const savedMatakuliah = "{{ $booking['matakuliah'] ?? '' }}";
+
+    function updateDosenDanMatakuliah(useSavedValues = false) {
+        const prodiInput = document.getElementById('booking-prodi');
+        if (!prodiInput) return;
+
+        const val = prodiInput.value || '';
+        const prodiName = val.split(' / ')[0].trim().toLowerCase();
+
+        const dosenSelect = document.getElementById('booking-dosen');
+        const matakuliahSelect = document.getElementById('booking-matakuliah');
+
+        if (!dosenSelect || !matakuliahSelect) return;
+
+        let filtered = [];
+        if (prodiName) {
+            filtered = databaseSchedules.filter(item => 
+                item.prodi && item.prodi.toLowerCase() === prodiName
+            );
+        }
+
+        const schedulesToUse = filtered.length > 0 ? filtered : databaseSchedules;
+
+        const uniqueLecturers = [...new Set(schedulesToUse.map(item => item.lecturer_name).filter(name => name))].sort();
+        const uniqueCourses = [...new Set(schedulesToUse.map(item => item.title).filter(title => title))].sort();
+
+        // Get currently selected or fallback to saved value
+        const currentDosen = useSavedValues ? savedDosen : dosenSelect.value;
+        dosenSelect.innerHTML = '<option value="" disabled selected>Pilih Dosen Pengampu</option>';
+        uniqueLecturers.forEach(lecturer => {
+            const opt = document.createElement('option');
+            opt.value = lecturer;
+            opt.textContent = lecturer;
+            dosenSelect.appendChild(opt);
+        });
+        if (uniqueLecturers.includes(currentDosen)) {
+            dosenSelect.value = currentDosen;
+        }
+
+        const currentMatakuliah = useSavedValues ? savedMatakuliah : matakuliahSelect.value;
+        matakuliahSelect.innerHTML = '<option value="" disabled selected>Pilih Mata Kuliah</option>';
+        uniqueCourses.forEach(course => {
+            const opt = document.createElement('option');
+            opt.value = course;
+            opt.textContent = course;
+            matakuliahSelect.appendChild(opt);
+        });
+        if (uniqueCourses.includes(currentMatakuliah)) {
+            matakuliahSelect.value = currentMatakuliah;
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         // Run initial check for form fields visibility
         togglePerihalFields();
+
+        // Listen for input changes in the prodi field to update dropdowns
+        const prodiInput = document.getElementById('booking-prodi');
+        if (prodiInput) {
+            prodiInput.addEventListener('input', () => updateDosenDanMatakuliah(false));
+            // Initialize dropdowns and select currently saved values
+            updateDosenDanMatakuliah(true);
+        }
     });
 
     function togglePerihalFields() {

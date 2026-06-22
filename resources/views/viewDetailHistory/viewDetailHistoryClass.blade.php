@@ -56,23 +56,22 @@
 @endphp
 
 @section('content')
-<!-- Header Banner / Back Button (Matches brand style) -->
-<div class="relative w-full h-32 bg-gradient-to-r from-blue-500/10 via-indigo-500/5 to-blue-600/10 -mt-20 lg:-mt-8 -mx-4 sm:-mx-6 lg:-mx-8 w-[calc(100%+2rem)] sm:w-[calc(100%+3rem)] lg:w-[calc(100%+4rem)] rounded-none border-b border-blue-100/30 mb-8 flex items-center justify-center overflow-hidden select-none">
-    <div class="w-full max-w-[1440px] px-4 sm:px-6 lg:px-10 flex items-center justify-between">
-        <div class="flex items-center gap-5">
-            <!-- Back button to history -->
-            <a href="/history" class="w-10 h-10 rounded-full bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center shadow-lg transition-transform hover:scale-105 cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-                </svg>
-            </a>
-            <div class="space-y-0.5">
-                <h1 class="text-2xl font-black text-slate-900 tracking-tight">Detail Booking</h1>
-                <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Nomor Booking: {{ $booking['no_booking'] }}</p>
-            </div>
+<!-- Page Header -->
+<div class="mb-8 select-none flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div class="flex items-center gap-4">
+        <a href="/history" class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-500 hover:text-slate-700 transition-colors shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+        </a>
+        <div>
+            <h1 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-slate-900 to-slate-700 tracking-tight">Detail Booking</h1>
+            <p class="text-sm text-slate-500 mt-1">Nomor Booking: {{ $booking['no_booking'] }}</p>
         </div>
-        <!-- Dynamic Status Badge -->
-        <span class="px-4 py-2 {{ $theme['badge_bg'] }} border {{ $theme['badge_border'] }} {{ $theme['badge_text'] }} text-xs font-black rounded-xl select-none shrink-0 tracking-wider uppercase">
+    </div>
+    <!-- Dynamic Status Badge -->
+    <div class="flex items-center shrink-0">
+        <span class="px-4 py-2 {{ $theme['badge_bg'] }} border {{ $theme['badge_border'] }} {{ $theme['badge_text'] }} text-xs font-black rounded-xl select-none tracking-wider uppercase">
             {{ $booking['status'] }}
         </span>
     </div>
@@ -193,13 +192,13 @@
     <div class="lg:col-span-5 flex flex-col gap-6">
         <!-- Room Info Card (Visual representation of room being booked) -->
         <div class="bg-white rounded-[28px] border border-slate-100 p-6 shadow-sm flex items-center gap-5">
-            <div class="w-20 h-20 bg-slate-50 border border-slate-100 rounded-2xl p-3 flex items-center justify-center shrink-0">
-                <img src="{{ asset('images/profile/ULM PNG.png') }}" alt="ULM Logo" class="max-h-full max-w-full object-contain filter drop-shadow-sm">
+            <div class="w-20 h-20 bg-slate-50 border border-slate-100 rounded-2xl flex items-center justify-center shrink-0 overflow-hidden">
+                <img src="{{ $booking['image_url'] }}" alt="{{ $booking['room_name'] }}" class="w-full h-full object-cover">
             </div>
             <div class="space-y-1 overflow-hidden select-none">
                 <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">Ruangan Dipesan</span>
                 <h4 class="text-lg font-black text-slate-900 leading-tight truncate">{{ $booking['room_name'] }}</h4>
-                <p class="text-xs text-slate-500 font-semibold truncate">{{ $booking['building'] }} &bull; {{ $booking['capacity'] }} Kursi</p>
+                <p class="text-xs text-slate-500 font-semibold truncate">{{ $booking['campus'] }} &bull; {{ $booking['capacity'] }} Kursi</p>
             </div>
         </div>
 
