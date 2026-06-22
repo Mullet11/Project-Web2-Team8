@@ -115,9 +115,6 @@
                             <select id="booking-dosen" name="dosen" required
                                 class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium appearance-none cursor-pointer pr-10">
                                 <option value="" disabled selected>Pilih Dosen Pengampu</option>
-                                <option value="Dr. H. Andi Wijaya, M.T.">Dr. H. Andi Wijaya, M.T.</option>
-                                <option value="Rina Setyawati, M.Kom.">Rina Setyawati, M.Kom.</option>
-                                <option value="Dr. Ir. H. M. Ismail, M.T.">Dr. Ir. H. M. Ismail, M.T.</option>
                             </select>
                             <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-450">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
@@ -132,9 +129,6 @@
                             <select id="booking-matakuliah" name="matakuliah" required
                                 class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium appearance-none cursor-pointer pr-10">
                                 <option value="" disabled selected>Pilih Mata Kuliah</option>
-                                <option value="Praktikum Jaringan Komputer">Praktikum Jaringan Komputer</option>
-                                <option value="Keamanan Sistem Informasi">Keamanan Sistem Informasi</option>
-                                <option value="Pemrograman Web II">Pemrograman Web II</option>
                             </select>
                             <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-450">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
@@ -249,6 +243,9 @@
         // Trigger Perihal Fields visibility check
         togglePerihalFields();
 
+        // Update dynamic lecturers and courses list
+        updateDosenDanMatakuliah();
+
         // Animate modal entry
         modal.classList.remove('pointer-events-none', 'opacity-0');
         modal.classList.add('opacity-100');
@@ -330,4 +327,64 @@
         // Let the form submit
         return true;
     }
+
+    // Dynamic Database-driven Lecturer & Course Lists
+    const databaseSchedules = @json($schedulesList ?? []);
+
+    function updateDosenDanMatakuliah() {
+        const prodiInput = document.getElementById('booking-prodi');
+        if (!prodiInput) return;
+
+        const val = prodiInput.value || '';
+        const prodiName = val.split(' / ')[0].trim().toLowerCase();
+
+        const dosenSelect = document.getElementById('booking-dosen');
+        const matakuliahSelect = document.getElementById('booking-matakuliah');
+
+        if (!dosenSelect || !matakuliahSelect) return;
+
+        let filtered = [];
+        if (prodiName) {
+            filtered = databaseSchedules.filter(item => 
+                item.prodi && item.prodi.toLowerCase() === prodiName
+            );
+        }
+
+        const schedulesToUse = filtered.length > 0 ? filtered : databaseSchedules;
+
+        const uniqueLecturers = [...new Set(schedulesToUse.map(item => item.lecturer_name).filter(name => name))].sort();
+        const uniqueCourses = [...new Set(schedulesToUse.map(item => item.title).filter(title => title))].sort();
+
+        const oldDosen = dosenSelect.value;
+        dosenSelect.innerHTML = '<option value="" disabled selected>Pilih Dosen Pengampu</option>';
+        uniqueLecturers.forEach(lecturer => {
+            const opt = document.createElement('option');
+            opt.value = lecturer;
+            opt.textContent = lecturer;
+            dosenSelect.appendChild(opt);
+        });
+        if (uniqueLecturers.includes(oldDosen)) {
+            dosenSelect.value = oldDosen;
+        }
+
+        const oldMatakuliah = matakuliahSelect.value;
+        matakuliahSelect.innerHTML = '<option value="" disabled selected>Pilih Mata Kuliah</option>';
+        uniqueCourses.forEach(course => {
+            const opt = document.createElement('option');
+            opt.value = course;
+            opt.textContent = course;
+            matakuliahSelect.appendChild(opt);
+        });
+        if (uniqueCourses.includes(oldMatakuliah)) {
+            matakuliahSelect.value = oldMatakuliah;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const prodiInput = document.getElementById('booking-prodi');
+        if (prodiInput) {
+            prodiInput.addEventListener('input', updateDosenDanMatakuliah);
+            updateDosenDanMatakuliah();
+        }
+    });
 </script>

@@ -94,9 +94,6 @@
                             <select id="booking-dosen" name="dosen"
                                 class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium appearance-none cursor-pointer pr-10">
                                 <option value="" disabled>Pilih Dosen Pengampu</option>
-                                <option value="Dr. H. Andi Wijaya, M.T." {{ ($booking['dosen'] ?? '') === 'Dr. H. Andi Wijaya, M.T.' ? 'selected' : '' }}>Dr. H. Andi Wijaya, M.T.</option>
-                                <option value="Rina Setyawati, M.Kom." {{ ($booking['dosen'] ?? '') === 'Rina Setyawati, M.Kom.' ? 'selected' : '' }}>Rina Setyawati, M.Kom.</option>
-                                <option value="Dr. Ir. H. M. Ismail, M.T." {{ ($booking['dosen'] ?? '') === 'Dr. Ir. H. M. Ismail, M.T.' ? 'selected' : '' }}>Dr. Ir. H. M. Ismail, M.T.</option>
                             </select>
                             <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-450">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
@@ -111,9 +108,6 @@
                             <select id="booking-matakuliah" name="matakuliah"
                                 class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium appearance-none cursor-pointer pr-10">
                                 <option value="" disabled>Pilih Mata Kuliah</option>
-                                <option value="Praktikum Jaringan Komputer" {{ ($booking['matakuliah'] ?? '') === 'Praktikum Jaringan Komputer' ? 'selected' : '' }}>Praktikum Jaringan Komputer</option>
-                                <option value="Keamanan Sistem Informasi" {{ ($booking['matakuliah'] ?? '') === 'Keamanan Sistem Informasi' ? 'selected' : '' }}>Keamanan Sistem Informasi</option>
-                                <option value="Pemrograman Web II" {{ ($booking['matakuliah'] ?? '') === 'Pemrograman Web II' ? 'selected' : '' }}>Pemrograman Web II</option>
                             </select>
                             <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-450">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
@@ -183,9 +177,72 @@
 
 @section('scripts')
 <script>
+    // Dynamic Database-driven Lecturer & Course Lists
+    const databaseSchedules = @json($schedulesList ?? []);
+    const savedDosen = "{{ $booking['dosen'] ?? '' }}";
+    const savedMatakuliah = "{{ $booking['matakuliah'] ?? '' }}";
+
+    function updateDosenDanMatakuliah(useSavedValues = false) {
+        const prodiInput = document.getElementById('booking-prodi');
+        if (!prodiInput) return;
+
+        const val = prodiInput.value || '';
+        const prodiName = val.split(' / ')[0].trim().toLowerCase();
+
+        const dosenSelect = document.getElementById('booking-dosen');
+        const matakuliahSelect = document.getElementById('booking-matakuliah');
+
+        if (!dosenSelect || !matakuliahSelect) return;
+
+        let filtered = [];
+        if (prodiName) {
+            filtered = databaseSchedules.filter(item => 
+                item.prodi && item.prodi.toLowerCase() === prodiName
+            );
+        }
+
+        const schedulesToUse = filtered.length > 0 ? filtered : databaseSchedules;
+
+        const uniqueLecturers = [...new Set(schedulesToUse.map(item => item.lecturer_name).filter(name => name))].sort();
+        const uniqueCourses = [...new Set(schedulesToUse.map(item => item.title).filter(title => title))].sort();
+
+        // Get currently selected or fallback to saved value
+        const currentDosen = useSavedValues ? savedDosen : dosenSelect.value;
+        dosenSelect.innerHTML = '<option value="" disabled selected>Pilih Dosen Pengampu</option>';
+        uniqueLecturers.forEach(lecturer => {
+            const opt = document.createElement('option');
+            opt.value = lecturer;
+            opt.textContent = lecturer;
+            dosenSelect.appendChild(opt);
+        });
+        if (uniqueLecturers.includes(currentDosen)) {
+            dosenSelect.value = currentDosen;
+        }
+
+        const currentMatakuliah = useSavedValues ? savedMatakuliah : matakuliahSelect.value;
+        matakuliahSelect.innerHTML = '<option value="" disabled selected>Pilih Mata Kuliah</option>';
+        uniqueCourses.forEach(course => {
+            const opt = document.createElement('option');
+            opt.value = course;
+            opt.textContent = course;
+            matakuliahSelect.appendChild(opt);
+        });
+        if (uniqueCourses.includes(currentMatakuliah)) {
+            matakuliahSelect.value = currentMatakuliah;
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         // Run initial check for form fields visibility
         togglePerihalFields();
+
+        // Listen for input changes in the prodi field to update dropdowns
+        const prodiInput = document.getElementById('booking-prodi');
+        if (prodiInput) {
+            prodiInput.addEventListener('input', () => updateDosenDanMatakuliah(false));
+            // Initialize dropdowns and select currently saved values
+            updateDosenDanMatakuliah(true);
+        }
     });
 
     function togglePerihalFields() {

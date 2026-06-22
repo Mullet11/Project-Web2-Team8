@@ -44,7 +44,13 @@ class HistoryController extends Controller
 
         $booking = HistoryViewModel::formatDetail($reservation);
 
-        return view('viewDetailHistory.editDetailHistory', compact('booking'));
+        $schedulesList = Schedule::select('prodi', 'title', 'lecturer_name')
+            ->whereNotNull('prodi')
+            ->where('prodi', '!=', '')
+            ->distinct()
+            ->get();
+
+        return view('viewDetailHistory.editDetailHistory', compact('booking', 'schedulesList'));
     }
 
     public function update(Request $request, $id)

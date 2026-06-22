@@ -55,12 +55,19 @@ class BookingController extends Controller
 
         $formattedDate = Carbon::parse($date)->locale('id')->translatedFormat('l, d F Y');
 
+        $schedulesList = Schedule::select('prodi', 'title', 'lecturer_name')
+            ->whereNotNull('prodi')
+            ->where('prodi', '!=', '')
+            ->distinct()
+            ->get();
+
         return view('booking.select-time', [
             'id' => $room->id,
             'room' => $roomData,
             'slots' => $slots,
             'date' => $date,
             'formattedDate' => $formattedDate,
+            'schedulesList' => $schedulesList,
         ]);
     }
 
