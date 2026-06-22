@@ -333,7 +333,7 @@
                             default => 'Kegiatan Kampus',
                         };
                     @endphp
-                    <tr class="schedule-row hover:bg-slate-50/30 transition-colors" 
+                    <tr class="schedule-row hover:bg-slate-50/30 transition-colors" style="display: none;" 
                         data-room="{{ strtolower($schedule->room->name) }}" 
                         data-title="{{ strtolower($schedule->title) }}" 
                         data-lecturer="{{ strtolower($schedule->lecturer_name) }}" 
@@ -424,7 +424,7 @@
         <!-- Mobile Card View -->
         <div class="block md:hidden divide-y divide-slate-100">
             @forelse($schedules as $schedule)
-            <div class="schedule-card p-5 space-y-4 hover:bg-slate-50/30 transition-colors" 
+            <div class="schedule-card p-5 space-y-4 hover:bg-slate-50/30 transition-colors" style="display: none;" 
                 data-room="{{ strtolower($schedule->room->name) }}" 
                 data-title="{{ strtolower($schedule->title) }}" 
                 data-lecturer="{{ strtolower($schedule->lecturer_name) }}" 

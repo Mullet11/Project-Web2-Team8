@@ -343,7 +343,7 @@
                             default => 'Kelas',
                         };
                     @endphp
-                    <tr class="room-row hover:bg-slate-50/30 transition-colors" data-name="{{ strtolower($room->name) }}" data-campus="{{ $room->campus }}" data-faculty="{{ strtolower($room->faculty) }}" data-faculty-raw="{{ $room->faculty }}" data-status="{{ $room->status }}" data-type="{{ $type }}">
+                    <tr class="room-row hover:bg-slate-50/30 transition-colors" style="display: none;" data-name="{{ strtolower($room->name) }}" data-campus="{{ $room->campus }}" data-faculty="{{ strtolower($room->faculty) }}" data-faculty-raw="{{ $room->faculty }}" data-status="{{ $room->status }}" data-type="{{ $type }}">
                         <!-- Nama Ruangan & Category Badge -->
                         <td class="px-6 py-5 whitespace-nowrap">
                             <div class="flex flex-col gap-1">
@@ -462,7 +462,7 @@
                     $type = 'theater';
                 }
             @endphp
-            <div class="room-card p-5 space-y-4 hover:bg-slate-50/30 transition-colors" data-name="{{ strtolower($room->name) }}" data-campus="{{ $room->campus }}" data-faculty="{{ strtolower($room->faculty) }}" data-status="{{ $room->status }}" data-type="{{ $type }}">
+            <div class="room-card p-5 space-y-4 hover:bg-slate-50/30 transition-colors" style="display: none;" data-name="{{ strtolower($room->name) }}" data-campus="{{ $room->campus }}" data-faculty="{{ strtolower($room->faculty) }}" data-status="{{ $room->status }}" data-type="{{ $type }}">
                 <div class="flex items-start justify-between">
                     <div class="space-y-1">
                         <p class="font-extrabold text-slate-800 leading-tight text-base">{{ $room->name }}</p>
