@@ -251,6 +251,17 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
+        // Update category section headers and grids visibility
+        const categorySections = document.querySelectorAll('.category-section');
+        categorySections.forEach(section => {
+            const visibleCardsInSection = section.querySelectorAll('.room-card:not([style*="display: none"])');
+            if (visibleCardsInSection.length > 0) {
+                section.style.display = '';
+            } else {
+                section.style.display = 'none';
+            }
+        });
+
         if (emptyState) {
             if (visibleCount === 0) {
                 emptyState.classList.remove('hidden');
