@@ -15,13 +15,13 @@
     @vite(['resources/css/app.css', 'resources/css/auth/login.css', 'resources/js/app.js'])
 
 </head>
-<body class="bg-white text-slate-800 font-sans min-h-screen antialiased flex">
+<body class="bg-white text-slate-800 font-sans min-h-screen lg:h-screen lg:overflow-hidden antialiased flex">
 
     <!-- Container Utama: Auto Active jika ada error di registrasi/Sign Up atau baru register -->
-    <div id="auth-container" class="flex-grow flex flex-col lg:flex-row p-4 min-h-screen relative overflow-hidden bg-white @if($errors->has('name') || old('is_signup') || request()->has('registered') || isset($is_signup)) active @endif">
+    <div id="auth-container" class="flex-grow flex flex-col lg:flex-row p-4 min-h-screen lg:h-full lg:min-h-0 relative overflow-hidden bg-white @if($errors->has('name') || old('is_signup') || request()->has('registered') || isset($is_signup)) active @endif">
         
         <!-- ==================== LEFT COLUMN: SIGN IN FORM ==================== -->
-        <div id="signin-wrapper" class="w-full lg:w-1/2 flex flex-col justify-between p-6 sm:p-12 lg:p-16 h-full min-h-[85vh] lg:min-h-0">
+        <div id="signin-wrapper" class="w-full lg:w-1/2 flex flex-col justify-between p-6 sm:p-12 lg:p-16 h-full min-h-[85vh] lg:min-h-0 lg:overflow-y-auto">
             <!-- Logo Section -->
             <div class="flex items-center gap-2">
                 <div class="relative w-8 h-8 flex items-center justify-center">
@@ -100,7 +100,7 @@
         </div>
 
         <!-- ==================== RIGHT COLUMN: SIGN UP FORM ==================== -->
-        <div id="signup-wrapper" class="w-full lg:w-1/2 flex flex-col justify-between p-6 sm:p-12 lg:p-16 h-full min-h-[85vh] lg:min-h-0">
+        <div id="signup-wrapper" class="w-full lg:w-1/2 flex flex-col justify-between p-6 sm:p-12 lg:p-16 h-full min-h-[85vh] lg:min-h-0 lg:overflow-y-auto">
             <!-- Logo Section -->
             <div class="flex items-center gap-2">
                 <div class="relative w-8 h-8 flex items-center justify-center">
@@ -268,16 +268,16 @@
 
         <!-- ==================== ABSOLUTE FLOATING IMAGE CARD (Desktop Only) ==================== -->
         <div id="sliding-card" class="hidden lg:block absolute top-4 bottom-4 w-[42%] rounded-[32px] bg-gradient-to-br from-blue-700 via-blue-600 to-indigo-900 overflow-hidden z-20">
-            <!-- Abstract Glass Circle Overlays -->
-            <div class="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
-            <div class="absolute bottom-1/4 left-0 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl"></div>
             
-            <!-- Centered Artwork Label -->
-            <div class="w-full h-full flex flex-col justify-end p-12 relative">
-                <div class="relative z-10 text-white/40 font-semibold text-sm tracking-widest uppercase">
-                    [ Area Gambar / Artwork Placeholder ]
-                </div>
-            </div>
+            <!-- Background Animation GIF -->
+            <img src="{{ asset('video/giflogin.gif') }}" class="absolute inset-0 w-full h-full object-cover" alt="Auth Background Animation">
+
+            <!-- Premium Dark Gradient Overlay (Menjaga agar teks di atasnya tetap terbaca) -->
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/50 via-transparent to-transparent z-10"></div>
+
+            <!-- Abstract Glass Circle Overlays -->
+            <div class="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl z-10"></div>
+            <div class="absolute bottom-1/4 left-0 w-80 h-80 bg-blue-500/20 rounded-full blur-3xl z-10"></div>
         </div>
 
     </div>

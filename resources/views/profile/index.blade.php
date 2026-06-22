@@ -37,11 +37,9 @@
 <div class="space-y-6">
     
     <!-- 1. Profile Identity Header Card (Full Width) -->
-    <div class="bg-white rounded-[24px] border border-slate-100 p-6 shadow-sm hover:shadow-md transition-shadow duration-300 relative overflow-hidden">
-        <!-- Decorative top accent bar -->
-        <div class="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500"></div>
+    <div class="bg-white rounded-[24px] border border-slate-100 p-6 shadow-sm hover:shadow-md transition-shadow duration-300">
         
-        <div class="flex flex-col md:flex-row items-center md:items-start justify-between gap-6 mt-2">
+        <div class="flex flex-col md:flex-row items-center md:items-start justify-between gap-6">
             <div class="flex flex-col md:flex-row items-center gap-5">
                 <!-- Avatar (ULM Logo in clean frame, guaranteed circle/square ratio) -->
                 <div class="relative group select-none">
@@ -287,9 +285,9 @@
                             <!-- Quick Link Action Grid (Balanced 2x2 Grid) -->
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 flex-grow">
                                 <!-- Action 1: Persetujuan Peminjaman -->
-                                <a href="/admin/dashboard" class="group p-6 bg-slate-50 hover:bg-blue-50/50 border border-slate-100 hover:border-blue-100 rounded-[20px] transition-all duration-300 flex flex-col justify-between min-h-[160px] flex-grow">
-                                    <div class="w-11 h-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <a href="/admin/dashboard" class="group p-6 bg-slate-50 hover:bg-blue-50/50 border border-slate-100 hover:border-blue-100 rounded-[20px] transition-all duration-300 flex flex-col items-center text-center justify-center min-h-[180px] flex-grow">
+                                    <div class="w-16 h-16 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                                         </svg>
                                     </div>
@@ -300,9 +298,9 @@
                                 </a>
  
                                 <!-- Action 2: Kelola Ruangan -->
-                                <a href="/admin/rooms" class="group p-6 bg-slate-50 hover:bg-emerald-50/50 border border-slate-100 hover:border-emerald-100 rounded-[20px] transition-all duration-300 flex flex-col justify-between min-h-[160px] flex-grow">
-                                    <div class="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <a href="/admin/rooms" class="group p-6 bg-slate-50 hover:bg-emerald-50/50 border border-slate-100 hover:border-emerald-100 rounded-[20px] transition-all duration-300 flex flex-col items-center text-center justify-center min-h-[180px] flex-grow">
+                                    <div class="w-16 h-16 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                                         </svg>
                                     </div>
@@ -313,9 +311,9 @@
                                 </a>
  
                                 <!-- Action 3: Kelola Jadwal Akademik -->
-                                <a href="/admin/schedules" class="group p-6 bg-slate-50 hover:bg-amber-50/50 border border-slate-100 hover:border-amber-100 rounded-[20px] transition-all duration-300 flex flex-col justify-between min-h-[160px] flex-grow">
-                                    <div class="w-11 h-11 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <a href="/admin/schedules" class="group p-6 bg-slate-50 hover:bg-amber-50/50 border border-slate-100 hover:border-amber-100 rounded-[20px] transition-all duration-300 flex flex-col items-center text-center justify-center min-h-[180px] flex-grow">
+                                    <div class="w-16 h-16 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                         </svg>
                                     </div>
@@ -326,9 +324,9 @@
                                 </a>
  
                                 <!-- Action 4: Riwayat Booking -->
-                                <a href="/history" class="group p-6 bg-slate-50 hover:bg-purple-50/50 border border-slate-100 hover:border-purple-100 rounded-[20px] transition-all duration-300 flex flex-col justify-between min-h-[160px] flex-grow">
-                                    <div class="w-11 h-11 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <a href="/history" class="group p-6 bg-slate-50 hover:bg-purple-50/50 border border-slate-100 hover:border-purple-100 rounded-[20px] transition-all duration-300 flex flex-col items-center text-center justify-center min-h-[180px] flex-grow">
+                                    <div class="w-16 h-16 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
                                     </div>
