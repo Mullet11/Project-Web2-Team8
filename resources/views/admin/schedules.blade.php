@@ -113,7 +113,7 @@
                     <button type="button" class="select-button w-full flex items-center justify-between px-4 py-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-xs sm:text-sm font-bold text-slate-650 transition-all cursor-pointer focus:outline-none focus:ring-4 focus:ring-blue-600/5 min-w-0 overflow-hidden" aria-haspopup="listbox" aria-expanded="false">
                         <span class="flex items-center gap-2 min-w-0 selected-label">
                             <span class="w-2 h-2 rounded-full bg-slate-400 shrink-0"></span>
-                            <span class="truncate">Semua Lokasi</span>
+                            <span class="truncate">Pilih Lokasi</span>
                         </span>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-400 transition-transform duration-300 pointer-events-none shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
@@ -152,7 +152,7 @@
                     <button type="button" class="select-button w-full flex items-center justify-between px-4 py-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-xs sm:text-sm font-bold text-slate-650 transition-all cursor-pointer focus:outline-none focus:ring-4 focus:ring-blue-600/5 min-w-0 overflow-hidden" aria-haspopup="listbox" aria-expanded="false">
                         <span class="flex items-center gap-2 min-w-0 selected-label">
                             <span class="w-2 h-2 rounded-full bg-slate-400 shrink-0"></span>
-                            <span class="truncate">Semua Fakultas</span>
+                            <span class="truncate">Pilih Fakultas</span>
                         </span>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-400 transition-transform duration-300 pointer-events-none shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
@@ -225,7 +225,7 @@
                     <button type="button" class="select-button w-full flex items-center justify-between px-4 py-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-xs sm:text-sm font-bold text-slate-650 transition-all cursor-pointer focus:outline-none focus:ring-4 focus:ring-blue-600/5 min-w-0 overflow-hidden" aria-haspopup="listbox" aria-expanded="false">
                         <span class="flex items-center gap-2 min-w-0 selected-label">
                             <span class="w-2 h-2 rounded-full bg-slate-400 shrink-0"></span>
-                            <span class="truncate">Semua Program Studi</span>
+                            <span class="truncate">Pilih Program Studi</span>
                         </span>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-400 transition-transform duration-300 pointer-events-none shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
@@ -250,7 +250,7 @@
                     <button type="button" class="select-button w-full flex items-center justify-between px-4 py-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-xs sm:text-sm font-bold text-slate-650 transition-all cursor-pointer focus:outline-none focus:ring-4 focus:ring-blue-600/5 min-w-0 overflow-hidden" aria-haspopup="listbox" aria-expanded="false">
                         <span class="flex items-center gap-2 min-w-0 selected-label">
                             <span class="w-2 h-2 rounded-full bg-slate-400 shrink-0"></span>
-                            <span class="truncate">Semua Hari</span>
+                            <span class="truncate">Pilih Hari</span>
                         </span>
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-400 transition-transform duration-300 pointer-events-none shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
@@ -951,7 +951,7 @@
         const selectedFacultyColor = getFacultyBulletColor(facultyVal);
         label.innerHTML = `
             <span class="w-2 h-2 rounded-full bg-slate-400 shrink-0"></span>
-            <span class="truncate">Semua Program Studi</span>
+            <span class="truncate">Pilih Program Studi</span>
         `;
 
         prodiMenuOptions.innerHTML = `
@@ -1264,6 +1264,8 @@
             }
         });
 
+        const needsFilter = (searchQuery === '' && campusFilter === '' && facultyFilter === '' && prodiFilter === '' && dayFilter === '');
+
         // Filter Desktop Rows
         let desktopCount = 0;
         document.querySelectorAll('.schedule-row').forEach(row => {
@@ -1287,7 +1289,7 @@
             const matchesProdi = prodiFilter === '' || prodi === prodiFilter;
             const matchesDay = dayFilter === '' || day === dayFilter;
 
-            if (matchesSearch && matchesCampus && matchesFaculty && matchesProdi && matchesDay) {
+            if (matchesSearch && matchesCampus && matchesFaculty && matchesProdi && matchesDay && !needsFilter) {
                 row.style.display = '';
                 desktopCount++;
             } else {
@@ -1318,7 +1320,7 @@
             const matchesProdi = prodiFilter === '' || prodi === prodiFilter;
             const matchesDay = dayFilter === '' || day === dayFilter;
 
-            if (matchesSearch && matchesCampus && matchesFaculty && matchesProdi && matchesDay) {
+            if (matchesSearch && matchesCampus && matchesFaculty && matchesProdi && matchesDay && !needsFilter) {
                 card.style.display = '';
                 mobileCount++;
             } else {
@@ -1329,10 +1331,15 @@
         // Toggle Empty States
         const desktopEmpty = document.getElementById('desktop-empty-state');
         if (desktopEmpty) {
-            if (desktopCount === 0) {
+            if (desktopCount === 0 || needsFilter) {
                 desktopEmpty.classList.remove('hidden');
-                desktopEmpty.querySelector('h3').textContent = 'Tidak Ada Hasil';
-                desktopEmpty.querySelector('p').textContent = 'Tidak ditemukan jadwal/penguncian yang cocok dengan kriteria filter Anda.';
+                if (needsFilter) {
+                    desktopEmpty.querySelector('h3').textContent = 'Pilih Filter Terlebih Dahulu';
+                    desktopEmpty.querySelector('p').textContent = 'Silakan tentukan salah satu filter atau ketik pencarian terlebih dahulu untuk menampilkan daftar jadwal.';
+                } else {
+                    desktopEmpty.querySelector('h3').textContent = 'Tidak Ada Hasil';
+                    desktopEmpty.querySelector('p').textContent = 'Tidak ditemukan jadwal/penguncian yang cocok dengan kriteria filter Anda.';
+                }
             } else {
                 desktopEmpty.classList.add('hidden');
             }
@@ -1340,10 +1347,15 @@
 
         const mobileEmpty = document.getElementById('mobile-empty-state');
         if (mobileEmpty) {
-            if (mobileCount === 0) {
+            if (mobileCount === 0 || needsFilter) {
                 mobileEmpty.classList.remove('hidden');
-                mobileEmpty.querySelector('h4').textContent = 'Tidak Ada Hasil';
-                mobileEmpty.querySelector('p').textContent = 'Tidak ditemukan jadwal/penguncian yang cocok dengan kriteria filter Anda.';
+                if (needsFilter) {
+                    mobileEmpty.querySelector('h4').textContent = 'Pilih Filter Terlebih Dahulu';
+                    mobileEmpty.querySelector('p').textContent = 'Silakan tentukan salah satu filter atau ketik pencarian terlebih dahulu untuk menampilkan daftar jadwal.';
+                } else {
+                    mobileEmpty.querySelector('h4').textContent = 'Tidak Ada Hasil';
+                    mobileEmpty.querySelector('p').textContent = 'Tidak ditemukan jadwal/penguncian yang cocok dengan kriteria filter Anda.';
+                }
             } else {
                 mobileEmpty.classList.add('hidden');
             }
@@ -1380,21 +1392,21 @@
         if (campusSelect) {
             campusSelect.querySelector('.selected-label').innerHTML = `
                 <span class="w-2 h-2 rounded-full bg-slate-400 shrink-0"></span>
-                <span class="truncate">Semua Lokasi</span>
+                <span class="truncate">Pilih Lokasi</span>
             `;
         }
         const facultySelect = document.getElementById('faculty-select-container');
         if (facultySelect) {
             facultySelect.querySelector('.selected-label').innerHTML = `
                 <span class="w-2 h-2 rounded-full bg-slate-400 shrink-0"></span>
-                <span class="truncate">Semua Fakultas</span>
+                <span class="truncate">Pilih Fakultas</span>
             `;
         }
         const daySelect = document.getElementById('day-select-container');
         if (daySelect) {
             daySelect.querySelector('.selected-label').innerHTML = `
                 <span class="w-2 h-2 rounded-full bg-slate-400 shrink-0"></span>
-                <span class="truncate">Semua Hari</span>
+                <span class="truncate">Pilih Hari</span>
             `;
         }
 
