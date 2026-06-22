@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Reservation;
+use App\Models\Schedule;
 use App\ViewModels\HistoryViewModel;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class HistoryController extends Controller
@@ -12,9 +13,9 @@ class HistoryController extends Controller
     public function index()
     {
         $reservations = Reservation::with('room')
-                            ->where('user_id', Auth::id())
-                            ->orderBy('created_at', 'desc')
-                            ->get();
+            ->where('user_id', Auth::id())
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         $historyCards = HistoryViewModel::formatIndex($reservations);
 
@@ -37,9 +38,9 @@ class HistoryController extends Controller
     public function edit($id)
     {
         $reservation = Reservation::with('room')
-                            ->where('user_id', Auth::id())
-                            ->where('status', 'menunggu')
-                            ->findOrFail($id);
+            ->where('user_id', Auth::id())
+            ->where('status', 'menunggu')
+            ->findOrFail($id);
 
         $booking = HistoryViewModel::formatDetail($reservation);
 
@@ -49,8 +50,8 @@ class HistoryController extends Controller
     public function update(Request $request, $id)
     {
         $reservation = Reservation::where('user_id', Auth::id())
-                            ->where('status', 'menunggu')
-                            ->findOrFail($id);
+            ->where('status', 'menunggu')
+            ->findOrFail($id);
 
         $validated = $request->validate([
             'nama' => 'required|string|max:255',
@@ -70,7 +71,7 @@ class HistoryController extends Controller
             ->whereIn('status', ['disetujui', 'menunggu'])
             ->where(function ($query) use ($validated) {
                 $query->where('waktu_mulai', '<', $validated['waktu_selesai'])
-                      ->where('waktu_selesai', '>', $validated['waktu_mulai']);
+                    ->where('waktu_selesai', '>', $validated['waktu_mulai']);
             })
             ->exists();
 
@@ -91,11 +92,11 @@ class HistoryController extends Controller
         ];
         $indonesianDay = $dayMap[$dayOfWeek] ?? 'Senin';
 
-        $routineExists = \App\Models\Schedule::where('room_id', $reservation->room_id)
+        $routineExists = Schedule::where('room_id', $reservation->room_id)
             ->where('day', $indonesianDay)
             ->where(function ($query) use ($validated) {
                 $query->where('start_time', '<', $validated['waktu_selesai'])
-                      ->where('end_time', '>', $validated['waktu_mulai']);
+                    ->where('end_time', '>', $validated['waktu_mulai']);
             })
             ->exists();
 
@@ -117,9 +118,9 @@ class HistoryController extends Controller
             'waktu_selesai' => $validated['waktu_selesai'],
             // Jika ada pembatalan dari mahasiswa (form punya opsi batal):
             'status' => $request->has('cancel_booking') ? 'dibatalkan' : 'menunggu',
-            'alasan_batal' => $request->alasan_batal ?? $reservation->alasan_batal
+            'alasan_batal' => $request->alasan_batal ?? $reservation->alasan_batal,
         ]);
 
-        return redirect('/history/detail/' . $reservation->id . '?edited=1')->with('success', 'Perubahan berhasil disimpan!');
+        return redirect('/history/detail/'.$reservation->id.'?edited=1')->with('success', 'Perubahan berhasil disimpan!');
     }
 }

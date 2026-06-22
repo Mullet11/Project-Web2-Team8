@@ -23,7 +23,6 @@ class User extends Authenticatable
         'identity_number',
         'email',
         'whatsapp',
-        'prodi_fakultas',
         'role',
         'password',
         'faculty',

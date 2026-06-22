@@ -16,28 +16,28 @@ return new class extends Migration
             $table->string('no_booking')->unique();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('room_id')->constrained()->cascadeOnDelete();
-            
+
             // Info Peminjam
             $table->string('nama');
             $table->string('nim');
             $table->string('prodi_fakultas');
             $table->string('whatsapp');
-            
+
             // Rincian Kegiatan
             $table->enum('perihal', ['Perkuliahan', 'Kegiatan Kampus']);
             $table->string('dosen')->nullable();
             $table->string('matakuliah')->nullable();
             $table->string('nama_kegiatan')->nullable();
-            
+
             // Waktu
             $table->date('tanggal');
             $table->time('waktu_mulai');
             $table->time('waktu_selesai');
-            
+
             // Status & Catatan
             $table->enum('status', ['menunggu', 'disetujui', 'dibatalkan', 'selesai', 'ditolak'])->default('menunggu');
             $table->text('alasan_batal')->nullable();
-            
+
             $table->timestamps();
         });
     }

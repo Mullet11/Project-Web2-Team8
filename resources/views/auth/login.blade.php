@@ -175,10 +175,10 @@
 
                     <!-- Fakultas Dropdown -->
                     <div class="relative">
-                        <select id="signup_fakultas" required
-                            class="block px-4 py-3.5 w-full text-sm text-slate-900 bg-transparent rounded-xl border @error('prodi_fakultas') border-rose-500 focus:border-rose-500 @else border-slate-200 focus:border-blue-600 @enderror appearance-none focus:outline-none focus:ring-0 peer transition-all cursor-pointer pr-10">
+                        <select id="signup_fakultas" name="faculty" required
+                            class="block px-4 py-3.5 w-full text-sm text-slate-900 bg-transparent rounded-xl border @error('faculty') border-rose-500 focus:border-rose-500 @else border-slate-200 focus:border-blue-600 @enderror appearance-none focus:outline-none focus:ring-0 peer transition-all cursor-pointer pr-10">
                             <option value="" disabled selected>Pilih Fakultas</option>
-                            <option value="Teknik">Fakultas Teknik</option>
+                            <option value="Teknik" {{ old('faculty') == 'Teknik' ? 'selected' : '' }}>Fakultas Teknik</option>
                         </select>
                         <label for="signup_fakultas" 
                             class="absolute text-sm text-slate-400 peer-focus:text-blue-600 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 left-3 select-none pointer-events-none">
@@ -190,11 +190,14 @@
                             </svg>
                         </div>
                     </div>
+                    @error('faculty')
+                        <p class="mt-1.5 text-xs text-rose-600 font-medium">{{ $message }}</p>
+                    @enderror
 
                     <!-- Program Studi Dropdown -->
                     <div class="relative">
-                        <select id="signup_prodi" required disabled
-                            class="block px-4 py-3.5 w-full text-sm text-slate-900 bg-transparent rounded-xl border @error('prodi_fakultas') border-rose-500 focus:border-rose-500 @else border-slate-200 focus:border-blue-600 @enderror appearance-none focus:outline-none focus:ring-0 peer transition-all cursor-pointer pr-10 disabled:opacity-60 disabled:cursor-not-allowed">
+                        <select id="signup_prodi" name="study_program" required disabled
+                            class="block px-4 py-3.5 w-full text-sm text-slate-900 bg-transparent rounded-xl border @error('study_program') border-rose-500 focus:border-rose-500 @else border-slate-200 focus:border-blue-600 @enderror appearance-none focus:outline-none focus:ring-0 peer transition-all cursor-pointer pr-10 disabled:opacity-60 disabled:cursor-not-allowed">
                             <option value="" disabled selected>Pilih Program Studi</option>
                         </select>
                         <label for="signup_prodi" 
@@ -207,9 +210,7 @@
                             </svg>
                         </div>
                     </div>
-
-                    <input type="hidden" id="signup_prodi_fakultas" name="prodi_fakultas" value="{{ old('prodi_fakultas') }}">
-                    @error('prodi_fakultas')
+                    @error('study_program')
                         <p class="mt-1.5 text-xs text-rose-600 font-medium">{{ $message }}</p>
                     @enderror
 
@@ -296,7 +297,6 @@
         document.addEventListener('DOMContentLoaded', () => {
             const fakultasSelect = document.getElementById('signup_fakultas');
             const prodiSelect = document.getElementById('signup_prodi');
-            const hiddenInput = document.getElementById('signup_prodi_fakultas');
 
             const prodiList = {
                 'Teknik': [
@@ -313,14 +313,6 @@
                 ]
             };
 
-            function updateHiddenInput() {
-                if (prodiSelect.value && fakultasSelect.value) {
-                    hiddenInput.value = prodiSelect.value + ' / ' + fakultasSelect.value;
-                } else {
-                    hiddenInput.value = '';
-                }
-            }
-
             fakultasSelect.addEventListener('change', () => {
                 const selectedFakultas = fakultasSelect.value;
                 prodiSelect.innerHTML = '<option value="" disabled selected>Pilih Program Studi</option>';
@@ -336,24 +328,18 @@
                 } else {
                     prodiSelect.disabled = true;
                 }
-                updateHiddenInput();
             });
 
-            prodiSelect.addEventListener('change', updateHiddenInput);
-
             // Pre-fill if validation failed and old input exists
-            const oldVal = hiddenInput.value;
-            if (oldVal && oldVal.includes(' / ')) {
-                const parts = oldVal.split(' / ');
-                const oldProdi = parts[0];
-                const oldFakultas = parts[1];
+            const oldFaculty = "{{ old('faculty') }}";
+            const oldStudyProgram = "{{ old('study_program') }}";
 
-                if (oldFakultas === 'Teknik') {
-                    fakultasSelect.value = oldFakultas;
-                    // Trigger change manually
-                    fakultasSelect.dispatchEvent(new Event('change'));
-                    prodiSelect.value = oldProdi;
-                    updateHiddenInput();
+            if (oldFaculty) {
+                fakultasSelect.value = oldFaculty;
+                // Trigger change manually to populate study programs list
+                fakultasSelect.dispatchEvent(new Event('change'));
+                if (oldStudyProgram) {
+                    prodiSelect.value = oldStudyProgram;
                 }
             }
         });

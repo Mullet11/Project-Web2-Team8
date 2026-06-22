@@ -4,10 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Application\Auth\LoginUser;
 use App\Http\Requests\LoginRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use App\Models\User;
 
 class AuthController extends Controller
 {
@@ -24,6 +23,7 @@ class AuthController extends Controller
             if (Auth::user()->role === 'admin') {
                 return redirect()->route('admin.dashboard');
             }
+
             return redirect()->route('dashboard');
         }
 
@@ -54,7 +54,8 @@ class AuthController extends Controller
             'identity_number' => 'required|string|max:255|unique:users',
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'whatsapp' => 'required|string|max:255',
-            'prodi_fakultas' => 'required|string|max:255',
+            'faculty' => 'required|string|max:255',
+            'study_program' => 'required|string|max:255',
             'password' => 'required|string|min:8|confirmed',
         ]);
 
@@ -67,7 +68,7 @@ class AuthController extends Controller
             $role = 'dosen';
         } else {
             return back()->withErrors([
-                'email' => 'Email harus menggunakan domain resmi @mhs.ulm.ac.id (untuk mahasiswa) atau @ulm.ac.id (untuk dosen).'
+                'email' => 'Email harus menggunakan domain resmi @mhs.ulm.ac.id (untuk mahasiswa) atau @ulm.ac.id (untuk dosen).',
             ])->withInput();
         }
 
@@ -76,7 +77,8 @@ class AuthController extends Controller
             'identity_number' => $validated['identity_number'],
             'email' => $email,
             'whatsapp' => $validated['whatsapp'],
-            'prodi_fakultas' => $validated['prodi_fakultas'],
+            'faculty' => $validated['faculty'],
+            'study_program' => $validated['study_program'],
             'role' => $role,
             'password' => $validated['password'],
         ]);

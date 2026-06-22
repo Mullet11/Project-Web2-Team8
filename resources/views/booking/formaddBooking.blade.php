@@ -68,6 +68,7 @@
                     <div class="space-y-1.5">
                         <label for="booking-nama" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Nama Lengkap</label>
                         <input type="text" id="booking-nama" name="nama" required placeholder="Masukkan nama lengkap"
+                            value="{{ old('nama', auth()->user()->name ?? '') }}"
                             class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium placeholder:text-slate-400/80">
                     </div>
 
@@ -75,6 +76,7 @@
                     <div class="space-y-1.5">
                         <label for="booking-nim" class="text-xs font-bold text-slate-500 uppercase tracking-wider">NIM</label>
                         <input type="text" id="booking-nim" name="nim" required placeholder="Masukkan NIM Anda"
+                            value="{{ old('nim', auth()->user()->identity_number ?? '') }}"
                             class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium placeholder:text-slate-400/80">
                     </div>
 
@@ -82,6 +84,7 @@
                     <div class="space-y-1.5">
                         <label for="booking-prodi" class="text-xs font-bold text-slate-500 uppercase tracking-wider">Prodi / Fakultas</label>
                         <input type="text" id="booking-prodi" name="prodi_fakultas" required placeholder="Teknologi Informasi / Teknik"
+                            value="{{ old('prodi_fakultas', auth()->user()->study_program ? auth()->user()->study_program . ' / ' . auth()->user()->faculty : '') }}"
                             class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium placeholder:text-slate-400/80">
                     </div>
 
@@ -89,6 +92,7 @@
                     <div class="space-y-1.5">
                         <label for="booking-whatsapp" class="text-xs font-bold text-slate-500 uppercase tracking-wider">No. WhatsApp Aktif</label>
                         <input type="tel" id="booking-whatsapp" name="whatsapp" required placeholder="Contoh: 08123456789"
+                            value="{{ old('whatsapp', auth()->user()->whatsapp ?? '') }}"
                             class="w-full px-4 py-3 bg-slate-50 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-sm focus:outline-none transition-all text-slate-800 font-medium placeholder:text-slate-400/80">
                     </div>
 

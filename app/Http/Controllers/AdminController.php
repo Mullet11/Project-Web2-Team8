@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 use App\Models\Reservation;
 use App\Models\Room;
+use App\Models\Schedule;
+use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
@@ -38,6 +38,7 @@ class AdminController extends Controller
     public function rooms()
     {
         $rooms = Room::orderBy('name', 'asc')->get();
+
         return view('admin.rooms', compact('rooms'));
     }
 
@@ -87,8 +88,9 @@ class AdminController extends Controller
 
     public function schedules()
     {
-        $schedules = \App\Models\Schedule::with('room')->get();
+        $schedules = Schedule::with('room')->get();
         $rooms = Room::orderBy('name', 'asc')->get();
+
         return view('admin.schedules', compact('schedules', 'rooms'));
     }
 
@@ -106,11 +108,11 @@ class AdminController extends Controller
         ]);
 
         // Overlap validation check
-        $exists = \App\Models\Schedule::where('room_id', $validated['room_id'])
+        $exists = Schedule::where('room_id', $validated['room_id'])
             ->where('day', $validated['day'])
             ->where(function ($query) use ($validated) {
                 $query->where('start_time', '<', $validated['end_time'])
-                      ->where('end_time', '>', $validated['start_time']);
+                    ->where('end_time', '>', $validated['start_time']);
             })
             ->exists();
 
@@ -118,7 +120,7 @@ class AdminController extends Controller
             return back()->withErrors(['start_time' => 'Jadwal bentrok dengan jadwal rutin lainnya di ruangan tersebut!'])->withInput();
         }
 
-        \App\Models\Schedule::create($validated);
+        Schedule::create($validated);
 
         return back()->with('success', 'Jadwal/Penguncian berhasil ditambahkan!');
     }
@@ -137,12 +139,12 @@ class AdminController extends Controller
         ]);
 
         // Overlap validation check (excluding this schedule)
-        $exists = \App\Models\Schedule::where('room_id', $validated['room_id'])
+        $exists = Schedule::where('room_id', $validated['room_id'])
             ->where('day', $validated['day'])
             ->where('id', '!=', $id)
             ->where(function ($query) use ($validated) {
                 $query->where('start_time', '<', $validated['end_time'])
-                      ->where('end_time', '>', $validated['start_time']);
+                    ->where('end_time', '>', $validated['start_time']);
             })
             ->exists();
 
@@ -150,7 +152,7 @@ class AdminController extends Controller
             return back()->withErrors(['error' => 'Jadwal bentrok dengan jadwal rutin lainnya di ruangan tersebut!'])->withInput();
         }
 
-        $schedule = \App\Models\Schedule::findOrFail($id);
+        $schedule = Schedule::findOrFail($id);
 
         if ($validated['type'] === 'general') {
             $validated['lecturer_name'] = null;
@@ -164,7 +166,7 @@ class AdminController extends Controller
 
     public function deleteSchedule($id)
     {
-        $schedule = \App\Models\Schedule::findOrFail($id);
+        $schedule = Schedule::findOrFail($id);
         $schedule->delete();
 
         return back()->with('success', 'Jadwal/Penguncian berhasil dihapus!');

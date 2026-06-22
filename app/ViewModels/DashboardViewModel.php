@@ -9,7 +9,7 @@ class DashboardViewModel
     public static function formatRooms(Collection $rooms): Collection
     {
         return $rooms->map(function ($room) {
-            $status = $room->status; 
+            $status = $room->status;
 
             $data_status = match ($status) {
                 'available' => 'tersedia',
@@ -112,7 +112,7 @@ class DashboardViewModel
                 'content_bg_color' => $content_bg_color,
                 'badge_text' => $badge_text,
                 'badge_text_color' => $badge_text_color,
-                'button_url' => '/rooms/' . $room->id,
+                'button_url' => '/rooms/'.$room->id,
                 'button_class' => $button_class,
                 'button_text' => $button_text,
                 'subtext_class' => $subtext_class,

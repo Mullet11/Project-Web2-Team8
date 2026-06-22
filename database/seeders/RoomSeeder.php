@@ -2,10 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
-
 use App\Models\Room;
+use Illuminate\Database\Seeder;
 
 class RoomSeeder extends Seeder
 {
@@ -23,7 +21,7 @@ class RoomSeeder extends Seeder
                 'building' => 'Gedung Utama FT BJM',
                 'capacity' => 40,
                 'facilities' => 'AC, Proyektor, Papan Tulis, Speaker',
-                'status' => 'available'
+                'status' => 'available',
             ],
             [
                 'name' => 'Ruang Kuliah FT BJM 2',
@@ -32,7 +30,7 @@ class RoomSeeder extends Seeder
                 'building' => 'Gedung Utama FT BJM',
                 'capacity' => 45,
                 'facilities' => 'AC, Proyektor, Papan Tulis, Speaker',
-                'status' => 'available'
+                'status' => 'available',
             ],
             [
                 'name' => 'Lab Menggambar FT BJM',
@@ -41,7 +39,7 @@ class RoomSeeder extends Seeder
                 'building' => 'Gedung D FT BJM',
                 'capacity' => 30,
                 'facilities' => 'AC, Proyektor, Meja Gambar',
-                'status' => 'available'
+                'status' => 'available',
             ],
             [
                 'name' => 'Lab Komputer FT BJM',
@@ -50,7 +48,7 @@ class RoomSeeder extends Seeder
                 'building' => 'Gedung D FT BJM',
                 'capacity' => 25,
                 'facilities' => 'AC, Proyektor, PC Komputer, Internet',
-                'status' => 'occupied'
+                'status' => 'occupied',
             ],
             [
                 'name' => 'Aula FT BJM',
@@ -59,7 +57,7 @@ class RoomSeeder extends Seeder
                 'building' => 'Gedung A FT BJM',
                 'capacity' => 150,
                 'facilities' => 'AC, Proyektor, Sound System, Panggung',
-                'status' => 'available'
+                'status' => 'available',
             ],
             [
                 'name' => 'Gedung Theater FT BJM',
@@ -68,7 +66,7 @@ class RoomSeeder extends Seeder
                 'building' => 'Gedung Dekanat FT BJM',
                 'capacity' => 100,
                 'facilities' => 'AC, Proyektor, Sound System, Kursi Theater',
-                'status' => 'available'
+                'status' => 'available',
             ],
 
             // Kampus Banjarbaru (BJB)
@@ -79,7 +77,7 @@ class RoomSeeder extends Seeder
                 'building' => 'Gedung IT FT',
                 'capacity' => 35,
                 'facilities' => 'AC, Proyektor, PC Praktikum, Internet',
-                'status' => 'available'
+                'status' => 'available',
             ],
             [
                 'name' => 'Lab Kimia Dasar FT BJB',
@@ -88,7 +86,7 @@ class RoomSeeder extends Seeder
                 'building' => 'Gedung Lab Terpadu FT',
                 'capacity' => 30,
                 'facilities' => 'Peralatan Lab, AC, Papan Tulis, Exhaust Fan',
-                'status' => 'available'
+                'status' => 'available',
             ],
             [
                 'name' => 'Ruang Kuliah FT BJB A1',
@@ -97,7 +95,7 @@ class RoomSeeder extends Seeder
                 'building' => 'Gedung Dekanat Baru FT',
                 'capacity' => 40,
                 'facilities' => 'AC, Proyektor, Papan Tulis',
-                'status' => 'available'
+                'status' => 'available',
             ],
             [
                 'name' => 'Ruang Kuliah FT BJB B2',
@@ -106,7 +104,7 @@ class RoomSeeder extends Seeder
                 'building' => 'Gedung Dekanat Baru FT',
                 'capacity' => 50,
                 'facilities' => 'AC, Proyektor, Papan Tulis, Sound System',
-                'status' => 'available'
+                'status' => 'available',
             ],
             [
                 'name' => 'Aula Dekanat FT BJB',
@@ -115,7 +113,7 @@ class RoomSeeder extends Seeder
                 'building' => 'Gedung Dekanat Baru FT',
                 'capacity' => 200,
                 'facilities' => 'AC, Proyektor, Sound System, Kursi Lipat',
-                'status' => 'available'
+                'status' => 'available',
             ],
             [
                 'name' => 'Gedung Theater FT BJB',
@@ -124,8 +122,8 @@ class RoomSeeder extends Seeder
                 'building' => 'Gedung Dekanat Baru FT',
                 'capacity' => 120,
                 'facilities' => 'AC, Proyektor, Sound System, Kursi Teater',
-                'status' => 'available'
-            ]
+                'status' => 'available',
+            ],
         ]);
     }
 }

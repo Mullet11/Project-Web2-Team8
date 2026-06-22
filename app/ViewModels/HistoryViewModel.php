@@ -3,8 +3,8 @@
 namespace App\ViewModels;
 
 use App\Models\Reservation;
-use Illuminate\Support\Collection;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 
 class HistoryViewModel
 {
@@ -15,7 +15,7 @@ class HistoryViewModel
     {
         return $reservations->map(function ($res) {
             $theme = self::getThemeForStatus($res->status);
-            
+
             return [
                 'id' => $res->id,
                 'status' => $res->status,
@@ -24,8 +24,8 @@ class HistoryViewModel
                 'campus' => $res->room->campus,
                 'capacity' => $res->room->capacity,
                 'tanggal' => Carbon::parse($res->tanggal)->translatedFormat('l, d F'),
-                'waktu' => substr($res->waktu_mulai, 0, 5) . ' - ' . substr($res->waktu_selesai, 0, 5) . ' WIB',
-                'theme' => $theme
+                'waktu' => substr($res->waktu_mulai, 0, 5).' - '.substr($res->waktu_selesai, 0, 5).' WIB',
+                'theme' => $theme,
             ];
         })->toArray();
     }
@@ -50,13 +50,13 @@ class HistoryViewModel
             'nama_kegiatan' => $reservation->nama_kegiatan,
             'tanggal' => Carbon::parse($reservation->tanggal)->translatedFormat('l, d F Y'),
             'tanggal_raw' => $reservation->tanggal,
-            'waktu' => substr($reservation->waktu_mulai, 0, 5) . ' - ' . substr($reservation->waktu_selesai, 0, 5) . ' WIB',
+            'waktu' => substr($reservation->waktu_mulai, 0, 5).' - '.substr($reservation->waktu_selesai, 0, 5).' WIB',
             'waktu_mulai' => substr($reservation->waktu_mulai, 0, 5),
             'waktu_selesai' => substr($reservation->waktu_selesai, 0, 5),
             'no_booking' => $reservation->no_booking,
             'dosen' => $reservation->dosen,
             'matakuliah' => $reservation->matakuliah,
-            'alasan_batal' => $reservation->alasan_batal
+            'alasan_batal' => $reservation->alasan_batal,
         ];
     }
 
@@ -80,7 +80,7 @@ class HistoryViewModel
                             <path d="M30 43 h12 M30 47 h8" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" />
                             <path d="M65 60 l15-15 l10,10 l25-25" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" />
                             <circle cx="115" cy="30" r="3" fill="#facc15" />
-                        </svg>'
+                        </svg>',
             ];
         } elseif ($status === 'selesai') {
             return [
@@ -99,7 +99,7 @@ class HistoryViewModel
                             <rect x="80" y="55" width="10" height="20" fill="#ffffff" opacity="0.8" />
                             <rect x="95" y="60" width="10" height="15" fill="#ffffff" opacity="0.8" />
                             <rect x="110" y="65" width="10" height="10" fill="#ffffff" opacity="0.8" />
-                        </svg>'
+                        </svg>',
             ];
         } elseif ($status === 'dibatalkan') {
             return [
@@ -120,7 +120,7 @@ class HistoryViewModel
                             <circle cx="110" cy="67" r="3" fill="#94a3b8" />
                             <circle cx="140" cy="45" r="16" fill="#ef4444" opacity="0.9" />
                             <path d="M133 38 l14 14 M147 38 l-14 14" stroke="#ffffff" stroke-width="3" stroke-linecap="round" />
-                        </svg>'
+                        </svg>',
             ];
         } else {
             // Menunggu
@@ -137,7 +137,7 @@ class HistoryViewModel
                             <path d="M100 32 v18 h12" fill="none" stroke="#94a3b8" stroke-width="4" stroke-linecap="round" />
                             <circle cx="128" cy="28" r="11" fill="#64748b" />
                             <path d="M125 24 v5 h6" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" />
-                        </svg>'
+                        </svg>',
             ];
         }
     }

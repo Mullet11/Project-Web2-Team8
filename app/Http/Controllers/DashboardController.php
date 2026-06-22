@@ -11,9 +11,9 @@ class DashboardController extends Controller
     {
         $rooms = Room::all();
         $formattedRooms = DashboardViewModel::formatRooms($rooms);
-        
+
         return view('dashboard.index', [
-            'rooms' => $formattedRooms
+            'rooms' => $formattedRooms,
         ]);
     }
 }

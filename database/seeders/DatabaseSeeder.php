@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,7 +12,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\User::factory()->create([
+        User::factory()->create([
             'name' => 'Administrator',
             'identity_number' => 'admin123',
             'email' => 'admin@smartclass.com',
@@ -21,7 +20,7 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin',
         ]);
 
-        \App\Models\User::factory()->create([
+        User::factory()->create([
             'name' => 'Mahasiswa Test',
             'identity_number' => '123456789',
             'email' => 'mhs@ulm.ac.id',

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Reservation;
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
@@ -14,13 +14,13 @@ class ProfileController extends Controller
         $user = Auth::user();
 
         if ($user->role === 'admin') {
-            $totalBookings = \App\Models\Reservation::count();
-            $pendingBookings = \App\Models\Reservation::where('status', 'menunggu')->count();
-            $approvedBookings = \App\Models\Reservation::where('status', 'disetujui')->count();
+            $totalBookings = Reservation::count();
+            $pendingBookings = Reservation::where('status', 'menunggu')->count();
+            $approvedBookings = Reservation::where('status', 'disetujui')->count();
         } else {
-            $totalBookings = \App\Models\Reservation::where('user_id', $user->id)->count();
-            $pendingBookings = \App\Models\Reservation::where('user_id', $user->id)->where('status', 'menunggu')->count();
-            $approvedBookings = \App\Models\Reservation::where('user_id', $user->id)->where('status', 'disetujui')->count();
+            $totalBookings = Reservation::where('user_id', $user->id)->count();
+            $pendingBookings = Reservation::where('user_id', $user->id)->where('status', 'menunggu')->count();
+            $approvedBookings = Reservation::where('user_id', $user->id)->where('status', 'disetujui')->count();
         }
 
         return view('profile.index', compact('user', 'totalBookings', 'pendingBookings', 'approvedBookings'));
@@ -45,7 +45,7 @@ class ProfileController extends Controller
         if ($request->hasFile('profile_photo')) {
             // Delete old photo if exists
             if ($user->profile_photo_path) {
-                \Illuminate\Support\Facades\Storage::disk('public')->delete($user->profile_photo_path);
+                Storage::disk('public')->delete($user->profile_photo_path);
             }
             // Store new photo
             $path = $request->file('profile_photo')->store('profile-photos', 'public');

@@ -1,19 +1,19 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\BookingController;
-use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BookingController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Route;
 
 // Auth Routes
 Route::middleware('guest')->group(function () {
     Route::get('/', [AuthController::class, 'showLogin'])->name('login');
     Route::get('/login', [AuthController::class, 'showLogin']);
     Route::post('/login', [AuthController::class, 'login']);
-    
+
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [AuthController::class, 'register']);
 });
@@ -21,13 +21,13 @@ Route::middleware('guest')->group(function () {
 // Protected Routes (Butuh Login)
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-    
+
     // Dashboard menggunakan Controller Backend
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::put('/profile', [ProfileController::class, 'update']);
-    
+
     // Booking Routes
     Route::get('/rooms/{id}', [BookingController::class, 'showRoom']);
     Route::get('/rooms/{id}/agenda', [BookingController::class, 'viewClassUsed']);
