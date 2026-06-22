@@ -45,7 +45,16 @@
                 <div class="relative group select-none">
                     <div id="avatar-container" class="rounded-2xl border-4 border-slate-50 bg-slate-50/50 shadow-sm overflow-hidden flex items-center justify-center shrink-0 relative" style="width: 96px; height: 96px;">
                         <!-- Profile Image -->
-                        <img id="avatar-preview" src="{{ $user->profile_photo_path ? asset('storage/' . $user->profile_photo_path) : asset('images/profile/ULM PNG.png') }}" alt="Foto Profil" class="{{ $user->profile_photo_path ? 'w-full h-full object-cover' : 'w-16 h-16 object-contain' }}">
+                        <img id="avatar-preview"
+                            @if($user->profile_photo_path)
+                                src="{{ asset('storage/' . $user->profile_photo_path) }}?v={{ time() }}"
+                                class="w-full h-full object-cover"
+                            @else
+                                src="{{ asset('images/profile/ULM PNG.png') }}"
+                                class="w-16 h-16 object-contain"
+                            @endif
+                            alt="Foto Profil"
+                            onerror="this.src='{{ asset('images/profile/ULM PNG.png') }}'; this.className='w-16 h-16 object-contain';">
                         
                         <!-- Hover Overlay (Visible/Active only when editing) -->
                         <div id="avatar-overlay" class="absolute inset-0 bg-slate-900/50 flex flex-col items-center justify-center gap-1 opacity-0 hover:opacity-100 cursor-pointer transition-opacity duration-200 hidden">
@@ -470,7 +479,7 @@
         
         let isEditing = false;
 
-        const defaultAvatarSrc = "{{ $user->profile_photo_path ? asset('storage/' . $user->profile_photo_path) : asset('images/profile/ULM PNG.png') }}";
+        const defaultAvatarSrc   = "{{ $user->profile_photo_path ? asset('storage/' . $user->profile_photo_path) . '?v=' . time() : asset('images/profile/ULM PNG.png') }}";
         const defaultAvatarClass = "{{ $user->profile_photo_path ? 'w-full h-full object-cover' : 'w-16 h-16 object-contain' }}";
 
         function enableEdit() {
