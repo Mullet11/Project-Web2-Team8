@@ -27,7 +27,7 @@ class UserSeeder extends Seeder
         User::create([
             'name' => 'Rakha Mahasiswa',
             'identity_number' => '123456789',
-            'role' => 'user',
+            'role' => 'mahasiswa',
             'password' => Hash::make('password123'),
         ]);
     }
