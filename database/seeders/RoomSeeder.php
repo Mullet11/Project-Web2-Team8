@@ -13,115 +13,210 @@ class RoomSeeder extends Seeder
     public function run(): void
     {
         Room::insert([
-            // Kampus Banjarmasin (BJM)
             [
-                'name' => 'Ruang Kuliah FT BJM 1',
+                'name' => 'Ruang A13',
                 'campus' => 'Banjarmasin',
                 'faculty' => 'Teknik',
-                'building' => 'Gedung Utama FT BJM',
-                'capacity' => 40,
-                'facilities' => 'AC, Proyektor, Papan Tulis, Speaker',
-                'status' => 'available',
-            ],
-            [
-                'name' => 'Ruang Kuliah FT BJM 2',
-                'campus' => 'Banjarmasin',
-                'faculty' => 'Teknik',
-                'building' => 'Gedung Utama FT BJM',
-                'capacity' => 45,
-                'facilities' => 'AC, Proyektor, Papan Tulis, Speaker',
-                'status' => 'available',
-            ],
-            [
-                'name' => 'Lab Menggambar FT BJM',
-                'campus' => 'Banjarmasin',
-                'faculty' => 'Teknik',
-                'building' => 'Gedung D FT BJM',
-                'capacity' => 30,
-                'facilities' => 'AC, Proyektor, Meja Gambar',
-                'status' => 'available',
-            ],
-            [
-                'name' => 'Lab Komputer FT BJM',
-                'campus' => 'Banjarmasin',
-                'faculty' => 'Teknik',
-                'building' => 'Gedung D FT BJM',
-                'capacity' => 25,
-                'facilities' => 'AC, Proyektor, PC Komputer, Internet',
-                'status' => 'occupied',
-            ],
-            [
-                'name' => 'Aula FT BJM',
-                'campus' => 'Banjarmasin',
-                'faculty' => 'Teknik',
-                'building' => 'Gedung A FT BJM',
-                'capacity' => 150,
-                'facilities' => 'AC, Proyektor, Sound System, Panggung',
-                'status' => 'available',
-            ],
-            [
-                'name' => 'Gedung Theater FT BJM',
-                'campus' => 'Banjarmasin',
-                'faculty' => 'Teknik',
-                'building' => 'Gedung Dekanat FT BJM',
-                'capacity' => 100,
-                'facilities' => 'AC, Proyektor, Sound System, Kursi Theater',
-                'status' => 'available',
-            ],
-
-            // Kampus Banjarbaru (BJB)
-            [
-                'name' => 'Lab Komputer IT 1',
-                'campus' => 'Banjarbaru',
-                'faculty' => 'Teknik',
-                'building' => 'Gedung IT FT',
-                'capacity' => 35,
-                'facilities' => 'AC, Proyektor, PC Praktikum, Internet',
-                'status' => 'available',
-            ],
-            [
-                'name' => 'Lab Kimia Dasar FT BJB',
-                'campus' => 'Banjarbaru',
-                'faculty' => 'Teknik',
-                'building' => 'Gedung Lab Terpadu FT',
-                'capacity' => 30,
-                'facilities' => 'Peralatan Lab, AC, Papan Tulis, Exhaust Fan',
-                'status' => 'available',
-            ],
-            [
-                'name' => 'Ruang Kuliah FT BJB A1',
-                'campus' => 'Banjarbaru',
-                'faculty' => 'Teknik',
-                'building' => 'Gedung Dekanat Baru FT',
+                'building' => 'kelas',
                 'capacity' => 40,
                 'facilities' => 'AC, Proyektor, Papan Tulis',
                 'status' => 'available',
             ],
+
             [
-                'name' => 'Ruang Kuliah FT BJB B2',
-                'campus' => 'Banjarbaru',
+                'name' => 'Ruang A14',
+                'campus' => 'Banjarmasin',
                 'faculty' => 'Teknik',
-                'building' => 'Gedung Dekanat Baru FT',
+                'building' => 'kelas',
+                'capacity' => 70,
+                'facilities' => 'AC, Proyektor, Papan Tulis',
+                'status' => 'available',
+            ],
+
+            [
+                'name' => 'Ruang A15',
+                'campus' => 'Banjarmasin',
+                'faculty' => 'Teknik',
+                'building' => 'kelas',
+                'capacity' => 40,
+                'facilities' => 'AC, Proyektor, Papan Tulis',
+                'status' => 'available',
+            ],
+
+            [
+                'name' => 'Ruang A16',
+                'campus' => 'Banjarmasin',
+                'faculty' => 'Teknik',
+                'building' => 'kelas',
+                'capacity' => 40,
+                'facilities' => 'AC, Proyektor, Papan Tulis',
+                'status' => 'available',
+            ],
+
+            /* Ruang Laboratorium */
+            [
+                'name' => 'Ruang Laboratorium Komputer Dasar',
+                'campus' => 'Banjarmasin',
+                'faculty' => 'Teknik',
+                'building' => 'lab',
+                'capacity' => 33,
+                'facilities' => 'AC, Proyektor, Papan Tulis, Komputer, Internet',
+                'status' => 'available',
+            ],
+
+            [
+                'name' => 'Laboratorium MTI',
+                'campus' => 'Banjarmasin',
+                'faculty' => 'Teknik',
+                'building' => 'lab',
+                'capacity' => 33,
+                'facilities' => 'AC, Proyektor, Papan Tulis, Komputer, Internet',
+                'status' => 'available',
+            ],
+
+            [
+                'name' => 'Laboratorium Big Data',
+                'campus' => 'Banjarmasin',
+                'faculty' => 'Teknik',
+                'building' => 'lab',
                 'capacity' => 50,
-                'facilities' => 'AC, Proyektor, Papan Tulis, Sound System',
+                'facilities' => 'AC, Proyektor, Papan Tulis, Komputer, Internet',
                 'status' => 'available',
             ],
+
+            /* Ruang Aula */
             [
-                'name' => 'Aula Dekanat FT BJB',
-                'campus' => 'Banjarbaru',
+                'name' => 'Aula Pasca Sarjana',
+                'campus' => 'Banjarmasin',
                 'faculty' => 'Teknik',
-                'building' => 'Gedung Dekanat Baru FT',
-                'capacity' => 200,
-                'facilities' => 'AC, Proyektor, Sound System, Kursi Lipat',
+                'building' => 'aula',
+                'capacity' => 100,
+                'facilities' => 'AC, Proyektor, Sound System',
                 'status' => 'available',
             ],
+
+            /* Ruang Theater */
             [
-                'name' => 'Gedung Theater FT BJB',
+                'name' => 'Lecture Theater ULM',
+                'campus' => 'Banjarmasin',
+                'faculty' => 'Teknik',
+                'building' => 'theater',
+                'capacity' => 150,
+                'facilities' => 'AC, Proyektor, Sound System, Panggung',
+                'status' => 'available',
+            ],
+
+
+            /* Banjarbaru - Ruang Kelas */
+            [
+                'name' => 'Ruang 1',
                 'campus' => 'Banjarbaru',
                 'faculty' => 'Teknik',
-                'building' => 'Gedung Dekanat Baru FT',
-                'capacity' => 120,
-                'facilities' => 'AC, Proyektor, Sound System, Kursi Teater',
+                'building' => 'kelas',
+                'capacity' => 40,
+                'facilities' => 'AC, Proyektor, Papan Tulis',
+                'status' => 'available',
+            ],
+
+            [
+                'name' => 'Ruang 2',
+                'campus' => 'Banjarbaru',
+                'faculty' => 'Teknik',
+                'building' => 'kelas',
+                'capacity' => 40,
+                'facilities' => 'AC, Proyektor, Papan Tulis',
+                'status' => 'available',
+            ],
+
+            [
+                'name' => 'Ruang 3',
+                'campus' => 'Banjarbaru',
+                'faculty' => 'Teknik',
+                'building' => 'kelas',
+                'capacity' => 40,
+                'facilities' => 'AC, Proyektor, Papan Tulis',
+                'status' => 'available',
+            ],
+
+            [
+                'name' => 'Ruang 4',
+                'campus' => 'Banjarbaru',
+                'faculty' => 'Teknik',
+                'building' => 'kelas',
+                'capacity' => 40,
+                'facilities' => 'AC, Proyektor, Papan Tulis',
+                'status' => 'available',
+            ],
+
+            [
+                'name' => 'Ruang 5',
+                'campus' => 'Banjarbaru',
+                'faculty' => 'Teknik',
+                'building' => 'kelas',
+                'capacity' => 40,
+                'facilities' => 'AC, Proyektor, Papan Tulis',
+                'status' => 'available',
+            ],
+
+            [
+                'name' => 'Ruang 6',
+                'campus' => 'Banjarbaru',
+                'faculty' => 'Teknik',
+                'building' => 'kelas',
+                'capacity' => 40,
+                'facilities' => 'AC, Proyektor, Papan Tulis',
+                'status' => 'available',
+            ],
+
+            /* Ruang Laboratorium */
+            [
+                'name' => 'Laboratorium Komputasi',
+                'campus' => 'Banjarbaru',
+                'faculty' => 'Teknik',
+                'building' => 'lab',
+                'capacity' => 30,
+                'facilities' => 'AC, Proyektor, Papan Tulis, Komputer, Internet',
+                'status' => 'available',
+            ],
+
+            [
+                'name' => 'Laboratorium Transportasi dan Jalan Raya',
+                'campus' => 'Banjarbaru',
+                'faculty' => 'Teknik',
+                'building' => 'lab',
+                'capacity' => 30,
+                'facilities' => 'AC, Proyektor, Papan Tulis',
+                'status' => 'available',
+            ],
+
+            [
+                'name' => 'Laboratorium Struktur dan Material',
+                'campus' => 'Banjarbaru',
+                'faculty' => 'Teknik',
+                'building' => 'lab',
+                'capacity' => 30,
+                'facilities' => 'AC, Proyektor, Papan Tulis',
+                'status' => 'available',
+            ],
+
+            /* Ruang Aula */
+            [
+                'name' => 'Aula 1 Fakultas Teknik',
+                'campus' => 'Banjarbaru',
+                'faculty' => 'Teknik',
+                'building' => 'aula',
+                'capacity' => 100,
+                'facilities' => 'AC, Proyektor, Sound System, Panggung',
+                'status' => 'available',
+            ],
+
+            [
+                'name' => 'Aula 2 Fakultas Teknik',
+                'campus' => 'Banjarbaru',
+                'faculty' => 'Teknik',
+                'building' => 'aula',
+                'capacity' => 100,
+                'facilities' => 'AC, Proyektor, Sound System, Panggung',
                 'status' => 'available',
             ],
         ]);
