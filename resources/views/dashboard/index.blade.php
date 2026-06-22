@@ -242,58 +242,102 @@
     </div>
 </div>
 
-<!-- Rooms Grid Section (Mockup Style) -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="rooms-grid">
+@php
+    $categories = [
+        'kelas' => [
+            'title' => 'Ruang Kelas',
+            'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>'
+        ],
+        'lab' => [
+            'title' => 'Laboratorium',
+            'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>'
+        ],
+        'aula' => [
+            'title' => 'Aula',
+            'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>'
+        ],
+        'theater' => [
+            'title' => 'Theater',
+            'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>'
+        ]
+    ];
+@endphp
 
-    @foreach ($rooms as $room)
-    <div class="room-card bg-white rounded-[24px] border border-slate-100 hover:-translate-y-1.5 transition-all duration-300 flex flex-col group h-[400px]" data-status="{{ $room->data_status }}" data-building="{{ $room->data_building }}" data-type="{{ $room->data_type }}" data-name="{{ $room->data_name }}" data-campus="{{ $room->campus }}" data-faculty="{{ $room->data_faculty }}" style="display: none;">
-        <!-- Top Half: Image Placeholder -->
-        <div class="h-44 w-full bg-gradient-to-br {{ $room->image_bg_gradient }} rounded-t-[24px] flex items-center justify-center relative overflow-hidden shrink-0 border-b border-slate-100/50">
-            <!-- Faculty Badge Overlay -->
-            <span class="absolute top-4 left-4 px-3 py-1 bg-slate-900/60 backdrop-blur-sm text-white text-[10px] font-black rounded-lg select-none tracking-wider z-10 uppercase">
-                Fakultas {{ $room->faculty }}
+<!-- Rooms Container -->
+<div id="rooms-container" class="space-y-12">
+
+    @foreach ($categories as $catKey => $cat)
+    @php
+        $catRooms = $rooms->filter(function($r) use ($catKey) {
+            return $r->data_type === $catKey;
+        });
+    @endphp
+    
+    @if ($catRooms->count() > 0)
+    <div class="category-section" data-category="{{ $catKey }}" style="display: none;">
+        <!-- Category Heading -->
+        <h3 class="text-lg font-black text-slate-800 mb-5 flex items-center gap-2.5 select-none tracking-tight">
+            <span class="p-1.5 bg-slate-100 rounded-lg shrink-0">
+                {!! $cat['icon'] !!}
             </span>
-            <!-- Category Badge Overlay -->
-            <span class="absolute top-4 right-4 px-3 py-1 {{ $room->category_badge_class }} text-[10px] font-black rounded-lg select-none tracking-wider z-10 shadow-sm uppercase">
-                {{ $room->type_label }}
-            </span>
-            @if($room->data_status === 'tersedia')
-            <div class="absolute inset-0 flex items-center justify-center opacity-20 select-none pointer-events-none">
-                <svg viewBox="0 0 24 24" fill="none" class="w-16 h-16 text-blue-600/30" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-                </svg>
-            </div>
-            @endif
-            <span class="text-[10px] font-bold text-slate-400/80 uppercase tracking-widest">[ Image Placeholder ]</span>
-        </div>
-        <!-- Bottom Half: Details Section -->
-        <div class="p-6 text-white {{ $room->content_bg_color }} rounded-b-[24px] flex flex-col justify-between flex-grow">
-            <!-- Info & Status Badge -->
-            <div class="flex justify-between items-start gap-4">
-                <div class="overflow-hidden">
-                    <h4 class="text-xl font-extrabold tracking-tight truncate">{{ $room->name }}</h4>
-                    <p class="text-xs {{ $room->subtext_class }} font-semibold truncate mt-1">{{ $room->faculty }} &bull; {{ $room->type_label }} &bull; {{ $room->location_label }}</p>
-                    <p class="text-[10px] {{ $room->subtext_class }} font-bold truncate mt-0.5 opacity-80">Kapasitas: {{ $room->capacity }} Kursi</p>
+            <span>{{ $cat['title'] }}</span>
+        </h3>
+        
+        <!-- Category Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            @foreach ($catRooms as $room)
+            <div class="room-card bg-white rounded-[24px] border border-slate-100 hover:-translate-y-1.5 transition-all duration-300 flex flex-col group h-[400px]" data-status="{{ $room->data_status }}" data-building="{{ $room->data_building }}" data-type="{{ $room->data_type }}" data-name="{{ $room->data_name }}" data-campus="{{ $room->campus }}" data-faculty="{{ $room->data_faculty }}" style="display: none;">
+                <!-- Top Half: Image -->
+                <div class="h-44 w-full bg-gradient-to-br {{ $room->image_bg_gradient }} rounded-t-[24px] flex items-center justify-center relative overflow-hidden shrink-0 border-b border-slate-100/50">
+                    <!-- Faculty Badge Overlay -->
+                    <span class="absolute top-4 left-4 px-3 py-1 bg-slate-900/60 backdrop-blur-sm text-white text-[10px] font-black rounded-lg select-none tracking-wider z-10 uppercase">
+                        Fakultas {{ $room->faculty }}
+                    </span>
+                    <!-- Category Badge Overlay -->
+                    <span class="absolute top-4 right-4 px-3 py-1 {{ $room->category_badge_class }} text-[10px] font-black rounded-lg select-none tracking-wider z-10 shadow-sm uppercase">
+                        {{ $room->type_label }}
+                    </span>
+                    @if($room->data_status === 'tersedia')
+                    <div class="absolute inset-0 flex items-center justify-center opacity-20 select-none pointer-events-none">
+                        <svg viewBox="0 0 24 24" fill="none" class="w-16 h-16 text-blue-600/30" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    @endif
+                    <img src="{{ $room->image_url }}" alt="{{ $room->name }}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
                 </div>
-                <span class="px-3 py-1 bg-white {{ $room->badge_text_color }} text-xs font-bold rounded-xl shrink-0 select-none">
-                    {{ $room->badge_text }}
-                </span>
+                <!-- Bottom Half: Details Section -->
+                <div class="p-6 text-white {{ $room->content_bg_color }} rounded-b-[24px] flex flex-col justify-between flex-grow">
+                    <!-- Info & Status Badge -->
+                    <div class="flex justify-between items-start gap-4">
+                        <div class="overflow-hidden">
+                            <h4 class="text-xl font-extrabold tracking-tight truncate">{{ $room->name }}</h4>
+                            <p class="text-xs {{ $room->subtext_class }} font-semibold truncate mt-1">{{ $room->faculty }} &bull; {{ $room->type_label }} &bull; {{ $room->location_label }}</p>
+                            <p class="text-[10px] {{ $room->subtext_class }} font-bold truncate mt-0.5 opacity-80">Kapasitas: {{ $room->capacity }} Kursi</p>
+                        </div>
+                        <span class="px-3 py-1 bg-white {{ $room->badge_text_color }} text-xs font-bold rounded-xl shrink-0 select-none">
+                            {{ $room->badge_text }}
+                        </span>
+                    </div>
+                    <!-- Action Buttons -->
+                    <div class="flex flex-col gap-2 mt-4 shrink-0 select-none">
+                        <a href="{{ $room->button_url }}" class="w-full py-2.5 {{ $room->button_class }} text-xs font-bold rounded-xl text-center transition-all duration-200">
+                            {{ $room->button_text }}
+                        </a>
+                        <a href="/rooms/{{ $room->id }}/agenda" class="block w-full py-2 text-white/80 hover:text-white text-xs font-semibold rounded-xl text-center transition-all duration-200 border border-white/20 hover:border-white/40">
+                            Lihat Agenda Hari Ini
+                        </a>
+                    </div>
+                </div>
             </div>
-            <!-- Action Buttons -->
-            <div class="flex flex-col gap-2 mt-4 shrink-0 select-none">
-                <a href="{{ $room->button_url }}" class="w-full py-2.5 {{ $room->button_class }} text-xs font-bold rounded-xl text-center transition-all duration-200">
-                    {{ $room->button_text }}
-                </a>
-                <a href="/rooms/{{ $room->id }}/agenda" class="block w-full py-2 text-white/80 hover:text-white text-xs font-semibold rounded-xl text-center transition-all duration-200 border border-white/20 hover:border-white/40">
-                    Lihat Agenda Hari Ini
-                </a>
-            </div>
+            @endforeach
         </div>
     </div>
+    @endif
     @endforeach
 
     <!-- Filter Instruction (Shown by default since no campus/faculty is selected) -->
-    <div id="filter-instruction" class="col-span-full py-16 flex flex-col items-center justify-center text-center">
+    <div id="filter-instruction" class="py-16 flex flex-col items-center justify-center text-center">
         <div class="w-16 h-16 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-500 mb-4 border border-blue-100 animate-pulse">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
@@ -305,7 +349,7 @@
     </div>
 
     <!-- Empty State (Hidden by default) -->
-    <div id="empty-state" class="hidden col-span-full py-16 flex flex-col items-center justify-center text-center">
+    <div id="empty-state" class="hidden py-16 flex flex-col items-center justify-center text-center">
         <div class="w-16 h-16 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-400 mb-4 border border-slate-100/80">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
