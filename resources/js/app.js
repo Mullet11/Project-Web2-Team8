@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateTypeTabs() {
-        if ((!activeFilters.campus && !activeFilters.faculty) && !showAllTriggered) {
+        if ((!activeFilters.campus && !activeFilters.faculty && !activeFilters.search) && !showAllTriggered) {
             // Hide the type tabs and divider
             if (typeFiltersSection) typeFiltersSection.classList.add('hidden');
             if (typeFiltersDivider) typeFiltersDivider.classList.add('hidden');
@@ -209,7 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateTypeTabs();
         updateDropdownOptions();
 
-        if ((!activeFilters.campus && !activeFilters.faculty) && !showAllTriggered) {
+        if ((!activeFilters.campus && !activeFilters.faculty && !activeFilters.search) && !showAllTriggered) {
             // Hide all room cards
             roomCards.forEach(card => {
                 card.style.display = 'none';
