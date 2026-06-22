@@ -78,33 +78,47 @@
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="history-grid">
 
     @foreach($historyCards as $card)
-    <div class="history-card bg-white rounded-[24px] border border-slate-100 hover:-translate-y-1.5 transition-all duration-300 flex flex-col group h-[380px]" data-status="{{ $card['status'] }}" data-search="{{ strtolower($card['room_name']) }}">
+    <div class="history-card bg-white rounded-[24px] border border-slate-100 hover:-translate-y-1.5 transition-all duration-300 flex flex-col group h-[400px]" data-status="{{ $card['status'] }}" data-search="{{ strtolower($card['room_name']) }}">
         <!-- Top Half -->
-        <div class="h-44 w-full bg-slate-50 flex items-center justify-center relative overflow-hidden shrink-0 border-b border-slate-100/50 rounded-t-[24px]">
-            {!! $card['theme']['svg'] !!}
+        <div class="h-44 w-full bg-gradient-to-br {{ $card['image_bg_gradient'] }} rounded-t-[24px] flex items-center justify-center relative overflow-hidden shrink-0 border-b border-slate-100/50">
+            <!-- Faculty Badge Overlay -->
+            <span class="absolute top-4 left-4 px-3 py-1 bg-slate-900/60 backdrop-blur-sm text-white text-[10px] font-black rounded-lg select-none tracking-wider z-10 uppercase">
+                Fakultas {{ $card['faculty'] }}
+            </span>
+            <!-- Category Badge Overlay -->
+            <span class="absolute top-4 right-4 px-3 py-1 {{ $card['category_badge_class'] }} text-[10px] font-black rounded-lg select-none tracking-wider z-10 shadow-sm uppercase">
+                {{ $card['type_label'] }}
+            </span>
+            <img src="{{ $card['image_url'] }}" alt="{{ $card['room_name'] }}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
         </div>
         <!-- Bottom Half: Details Section -->
-        <div class="p-6 text-white {{ $card['theme']['bg_bottom'] }} rounded-b-[24px] flex flex-col justify-between flex-grow">
+        <div class="p-6 text-white {{ $card['content_bg_color'] }} rounded-b-[24px] flex flex-col justify-between flex-grow">
             <!-- Info & Status Badge -->
-            <div class="flex justify-between items-center gap-4">
+            <div class="flex justify-between items-start gap-4">
                 <div class="overflow-hidden">
-                    <h4 class="text-xl font-bold tracking-tight truncate">{{ $card['room_name'] }}</h4>
-                    <p class="text-xs {{ $card['theme']['text_bottom'] }} font-medium truncate mt-0.5">{{ $card['campus'] }} &bull; {{ $card['capacity'] }} Kursi</p>
+                    <h4 class="text-xl font-extrabold tracking-tight truncate">{{ $card['room_name'] }}</h4>
+                    <p class="text-xs {{ $card['subtext_class'] }} font-semibold truncate mt-1">Fakultas {{ $card['faculty'] }} &bull; {{ $card['type_label'] }} &bull; {{ $card['campus'] }}</p>
+                    <p class="text-[10px] {{ $card['subtext_class'] }} font-bold truncate mt-0.5 opacity-80">Kapasitas: {{ $card['capacity'] }} Kursi</p>
                 </div>
-                <span class="px-3.5 py-1.5 bg-white {{ $card['theme']['badge_text'] }} text-xs font-bold rounded-xl shrink-0 select-none">
+                <span class="px-3 py-1 bg-white {{ $card['badge_text_color'] }} text-xs font-bold rounded-xl shrink-0 select-none">
                     {{ $card['status_label'] }}
                 </span>
             </div>
 
             <!-- Booking Time -->
-            <p class="text-xs {{ $card['theme']['text_bottom'] }} font-semibold my-2">
-                {{ $card['tanggal'] }} &bull; {{ $card['waktu'] }}
-            </p>
+            <div class="mt-2 shrink-0">
+                <p class="text-xs {{ $card['subtext_class'] }} font-bold">Waktu Booking:</p>
+                <p class="text-xs text-white font-semibold mt-0.5">
+                    {{ $card['tanggal'] }} &bull; {{ $card['waktu'] }}
+                </p>
+            </div>
 
             <!-- Action Button -->
-            <a href="/history/detail/{{ $card['id'] }}" class="w-full py-3 {{ $card['theme']['btn_class'] }} text-sm font-bold rounded-xl text-center transition-all duration-200 cursor-pointer block">
-                Detail
-            </a>
+            <div class="flex flex-col gap-2 mt-4 shrink-0 select-none">
+                <a href="/history/detail/{{ $card['id'] }}" class="w-full py-2.5 {{ $card['button_class'] }} text-xs font-bold rounded-xl text-center transition-all duration-200 block cursor-pointer">
+                    Detail
+                </a>
+            </div>
         </div>
     </div>
     @endforeach
