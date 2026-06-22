@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique()->nullable();
             $table->string('identity_number')->unique();
             $table->string('whatsapp')->nullable();
-            $table->enum('role', ['admin', 'user', 'mahasiswa', 'dosen'])->default('mahasiswa');
+            $table->enum('role', ['admin', 'mahasiswa', 'dosen'])->default('mahasiswa');
             $table->string('faculty')->nullable();
             $table->string('study_program')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
