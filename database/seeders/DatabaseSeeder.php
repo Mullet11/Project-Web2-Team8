@@ -26,9 +26,9 @@ class DatabaseSeeder extends Seeder
             'identity_number' => '123456789',
             'email' => 'mhs@ulm.ac.id',
             'password' => 'password',
-            'role' => 'mahasiswa',
             'faculty' => 'Teknik',
             'study_program' => 'Teknologi Informasi',
+            'role' => 'mahasiswa',
         ]);
 
         $this->call([

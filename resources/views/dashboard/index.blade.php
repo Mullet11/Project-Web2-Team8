@@ -72,11 +72,11 @@
                             <span class="w-2 h-2 rounded-full bg-slate-400"></span>
                             Pilih Lokasi
                         </div>
-                        <div class="campus-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-600 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="Kampus Banjarmasin">
+                        <div class="campus-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-600 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="Banjarmasin">
                             <span class="w-2 h-2 rounded-full bg-blue-500"></span>
                             Banjarmasin
                         </div>
-                        <div class="campus-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-600 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="Kampus Banjarbaru">
+                        <div class="campus-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-600 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="Banjarbaru">
                             <span class="w-2 h-2 rounded-full bg-amber-500"></span>
                             Banjarbaru
                         </div>
@@ -299,8 +299,8 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
         </div>
-        <h3 class="text-base font-extrabold text-slate-800">Pilih Lokasi Kampus & Fakultas</h3>
-        <p class="text-sm text-slate-400 mt-1 max-w-sm">Silakan pilih lokasi kampus dan fakultas terlebih dahulu pada dropdown di atas untuk melihat daftar ruangan yang tersedia.</p>
+        <h3 class="text-base font-extrabold text-slate-800">Pilih Lokasi atau Fakultas</h3>
+        <p class="text-sm text-slate-400 mt-1 max-w-sm">Silakan tentukan filter lokasi atau fakultas terlebih dahulu pada dropdown di atas untuk melihat daftar ruangan yang tersedia.</p>
         <p class="text-xs text-slate-400 mt-3 select-none">Atau, <button type="button" id="show-all-rooms-btn" class="text-blue-600 hover:text-blue-700 font-extrabold hover:underline cursor-pointer focus:outline-none transition-colors">Tampilkan Semua Ruangan</button> jika Anda kebingungan.</p>
     </div>
 

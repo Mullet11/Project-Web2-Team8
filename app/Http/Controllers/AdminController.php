@@ -45,7 +45,7 @@ class AdminController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'campus' => 'required|string|in:Kampus Banjarmasin,Kampus Banjarbaru',
+            'campus' => 'required|string|in:Banjarmasin,Banjarbaru',
             'faculty' => 'nullable|string|max:255',
             'building' => 'nullable|string|max:255',
             'capacity' => 'required|integer|min:1',
@@ -64,7 +64,7 @@ class AdminController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'campus' => 'required|string|in:Kampus Banjarmasin,Kampus Banjarbaru',
+            'campus' => 'required|string|in:Banjarmasin,Banjarbaru',
             'faculty' => 'nullable|string|max:255',
             'building' => 'nullable|string|max:255',
             'capacity' => 'required|integer|min:1',

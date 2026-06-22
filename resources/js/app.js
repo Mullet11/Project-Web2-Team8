@@ -152,55 +152,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     function updateDropdownOptions() {
-        const allRooms = Array.from(roomCards);
-
-        // Determine allowed faculties based on selected campus
-        let allowedFaculties = new Set();
-        allRooms.forEach(card => {
-            const cardCampus = card.getAttribute('data-campus') || '';
-            const cardFaculty = (card.getAttribute('data-faculty') || '').toLowerCase();
-            
-            if (activeFilters.campus === '' || cardCampus === activeFilters.campus) {
-                if (cardFaculty) allowedFaculties.add(cardFaculty);
-            }
-        });
-
-        // Determine allowed campuses based on selected faculty
-        let allowedCampuses = new Set();
-        allRooms.forEach(card => {
-            const cardCampus = card.getAttribute('data-campus') || '';
-            const cardFaculty = (card.getAttribute('data-faculty') || '').toLowerCase();
-            
-            if (activeFilters.faculty === '' || cardFaculty === activeFilters.faculty.toLowerCase()) {
-                if (cardCampus) allowedCampuses.add(cardCampus);
-            }
-        });
-
-        // Update Campus dropdown options visibility
+        // Keep all campus dropdown options visible at all times
         if (campusMenu) {
             const campusOptions = campusMenu.querySelectorAll('.campus-option');
             campusOptions.forEach(opt => {
-                const val = opt.getAttribute('data-value');
-                if (val === '' || allowedCampuses.has(val)) {
-                    opt.style.display = '';
-                } else {
-                    opt.style.display = 'none';
-                }
+                opt.style.display = '';
             });
         }
 
-        // Update Faculty dropdown options visibility
+        // Keep all faculty dropdown options visible at all times
         if (facultyMenu) {
             const facultyOptions = facultyMenu.querySelectorAll('.faculty-option');
             facultyOptions.forEach(opt => {
-                // Keep all faculty options visible (as requested, matching sign up options)
                 opt.style.display = '';
             });
         }
     }
 
     function updateTypeTabs() {
-        if ((!activeFilters.campus || !activeFilters.faculty) && !showAllTriggered) {
+        if ((!activeFilters.campus && !activeFilters.faculty) && !showAllTriggered) {
             // Hide the type tabs and divider
             if (typeFiltersSection) typeFiltersSection.classList.add('hidden');
             if (typeFiltersDivider) typeFiltersDivider.classList.add('hidden');
@@ -239,7 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateTypeTabs();
         updateDropdownOptions();
 
-        if ((!activeFilters.campus || !activeFilters.faculty) && !showAllTriggered) {
+        if ((!activeFilters.campus && !activeFilters.faculty) && !showAllTriggered) {
             // Hide all room cards
             roomCards.forEach(card => {
                 card.style.display = 'none';

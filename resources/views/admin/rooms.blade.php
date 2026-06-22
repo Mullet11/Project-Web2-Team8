@@ -109,11 +109,35 @@
                     <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
                     Lokasi
                 </label>
-                <select id="filter-campus" onchange="applyFilters()" class="w-full px-4 py-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-xs sm:text-sm font-bold text-slate-650 focus:outline-none transition-colors cursor-pointer">
-                    <option value="">Semua Lokasi</option>
-                    <option value="Kampus Banjarmasin">Banjarmasin</option>
-                    <option value="Kampus Banjarbaru">Banjarbaru</option>
-                </select>
+                <div class="relative w-full custom-select" id="campus-select-container">
+                    <button type="button" class="select-button w-full flex items-center justify-between px-4 py-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-xs sm:text-sm font-bold text-slate-650 transition-all cursor-pointer focus:outline-none focus:ring-4 focus:ring-blue-600/5 min-w-0 overflow-hidden" aria-haspopup="listbox" aria-expanded="false">
+                        <span class="flex items-center gap-2 min-w-0 selected-label">
+                            <span class="w-2 h-2 rounded-full bg-slate-400 shrink-0"></span>
+                            <span class="truncate">Semua Lokasi</span>
+                        </span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-400 transition-transform duration-300 pointer-events-none shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <!-- Options Menu -->
+                    <div class="select-menu absolute right-0 z-50 w-full mt-2 origin-top-right bg-white border border-slate-200 rounded-2xl opacity-0 invisible scale-95 transition-all duration-200 pointer-events-none shadow-xl max-h-60 overflow-y-auto" role="listbox">
+                        <div class="p-1.5 space-y-0.5">
+                            <div class="select-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-650 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="" data-bullet-color="bg-slate-400">
+                                <span class="w-2 h-2 rounded-full bg-slate-400"></span>
+                                Semua Lokasi
+                            </div>
+                            <div class="select-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-650 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="Banjarmasin" data-bullet-color="bg-blue-500">
+                                <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                                Banjarmasin
+                            </div>
+                            <div class="select-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-650 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="Banjarbaru" data-bullet-color="bg-amber-500">
+                                <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                                Banjarbaru
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="filter-campus" value="">
+                </div>
             </div>
         </div>
 
@@ -125,35 +149,114 @@
                     <span class="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
                     Kategori
                 </label>
-                <select id="filter-type" onchange="applyFilters()" class="w-full px-4 py-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-xs sm:text-sm font-bold text-slate-650 focus:outline-none transition-colors cursor-pointer">
-                    <option value="">Semua Kategori</option>
-                    <option value="kelas">Kelas</option>
-                    <option value="lab">Lab</option>
-                    <option value="aula">Aula</option>
-                    <option value="theater">Theater</option>
-                </select>
+                <div class="relative w-full custom-select" id="type-select-container">
+                    <button type="button" class="select-button w-full flex items-center justify-between px-4 py-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-xs sm:text-sm font-bold text-slate-650 transition-all cursor-pointer focus:outline-none focus:ring-4 focus:ring-blue-600/5 min-w-0 overflow-hidden" aria-haspopup="listbox" aria-expanded="false">
+                        <span class="flex items-center gap-2 min-w-0 selected-label">
+                            <span class="w-2 h-2 rounded-full bg-slate-400 shrink-0"></span>
+                            <span class="truncate">Semua Kategori</span>
+                        </span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-400 transition-transform duration-300 pointer-events-none shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div class="select-menu absolute right-0 z-50 w-full mt-2 origin-top-right bg-white border border-slate-200 rounded-2xl opacity-0 invisible scale-95 transition-all duration-200 pointer-events-none shadow-xl max-h-60 overflow-y-auto" role="listbox">
+                        <div class="p-1.5 space-y-0.5">
+                            <div class="select-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-650 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="" data-bullet-color="bg-slate-400">
+                                <span class="w-2 h-2 rounded-full bg-slate-400"></span>
+                                Semua Kategori
+                            </div>
+                            <div class="select-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-650 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="kelas" data-bullet-color="bg-purple-500">
+                                <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                                Kelas
+                            </div>
+                            <div class="select-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-650 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="lab" data-bullet-color="bg-teal-500">
+                                <span class="w-2 h-2 rounded-full bg-teal-500"></span>
+                                Lab
+                            </div>
+                            <div class="select-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-650 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="aula" data-bullet-color="bg-rose-500">
+                                <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+                                Aula
+                            </div>
+                            <div class="select-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-650 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="theater" data-bullet-color="bg-amber-500">
+                                <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                                Theater
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="filter-type" value="">
+                </div>
             </div>
 
             <!-- Fakultas Filter -->
             <div class="md:col-span-4 space-y-2">
-                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
                     <span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>
                     Fakultas
                 </label>
-                <select id="filter-faculty" onchange="applyFilters()" class="w-full px-4 py-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-xs sm:text-sm font-bold text-slate-650 focus:outline-none transition-colors cursor-pointer">
-                    <option value="">Semua Fakultas</option>
-                    <option value="keguruan dan ilmu pendidikan">Keguruan dan Ilmu Pendidikan (FKIP)</option>
-                    <option value="ekonomi dan bisnis">Ekonomi dan Bisnis (FEB)</option>
-                    <option value="hukum">Hukum (FH)</option>
-                    <option value="ilmu sosial dan ilmu politik">Ilmu Sosial dan Ilmu Politik (FISIP)</option>
-                    <option value="kedokteran">Kedokteran (FK)</option>
-                    <option value="kedokteran gigi">Kedokteran Gigi (FKG)</option>
-                    <option value="matematika dan ilmu pengetahuan alam">Matematika dan Ilmu Pengetahuan Alam (FMIPA)</option>
-                    <option value="kehutanan">Kehutanan (Fahutan)</option>
-                    <option value="pertanian">Pertanian (Faperta)</option>
-                    <option value="perikanan dan kelautan">Perikanan dan Kelautan (FPK)</option>
-                    <option value="teknik">Teknik (FT)</option>
-                </select>
+                <div class="relative w-full custom-select" id="faculty-select-container">
+                    <button type="button" class="select-button w-full flex items-center justify-between px-4 py-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-xs sm:text-sm font-bold text-slate-650 transition-all cursor-pointer focus:outline-none focus:ring-4 focus:ring-blue-600/5 min-w-0 overflow-hidden" aria-haspopup="listbox" aria-expanded="false">
+                        <span class="flex items-center gap-2 min-w-0 selected-label">
+                            <span class="w-2 h-2 rounded-full bg-slate-400 shrink-0"></span>
+                            <span class="truncate">Semua Fakultas</span>
+                        </span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-400 transition-transform duration-300 pointer-events-none shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div class="select-menu absolute right-0 z-50 w-full mt-2 origin-top-right bg-white border border-slate-200 rounded-2xl opacity-0 invisible scale-95 transition-all duration-200 pointer-events-none shadow-xl max-h-60 overflow-y-auto" role="listbox">
+                        <div class="p-1.5 space-y-0.5">
+                            <div class="select-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-650 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="" data-bullet-color="bg-slate-400">
+                                <span class="w-2 h-2 rounded-full bg-slate-400"></span>
+                                Semua Fakultas
+                            </div>
+                            <div class="select-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-650 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="keguruan dan ilmu pendidikan" data-bullet-color="bg-indigo-500">
+                                <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+                                Keguruan dan Ilmu Pendidikan (FKIP)
+                            </div>
+                            <div class="select-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-650 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="ekonomi dan bisnis" data-bullet-color="bg-emerald-500">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                                Ekonomi dan Bisnis (FEB)
+                            </div>
+                            <div class="select-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-650 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="hukum" data-bullet-color="bg-rose-500">
+                                <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+                                Hukum (FH)
+                            </div>
+                            <div class="select-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-650 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="ilmu sosial dan ilmu politik" data-bullet-color="bg-purple-500">
+                                <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                                Ilmu Sosial dan Ilmu Politik (FISIP)
+                            </div>
+                            <div class="select-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-650 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="kedokteran" data-bullet-color="bg-teal-500">
+                                <span class="w-2 h-2 rounded-full bg-teal-500"></span>
+                                Kedokteran (FK)
+                            </div>
+                            <div class="select-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-650 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="kedokteran gigi" data-bullet-color="bg-pink-500">
+                                <span class="w-2 h-2 rounded-full bg-pink-500"></span>
+                                Kedokteran Gigi (FKG)
+                            </div>
+                            <div class="select-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-650 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="matematika dan ilmu pengetahuan alam" data-bullet-color="bg-sky-500">
+                                <span class="w-2 h-2 rounded-full bg-sky-500"></span>
+                                Matematika dan Ilmu Pengetahuan Alam (FMIPA)
+                            </div>
+                            <div class="select-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-650 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="kehutanan" data-bullet-color="bg-amber-700">
+                                <span class="w-2 h-2 rounded-full bg-amber-700"></span>
+                                Kehutanan (Fahutan)
+                            </div>
+                            <div class="select-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-650 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="pertanian" data-bullet-color="bg-lime-600">
+                                <span class="w-2 h-2 rounded-full bg-lime-600"></span>
+                                Pertanian (Faperta)
+                            </div>
+                            <div class="select-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-650 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="perikanan dan kelautan" data-bullet-color="bg-cyan-600">
+                                <span class="w-2 h-2 rounded-full bg-cyan-600"></span>
+                                Perikanan dan Kelautan (FPK)
+                            </div>
+                            <div class="select-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-650 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="teknik" data-bullet-color="bg-amber-500">
+                                <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                                Teknik (FT)
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="filter-faculty" value="">
+                </div>
             </div>
 
             <!-- Status Filter -->
@@ -162,12 +265,38 @@
                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
                     Status
                 </label>
-                <select id="filter-status" onchange="applyFilters()" class="w-full px-4 py-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-xs sm:text-sm font-bold text-slate-650 focus:outline-none transition-colors cursor-pointer">
-                    <option value="">Semua Status</option>
-                    <option value="available">Tersedia</option>
-                    <option value="occupied">Terpakai</option>
-                    <option value="inactive">Nonaktif</option>
-                </select>
+                <div class="relative w-full custom-select" id="status-select-container">
+                    <button type="button" class="select-button w-full flex items-center justify-between px-4 py-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-xs sm:text-sm font-bold text-slate-650 transition-all cursor-pointer focus:outline-none focus:ring-4 focus:ring-blue-600/5 min-w-0 overflow-hidden" aria-haspopup="listbox" aria-expanded="false">
+                        <span class="flex items-center gap-2 min-w-0 selected-label">
+                            <span class="w-2 h-2 rounded-full bg-slate-400 shrink-0"></span>
+                            <span class="truncate">Semua Status</span>
+                        </span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-400 transition-transform duration-300 pointer-events-none shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div class="select-menu absolute right-0 z-50 w-full mt-2 origin-top-right bg-white border border-slate-200 rounded-2xl opacity-0 invisible scale-95 transition-all duration-200 pointer-events-none shadow-xl max-h-60 overflow-y-auto" role="listbox">
+                        <div class="p-1.5 space-y-0.5">
+                            <div class="select-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-650 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="" data-bullet-color="bg-slate-400">
+                                <span class="w-2 h-2 rounded-full bg-slate-400"></span>
+                                Semua Status
+                            </div>
+                            <div class="select-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-650 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="available" data-bullet-color="bg-emerald-500">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                                Tersedia
+                            </div>
+                            <div class="select-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-650 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="occupied" data-bullet-color="bg-rose-500">
+                                <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+                                Terpakai
+                            </div>
+                            <div class="select-option flex items-center gap-2 px-3.5 py-2.5 text-xs font-semibold text-slate-650 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors whitespace-nowrap" role="option" data-value="inactive" data-bullet-color="bg-slate-400">
+                                <span class="w-2 h-2 rounded-full bg-slate-400"></span>
+                                Nonaktif
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="filter-status" value="">
+                </div>
             </div>
         </div>
     </div>
@@ -437,8 +566,8 @@
                     <label class="block text-xs font-black text-slate-400 uppercase tracking-wider mb-2">Lokasi *</label>
                     <select name="campus" required class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-semibold focus:outline-none focus:border-blue-500 transition-colors">
                         <option value="" disabled selected>Pilih Lokasi</option>
-                        <option value="Kampus Banjarmasin">Kampus Banjarmasin</option>
-                        <option value="Kampus Banjarbaru">Kampus Banjarbaru</option>
+                        <option value="Banjarmasin">Banjarmasin</option>
+                        <option value="Banjarbaru">Banjarbaru</option>
                     </select>
                 </div>
                 <div>
@@ -556,8 +685,8 @@
                     <label class="block text-xs font-black text-slate-400 uppercase tracking-wider mb-2">Lokasi *</label>
                     <select id="edit_campus" name="campus" required class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-semibold focus:outline-none focus:border-blue-500 transition-colors">
                         <option value="" disabled>Pilih Lokasi</option>
-                        <option value="Kampus Banjarmasin">Kampus Banjarmasin</option>
-                        <option value="Kampus Banjarbaru">Kampus Banjarbaru</option>
+                        <option value="Banjarmasin">Banjarmasin</option>
+                        <option value="Banjarbaru">Banjarbaru</option>
                     </select>
                 </div>
                 <div>
@@ -661,66 +790,105 @@
         const facultyFilter = document.getElementById('filter-faculty').value;
         const statusFilter = document.getElementById('filter-status').value;
 
-        // Filter Desktop Rows
+        const desktopEmpty = document.getElementById('desktop-empty-state');
+        const mobileEmpty = document.getElementById('mobile-empty-state');
+
+        const needsFilter = (campusFilter === '' && facultyFilter === '');
+
         let desktopCount = 0;
-        document.querySelectorAll('.room-row').forEach(row => {
-            const name = row.getAttribute('data-name');
-            const campus = row.getAttribute('data-campus');
-            const type = row.getAttribute('data-type');
-            const faculty = row.getAttribute('data-faculty');
-            const status = row.getAttribute('data-status');
-
-            const matchesSearch = name.includes(searchQuery);
-            const matchesCampus = campusFilter === '' || campus === campusFilter;
-            const matchesType = typeFilter === '' || type === typeFilter;
-            const matchesFaculty = facultyFilter === '' || faculty === facultyFilter;
-            const matchesStatus = statusFilter === '' || status === statusFilter;
-
-            if (matchesSearch && matchesCampus && matchesType && matchesFaculty && matchesStatus) {
-                row.style.display = '';
-                desktopCount++;
-            } else {
-                row.style.display = 'none';
-            }
-        });
-
-        // Filter Mobile Cards
         let mobileCount = 0;
-        document.querySelectorAll('.room-card').forEach(card => {
-            const name = card.getAttribute('data-name');
-            const campus = card.getAttribute('data-campus');
-            const type = card.getAttribute('data-type');
-            const faculty = card.getAttribute('data-faculty');
-            const status = card.getAttribute('data-status');
 
-            const matchesSearch = name.includes(searchQuery);
-            const matchesCampus = campusFilter === '' || campus === campusFilter;
-            const matchesType = typeFilter === '' || type === typeFilter;
-            const matchesFaculty = facultyFilter === '' || faculty === facultyFilter;
-            const matchesStatus = statusFilter === '' || status === statusFilter;
-
-            if (matchesSearch && matchesCampus && matchesType && matchesFaculty && matchesStatus) {
-                card.style.display = '';
-                mobileCount++;
-            } else {
+        if (needsFilter) {
+            // Hide all desktop rows
+            document.querySelectorAll('.room-row').forEach(row => {
+                row.style.display = 'none';
+            });
+            // Hide all mobile cards
+            document.querySelectorAll('.room-card').forEach(card => {
                 card.style.display = 'none';
+            });
+
+            // Update messages
+            if (desktopEmpty) {
+                desktopEmpty.querySelector('h3').textContent = 'Pilih Filter Terlebih Dahulu';
+                desktopEmpty.querySelector('p').textContent = 'Silakan tentukan filter Lokasi atau Fakultas terlebih dahulu untuk menampilkan daftar ruangan.';
             }
-        });
+            if (mobileEmpty) {
+                mobileEmpty.querySelector('h4').textContent = 'Pilih Filter Terlebih Dahulu';
+                mobileEmpty.querySelector('p').textContent = 'Silakan tentukan filter Lokasi atau Fakultas terlebih dahulu untuk menampilkan daftar ruangan.';
+            }
+        } else {
+            // Filter Desktop Rows
+            document.querySelectorAll('.room-row').forEach(row => {
+                const name = row.getAttribute('data-name');
+                const campus = row.getAttribute('data-campus');
+                const type = row.getAttribute('data-type');
+                const faculty = row.getAttribute('data-faculty');
+                const status = row.getAttribute('data-status');
+
+                const matchesSearch = name.includes(searchQuery);
+                const matchesCampus = campusFilter === '' || campus === campusFilter;
+                const matchesType = typeFilter === '' || type === typeFilter;
+                const matchesFaculty = facultyFilter === '' || faculty === facultyFilter;
+                const matchesStatus = statusFilter === '' || status === statusFilter;
+
+                if (matchesSearch && matchesCampus && matchesType && matchesFaculty && matchesStatus) {
+                    row.style.display = '';
+                    desktopCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            // Filter Mobile Cards
+            document.querySelectorAll('.room-card').forEach(card => {
+                const name = card.getAttribute('data-name');
+                const campus = card.getAttribute('data-campus');
+                const type = card.getAttribute('data-type');
+                const faculty = card.getAttribute('data-faculty');
+                const status = card.getAttribute('data-status');
+
+                const matchesSearch = name.includes(searchQuery);
+                const matchesCampus = campusFilter === '' || campus === campusFilter;
+                const matchesType = typeFilter === '' || type === typeFilter;
+                const matchesFaculty = facultyFilter === '' || faculty === facultyFilter;
+                const matchesStatus = statusFilter === '' || status === statusFilter;
+
+                if (matchesSearch && matchesCampus && matchesType && matchesFaculty && matchesStatus) {
+                    card.style.display = '';
+                    mobileCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Restore messages
+            if (desktopEmpty) {
+                desktopEmpty.querySelector('h3').textContent = 'Tidak Ada Hasil';
+                desktopEmpty.querySelector('p').textContent = 'Tidak ditemukan ruangan yang cocok dengan kriteria filter Anda.';
+            }
+            if (mobileEmpty) {
+                mobileEmpty.querySelector('h4').textContent = 'Tidak Ada Hasil';
+                mobileEmpty.querySelector('p').textContent = 'Tidak ditemukan ruangan yang cocok dengan kriteria filter Anda.';
+            }
+        }
 
         // Toggle Desktop Empty State
-        const desktopEmpty = document.getElementById('desktop-empty-state');
-        if (desktopCount === 0) {
-            desktopEmpty.classList.remove('hidden');
-        } else {
-            desktopEmpty.classList.add('hidden');
+        if (desktopEmpty) {
+            if (desktopCount === 0 || needsFilter) {
+                desktopEmpty.classList.remove('hidden');
+            } else {
+                desktopEmpty.classList.add('hidden');
+            }
         }
 
         // Toggle Mobile Empty State
-        const mobileEmpty = document.getElementById('mobile-empty-state');
-        if (mobileCount === 0) {
-            mobileEmpty.classList.remove('hidden');
-        } else {
-            mobileEmpty.classList.add('hidden');
+        if (mobileEmpty) {
+            if (mobileCount === 0 || needsFilter) {
+                mobileEmpty.classList.remove('hidden');
+            } else {
+                mobileEmpty.classList.add('hidden');
+            }
         }
 
         // Show/hide Reset button dynamically
@@ -741,6 +909,37 @@
         document.getElementById('filter-type').value = '';
         document.getElementById('filter-faculty').value = '';
         document.getElementById('filter-status').value = '';
+        
+        // Reset custom selects visual labels
+        const campusSelect = document.getElementById('campus-select-container');
+        if (campusSelect) {
+            campusSelect.querySelector('.selected-label').innerHTML = `
+                <span class="w-2 h-2 rounded-full bg-slate-400 shrink-0"></span>
+                <span class="truncate">Semua Lokasi</span>
+            `;
+        }
+        const typeSelect = document.getElementById('type-select-container');
+        if (typeSelect) {
+            typeSelect.querySelector('.selected-label').innerHTML = `
+                <span class="w-2 h-2 rounded-full bg-slate-400 shrink-0"></span>
+                <span class="truncate">Semua Kategori</span>
+            `;
+        }
+        const facultySelect = document.getElementById('faculty-select-container');
+        if (facultySelect) {
+            facultySelect.querySelector('.selected-label').innerHTML = `
+                <span class="w-2 h-2 rounded-full bg-slate-400 shrink-0"></span>
+                <span class="truncate">Semua Fakultas</span>
+            `;
+        }
+        const statusSelect = document.getElementById('status-select-container');
+        if (statusSelect) {
+            statusSelect.querySelector('.selected-label').innerHTML = `
+                <span class="w-2 h-2 rounded-full bg-slate-400 shrink-0"></span>
+                <span class="truncate">Semua Status</span>
+            `;
+        }
+
         applyFilters();
     }
 
@@ -859,5 +1058,90 @@
 
         document.getElementById(`${prefix}_facilities_compiled`).value = parts.join(', ');
     }
+
+    // --- Custom Select Dropdown Handler ---
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.custom-select').forEach(container => {
+            const btn = container.querySelector('.select-button');
+            const menu = container.querySelector('.select-menu');
+            const input = container.querySelector('input[type="hidden"]');
+            const label = container.querySelector('.selected-label');
+
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                
+                // Close other dropdowns
+                document.querySelectorAll('.custom-select').forEach(other => {
+                    if (other !== container) {
+                        const otherBtn = other.querySelector('.select-button');
+                        const otherMenu = other.querySelector('.select-menu');
+                        otherBtn.setAttribute('aria-expanded', 'false');
+                        otherMenu.classList.add('opacity-0', 'invisible', 'scale-95');
+                        otherMenu.classList.remove('opacity-100', 'visible', 'scale-100');
+                        otherMenu.classList.add('pointer-events-none');
+                        const svg = otherBtn.querySelector('svg');
+                        if (svg) svg.classList.remove('rotate-180');
+                    }
+                });
+
+                const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+                if (isExpanded) {
+                    btn.setAttribute('aria-expanded', 'false');
+                    menu.classList.add('opacity-0', 'invisible', 'scale-95');
+                    menu.classList.remove('opacity-100', 'visible', 'scale-100');
+                    menu.classList.add('pointer-events-none');
+                    btn.querySelector('svg').classList.remove('rotate-180');
+                } else {
+                    btn.setAttribute('aria-expanded', 'true');
+                    menu.classList.remove('opacity-0', 'invisible', 'scale-95');
+                    menu.classList.add('opacity-100', 'visible', 'scale-100');
+                    menu.classList.remove('pointer-events-none');
+                    btn.querySelector('svg').classList.add('rotate-180');
+                }
+            });
+
+            container.querySelectorAll('.select-option').forEach(option => {
+                option.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const val = option.getAttribute('data-value');
+                    const text = option.innerText.trim();
+                    const bulletColor = option.getAttribute('data-bullet-color') || 'bg-slate-400';
+
+                    input.value = val;
+                    
+                    label.innerHTML = `
+                        <span class="w-2 h-2 rounded-full ${bulletColor} shrink-0"></span>
+                        <span class="truncate">${text}</span>
+                    `;
+
+                    btn.setAttribute('aria-expanded', 'false');
+                    menu.classList.add('opacity-0', 'invisible', 'scale-95');
+                    menu.classList.remove('opacity-100', 'visible', 'scale-100');
+                    menu.classList.add('pointer-events-none');
+                    btn.querySelector('svg').classList.remove('rotate-180');
+
+                    // Trigger applyFilters
+                    applyFilters();
+                });
+            });
+        });
+
+        // Close on click outside
+        document.addEventListener('click', () => {
+            document.querySelectorAll('.custom-select').forEach(container => {
+                const btn = container.querySelector('.select-button');
+                const menu = container.querySelector('.select-menu');
+                btn.setAttribute('aria-expanded', 'false');
+                menu.classList.add('opacity-0', 'invisible', 'scale-95');
+                menu.classList.remove('opacity-100', 'visible', 'scale-100');
+                menu.classList.add('pointer-events-none');
+                const svg = btn.querySelector('svg');
+                if (svg) svg.classList.remove('rotate-180');
+            });
+        });
+
+        // Initialize filtering on page load
+        applyFilters();
+    });
 </script>
 @endsection
