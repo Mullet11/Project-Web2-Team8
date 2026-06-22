@@ -44,6 +44,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
         Route::post('/approve/{id}', [AdminController::class, 'approve']);
         Route::post('/reject/{id}', [AdminController::class, 'reject']);
+        Route::get('/reservations', [AdminController::class, 'reservations'])->name('admin.reservations');
 
         // Room Management CRUD
         Route::get('/rooms', [AdminController::class, 'rooms'])->name('admin.rooms');

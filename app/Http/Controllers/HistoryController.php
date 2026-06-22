@@ -23,9 +23,11 @@ class HistoryController extends Controller
 
     public function show($id)
     {
-        $reservation = Reservation::with('room')
-                            ->where('user_id', Auth::id())
-                            ->findOrFail($id);
+        $query = Reservation::with('room');
+        if (Auth::user()->role !== 'admin') {
+            $query->where('user_id', Auth::id());
+        }
+        $reservation = $query->findOrFail($id);
 
         $booking = HistoryViewModel::formatDetail($reservation);
 

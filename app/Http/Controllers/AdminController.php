@@ -169,4 +169,13 @@ class AdminController extends Controller
 
         return back()->with('success', 'Jadwal/Penguncian berhasil dihapus!');
     }
+
+    public function reservations()
+    {
+        $reservations = Reservation::with(['room', 'user'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('admin.reservations', compact('reservations'));
+    }
 }
