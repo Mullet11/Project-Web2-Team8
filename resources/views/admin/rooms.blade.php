@@ -677,7 +677,7 @@
                     <!-- Kursi Lipat -->
                     <label class="flex items-center gap-2 text-sm font-bold text-slate-600 cursor-pointer select-none">
                         <input type="checkbox" id="add_fac_kursi" class="rounded border-slate-300 text-blue-600 focus:ring-blue-500">
-                        <span>Kursi Lipat</span>
+                        <span>Kabel HDMI</span>
                     </label>
                 </div>
 
