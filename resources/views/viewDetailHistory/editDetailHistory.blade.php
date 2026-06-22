@@ -29,10 +29,8 @@
     <div class="bg-white rounded-[32px] border border-slate-100 shadow-sm overflow-hidden grid grid-cols-1 lg:grid-cols-2">
         
         <!-- LEFT COLUMN: Only Room Image (Visible only on lg screen sizes) -->
-        <div class="hidden lg:flex items-center justify-center p-12 bg-slate-50 border-r border-slate-100 select-none min-h-[500px]">
-            <div class="w-full h-full flex items-center justify-center">
-                <img src="{{ asset('images/profile/ULM PNG.png') }}" alt="ULM Logo Placeholder" class="max-h-[80%] max-w-[80%] object-contain filter drop-shadow-md">
-            </div>
+        <div class="hidden lg:block relative bg-slate-50 border-r border-slate-100 select-none min-h-[500px]">
+            <img src="{{ $booking['image_url'] }}" alt="{{ $booking['room_name'] }}" class="absolute inset-0 w-full h-full object-cover">
         </div>
 
         <!-- RIGHT COLUMN: Booking Form Container -->
