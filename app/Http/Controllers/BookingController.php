@@ -137,15 +137,8 @@ class BookingController extends Controller
         // Format schedules using BookingViewModel helper
         $formattedSchedules = BookingViewModel::formatSchedules($sortedEvents);
 
-        // Determine room type label
-        $data_type = 'kelas';
-        if (stripos($room->name, 'Lab') !== false) {
-            $data_type = 'lab';
-        } elseif (stripos($room->name, 'Aula') !== false) {
-            $data_type = 'aula';
-        } elseif (stripos($room->name, 'Teater') !== false || stripos($room->name, 'Theater') !== false) {
-            $data_type = 'theater';
-        }
+        // Determine room type label from building column
+        $data_type = $room->building ?? 'kelas';
 
         $type_label = match ($data_type) {
             'lab' => 'Laboratorium',

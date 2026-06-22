@@ -17,15 +17,8 @@ class DashboardViewModel
                 default => 'nonaktif',
             };
 
-            // Calculate data_type early
-            $data_type = 'kelas';
-            if (stripos($room->name, 'Lab') !== false) {
-                $data_type = 'lab';
-            } elseif (stripos($room->name, 'Aula') !== false) {
-                $data_type = 'aula';
-            } elseif (stripos($room->name, 'Teater') !== false || stripos($room->name, 'Theater') !== false) {
-                $data_type = 'theater';
-            }
+            // Calculate data_type early from the building column
+            $data_type = $room->building ?? 'kelas';
 
             $type_label = match ($data_type) {
                 'lab' => 'Laboratorium',
@@ -100,8 +93,8 @@ class DashboardViewModel
                 'campus' => $room->campus,
                 'faculty' => $room->faculty,
                 'data_faculty' => strtolower($room->faculty),
-                'building' => $room->campus,
-                'data_building' => 'all',
+                'building' => $room->building ?? 'kelas',
+                'data_building' => $room->building ?? 'kelas',
                 'data_type' => $data_type,
                 'type_label' => $type_label,
                 'category_badge_class' => $category_badge_class,

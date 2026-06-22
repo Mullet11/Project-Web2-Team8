@@ -556,9 +556,20 @@
 
         <form action="/admin/rooms" method="POST" class="space-y-4" onsubmit="compileFacilities('add')">
             @csrf
-            <div>
-                <label class="block text-xs font-black text-slate-400 uppercase tracking-wider mb-2">Nama Ruangan *</label>
-                <input type="text" name="name" required placeholder="Contoh: Ruang Kuliah 1" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-semibold focus:outline-none focus:border-blue-500 transition-colors">
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-black text-slate-400 uppercase tracking-wider mb-2">Nama Ruangan *</label>
+                    <input type="text" name="name" required placeholder="Contoh: Ruang Kuliah 1" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-semibold focus:outline-none focus:border-blue-500 transition-colors">
+                </div>
+                <div>
+                    <label class="block text-xs font-black text-slate-400 uppercase tracking-wider mb-2">Tipe Ruangan *</label>
+                    <select name="building" required class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-semibold focus:outline-none focus:border-blue-500 transition-colors">
+                        <option value="kelas">Ruang Kelas</option>
+                        <option value="lab">Laboratorium</option>
+                        <option value="aula">Aula</option>
+                        <option value="theater">Theater</option>
+                    </select>
+                </div>
             </div>
 
             <div class="grid grid-cols-2 gap-4">
@@ -675,9 +686,20 @@
         <form id="editRoomForm" action="" method="POST" class="space-y-4" onsubmit="compileFacilities('edit')">
             @csrf
             @method('PUT')
-            <div>
-                <label class="block text-xs font-black text-slate-400 uppercase tracking-wider mb-2">Nama Ruangan *</label>
-                <input type="text" id="edit_name" name="name" required class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-semibold focus:outline-none focus:border-blue-500 transition-colors">
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-black text-slate-400 uppercase tracking-wider mb-2">Nama Ruangan *</label>
+                    <input type="text" id="edit_name" name="name" required class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-semibold focus:outline-none focus:border-blue-500 transition-colors">
+                </div>
+                <div>
+                    <label class="block text-xs font-black text-slate-400 uppercase tracking-wider mb-2">Tipe Ruangan *</label>
+                    <select id="edit_building" name="building" required class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm font-semibold focus:outline-none focus:border-blue-500 transition-colors">
+                        <option value="kelas">Ruang Kelas</option>
+                        <option value="lab">Laboratorium</option>
+                        <option value="aula">Aula</option>
+                        <option value="theater">Theater</option>
+                    </select>
+                </div>
             </div>
 
             <div class="grid grid-cols-2 gap-4">
@@ -975,6 +997,7 @@
         document.getElementById('edit_capacity').value = room.capacity;
         document.getElementById('edit_faculty').value = room.faculty || 'Teknik';
         document.getElementById('edit_status').value = room.status;
+        document.getElementById('edit_building').value = room.building || 'kelas';
         
         // Reset all edit checkboxes
         const items = ['ac', 'proyektor', 'papan', 'pc', 'sound', 'kursi'];
