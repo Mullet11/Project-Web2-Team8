@@ -55,7 +55,7 @@ class RoomSeeder extends Seeder
 
             /* Ruang Laboratorium */
             [
-                'name' => 'Ruang Laboratorium Komputer Dasar',
+                'name' => 'Laboratorium Komputer Dasar',
                 'campus' => 'Banjarmasin',
                 'faculty' => 'Teknik',
                 'building' => 'lab',
