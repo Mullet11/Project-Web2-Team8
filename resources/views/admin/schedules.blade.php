@@ -366,28 +366,58 @@
                         <td class="px-6 py-4 whitespace-nowrap text-center">
                             <span class="text-xs font-black text-slate-800">{{ $schedule->day }}, {{ substr($schedule->start_time, 0, 5) }} - {{ substr($schedule->end_time, 0, 5) }} WIB</span>
                         </td>
-                        <!-- Actions -->
+                        <!-- Dropdown Action -->
                         <td class="px-6 py-4 text-center whitespace-nowrap">
-                            <div class="flex items-center justify-center gap-2">
-                                <!-- Edit Button -->
-                                <button onclick="openEditModal({{ json_encode($schedule) }})" type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-bold rounded-xl transition-colors cursor-pointer select-none border border-blue-100/30">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                            <div class="relative inline-block" id="sched-dropdown-wrap-{{ $schedule->id }}">
+                                <!-- Tombol Pilih -->
+                                <button
+                                    type="button"
+                                    onclick="toggleSchedDropdown({{ $schedule->id }})"
+                                    class="inline-flex items-center gap-1.5 px-4 py-1.5 bg-slate-700 hover:bg-slate-800 text-white text-xs font-bold rounded-xl transition-all cursor-pointer select-none shadow-sm"
+                                >
+                                    <span>Pilih</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 transition-transform duration-200" id="sched-chevron-{{ $schedule->id }}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
                                     </svg>
-                                    <span>Edit</span>
                                 </button>
 
-                                <!-- Delete Button -->
-                                <form action="/admin/schedules/{{ $schedule->id }}" method="POST" class="inline-block" onsubmit="return confirm('Apakah Anda yakin ingin menghapus jadwal penguncian ini?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold rounded-xl transition-colors cursor-pointer select-none border border-rose-100/30">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                        </svg>
-                                        <span>Hapus</span>
-                                    </button>
-                                </form>
+                                <!-- Dropdown Menu -->
+                                <div
+                                    id="sched-dropdown-{{ $schedule->id }}"
+                                    class="absolute right-0 z-50 mt-2 w-36 bg-white border border-slate-100 rounded-2xl shadow-xl opacity-0 invisible scale-95 transition-all duration-200 origin-top-right"
+                                >
+                                    <div class="p-1.5 space-y-0.5">
+                                        <!-- Edit -->
+                                        <button
+                                            onclick="openEditModal({{ json_encode($schedule) }}); closeSchedDropdown({{ $schedule->id }})"
+                                            type="button"
+                                            class="w-full flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs font-bold text-blue-700 hover:bg-blue-50 transition-colors cursor-pointer select-none"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                            </svg>
+                                            Edit Jadwal
+                                        </button>
+
+                                        <!-- Divider -->
+                                        <div class="border-t border-slate-100 my-1"></div>
+
+                                        <!-- Hapus -->
+                                        <form action="/admin/schedules/{{ $schedule->id }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus jadwal penguncian ini?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button
+                                                type="submit"
+                                                class="w-full flex items-center gap-2.5 px-3.5 py-2 rounded-xl text-xs font-bold text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer select-none"
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                </svg>
+                                                Hapus Jadwal
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </td>
                     </tr>
@@ -461,15 +491,21 @@
                 </div>
 
                 <div class="flex justify-end gap-2 pt-3 border-t border-slate-100">
-                    <!-- Edit Button -->
-                    <button onclick="openEditModal({{ json_encode($schedule) }})" type="button" class="px-3.5 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-bold rounded-xl transition-all cursor-pointer border border-blue-100/30">
+                    <!-- Edit Button Mobile -->
+                    <button onclick="openEditModal({{ json_encode($schedule) }})" type="button" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-bold rounded-xl transition-all cursor-pointer border border-blue-100/30">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                        </svg>
                         Edit
                     </button>
-                    <!-- Delete Button -->
+                    <!-- Delete Button Mobile -->
                     <form action="/admin/schedules/{{ $schedule->id }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus jadwal ini?');">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="px-3.5 py-2 bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold rounded-xl transition-all cursor-pointer border border-rose-100/30">
+                        <button type="submit" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-bold rounded-xl transition-all cursor-pointer border border-rose-100/30">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
                             Hapus
                         </button>
                     </form>
@@ -826,6 +862,50 @@
 
 @section('scripts')
 <script>
+    // --- Schedule Action Dropdown Logic ---
+    let activeSchedDropdownId = null;
+
+    function toggleSchedDropdown(id) {
+        if (activeSchedDropdownId !== null && activeSchedDropdownId !== id) {
+            closeSchedDropdown(activeSchedDropdownId);
+        }
+        const menu = document.getElementById('sched-dropdown-' + id);
+        const chevron = document.getElementById('sched-chevron-' + id);
+        const isOpen = !menu.classList.contains('invisible');
+
+        if (isOpen) {
+            closeSchedDropdown(id);
+        } else {
+            menu.classList.remove('opacity-0', 'invisible', 'scale-95');
+            menu.classList.add('opacity-100', 'visible', 'scale-100');
+            chevron.classList.add('rotate-180');
+            activeSchedDropdownId = id;
+        }
+    }
+
+    function closeSchedDropdown(id) {
+        const menu = document.getElementById('sched-dropdown-' + id);
+        const chevron = document.getElementById('sched-chevron-' + id);
+        if (menu) {
+            menu.classList.add('opacity-0', 'invisible', 'scale-95');
+            menu.classList.remove('opacity-100', 'visible', 'scale-100');
+        }
+        if (chevron) {
+            chevron.classList.remove('rotate-180');
+        }
+        if (activeSchedDropdownId === id) activeSchedDropdownId = null;
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        if (activeSchedDropdownId !== null) {
+            const wrap = document.getElementById('sched-dropdown-wrap-' + activeSchedDropdownId);
+            if (wrap && !wrap.contains(e.target)) {
+                closeSchedDropdown(activeSchedDropdownId);
+            }
+        }
+    });
+
     // --- Data Mapping ---
     const allRooms = @json($rooms);
     const prodiMap = {
