@@ -223,6 +223,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Filter execution
     function applyFilters() {
+        // Show/hide Reset button dynamically
+        const isFiltering = activeFilters.search !== '' || 
+                            activeFilters.status !== 'all' || 
+                            activeFilters.building !== 'all' || 
+                            activeFilters.type !== 'all' || 
+                            activeFilters.campus !== '' || 
+                            activeFilters.faculty !== '' ||
+                            showAllTriggered;
+        const resetBtn = document.getElementById('btn-reset-filter');
+        if (resetBtn) {
+            if (isFiltering) {
+                resetBtn.classList.remove('opacity-0', 'pointer-events-none');
+            } else {
+                resetBtn.classList.add('opacity-0', 'pointer-events-none');
+            }
+        }
+
         updateTypeTabs();
         updateDropdownOptions();
 
@@ -332,17 +349,17 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                                 <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                             </span>
-                            <span class="text-teal-600">${labelText}</span>
+                            <span class="text-teal-600 truncate">${labelText}</span>
                         `;
                     } else if (val === 'terpakai') {
                         statusSelectedLabel.innerHTML = `
                             <span class="w-2 h-2 rounded-full bg-rose-500 shrink-0"></span>
-                            <span class="text-rose-600">${labelText}</span>
+                            <span class="text-rose-600 truncate">${labelText}</span>
                         `;
                     } else {
                         statusSelectedLabel.innerHTML = `
                             <span class="w-2 h-2 rounded-full bg-slate-400 shrink-0"></span>
-                            <span class="text-slate-600">${labelText}</span>
+                            <span class="text-slate-600 truncate">${labelText}</span>
                         `;
                     }
                 }
@@ -411,14 +428,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (val === 'all') {
                         facultySelectedLabel.innerHTML = `
                             <span class="w-2 h-2 rounded-full bg-slate-400 shrink-0"></span>
-                            <span class="text-slate-600">${labelText}</span>
+                            <span class="text-slate-600 truncate">${labelText}</span>
                         `;
                     } else {
                         const bulletSpan = option.querySelector('span');
-                        const bulletClass = bulletSpan ? bulletSpan.className : 'w-2 h-2 rounded-full bg-blue-500 shrink-0';
+                        const bulletClass = bulletSpan ? bulletSpan.className + ' shrink-0' : 'w-2 h-2 rounded-full bg-blue-500 shrink-0';
                         facultySelectedLabel.innerHTML = `
                             <span class="${bulletClass}"></span>
-                            <span class="text-slate-600">${labelText}</span>
+                            <span class="text-slate-600 truncate">${labelText}</span>
                         `;
                     }
                 }
@@ -487,10 +504,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (campusSelectedLabel) {
                     const bulletSpan = option.querySelector('span');
-                    const bulletClass = bulletSpan ? bulletSpan.className : 'w-2 h-2 rounded-full bg-slate-400 shrink-0';
+                    const bulletClass = bulletSpan ? bulletSpan.className + ' shrink-0' : 'w-2 h-2 rounded-full bg-slate-400 shrink-0';
                     campusSelectedLabel.innerHTML = `
                         <span class="${bulletClass}"></span>
-                        <span class="text-slate-600">${labelText}</span>
+                        <span class="text-slate-600 truncate">${labelText}</span>
                     `;
                 }
 
@@ -548,6 +565,75 @@ document.addEventListener('DOMContentLoaded', () => {
     if (showAllBtn) {
         showAllBtn.addEventListener('click', () => {
             showAllTriggered = true;
+            applyFilters();
+        });
+    }
+
+    // Reset Filter Button click handler
+    const resetBtn = document.getElementById('btn-reset-filter');
+    if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+            // Reset active filters
+            activeFilters.search = '';
+            activeFilters.status = 'all';
+            activeFilters.building = 'all';
+            activeFilters.type = 'all';
+            activeFilters.campus = '';
+            activeFilters.faculty = '';
+            showAllTriggered = false;
+
+            // Reset search input
+            if (searchInput) searchInput.value = '';
+
+            // Reset campus dropdown label & value
+            if (campusInput) campusInput.value = '';
+            if (campusSelectedLabel) {
+                campusSelectedLabel.innerHTML = `
+                    <span class="w-2 h-2 rounded-full bg-slate-400 shrink-0"></span>
+                    <span class="truncate">Pilih Lokasi Kampus</span>
+                `;
+            }
+
+            // Reset faculty dropdown label & value
+            if (facultyInput) facultyInput.value = '';
+            if (facultySelectedLabel) {
+                facultySelectedLabel.innerHTML = `
+                    <span class="w-2 h-2 rounded-full bg-slate-400 shrink-0"></span>
+                    <span class="truncate">Pilih Fakultas</span>
+                `;
+            }
+
+            // Reset status dropdown label & value
+            if (statusInput) statusInput.value = 'all';
+            if (statusSelectedLabel) {
+                statusSelectedLabel.innerHTML = `
+                    <span class="w-2 h-2 rounded-full bg-slate-400 shrink-0"></span>
+                    <span class="truncate">Semua Status</span>
+                `;
+            }
+
+            // Reset Type Tabs style
+            if (typeTabs.length > 0) {
+                typeTabs.forEach(t => {
+                    t.classList.remove('bg-blue-600', 'text-white', 'shadow-md', 'shadow-blue-500/10');
+                    t.classList.add('bg-white', 'text-slate-600', 'border', 'border-slate-200/60', 'shadow-sm', 'hover:bg-slate-50', 'hover:text-slate-900');
+                    if (t.getAttribute('data-type') === 'all') {
+                        t.classList.remove('bg-white', 'text-slate-600', 'border', 'border-slate-200/60', 'shadow-sm', 'hover:bg-slate-50', 'hover:text-slate-900');
+                        t.classList.add('bg-blue-600', 'text-white', 'shadow-md', 'shadow-blue-500/10');
+                    }
+                });
+            }
+
+            // Reset Building Tabs if any
+            if (buildingTabs.length > 0) {
+                buildingTabs.forEach(t => {
+                    t.className = 'building-tab px-4 py-2 bg-slate-50 hover:bg-slate-100 text-slate-600 text-xs font-bold rounded-xl transition-all whitespace-nowrap border border-slate-100/50 cursor-pointer';
+                    if ((t.getAttribute('data-building') || 'all') === 'all') {
+                        t.className = 'building-tab px-4 py-2 bg-blue-600 text-white text-xs font-bold rounded-xl transition-all whitespace-nowrap cursor-pointer';
+                    }
+                });
+            }
+
             applyFilters();
         });
     }

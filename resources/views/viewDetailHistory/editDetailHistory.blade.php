@@ -3,22 +3,21 @@
 @section('title', 'Edit Booking - Smart Class Booking')
 
 @section('content')
-<!-- Header Banner / Back Button (Matches brand style) -->
-<div class="relative w-full h-32 bg-gradient-to-r from-blue-500/10 via-indigo-500/5 to-blue-600/10 -mt-20 lg:-mt-8 -mx-4 sm:-mx-6 lg:-mx-8 w-[calc(100%+2rem)] sm:w-[calc(100%+3rem)] lg:w-[calc(100%+4rem)] rounded-none border-b border-blue-100/30 mb-8 flex items-center justify-center overflow-hidden select-none">
-    <div class="w-full max-w-[1440px] px-4 sm:px-6 lg:px-10 flex items-center justify-between">
-        <div class="flex items-center gap-5">
-            <!-- Back button to detail -->
-            <a href="/history/detail/{{ $booking['id'] }}" class="w-10 h-10 rounded-full bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center shadow-lg transition-transform hover:scale-105 cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-                </svg>
-            </a>
-            <div class="space-y-0.5">
-                <h1 class="text-2xl font-black text-slate-900 tracking-tight">Edit Peminjaman</h1>
-                <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Nomor Booking: {{ $booking['no_booking'] }}</p>
-            </div>
+<!-- Page Header -->
+<div class="mb-8 select-none flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div class="flex items-center gap-4">
+        <a href="/history/detail/{{ $booking['id'] }}" class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-500 hover:text-slate-700 transition-colors shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+        </a>
+        <div>
+            <h1 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-slate-900 to-slate-700 tracking-tight">Edit Booking</h1>
+            <p class="text-sm text-slate-500 mt-1">Nomor Booking: {{ $booking['no_booking'] }}</p>
         </div>
-        <!-- Dynamic Status Badge -->
+    </div>
+    <!-- Dynamic Status Badge -->
+    <div class="flex items-center shrink-0">
         <span class="px-4 py-2 bg-slate-100 border border-slate-200 text-slate-600 text-xs font-black rounded-xl select-none shrink-0 tracking-wider uppercase">
             {{ $booking['status'] }}
         </span>

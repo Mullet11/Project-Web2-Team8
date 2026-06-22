@@ -3,27 +3,25 @@
 @section('title', 'Kelola Ruangan - Smart Class Booking')
 
 @section('content')
-<!-- Header Banner (Matches brand style) -->
-<div class="relative w-full h-32 bg-gradient-to-r from-blue-500/10 via-indigo-500/5 to-blue-600/10 -mt-20 lg:-mt-8 -mx-4 sm:-mx-6 lg:-mx-8 w-[calc(100%+2rem)] sm:w-[calc(100%+3rem)] lg:w-[calc(100%+4rem)] rounded-none border-b border-blue-100/30 mb-8 flex items-center justify-center overflow-hidden select-none">
-    <div class="w-full max-w-[1440px] px-4 sm:px-6 lg:px-10 flex items-center justify-between">
-        <div class="flex items-center gap-5">
-            <div class="space-y-0.5">
-                <h1 class="text-2xl font-black text-slate-900 tracking-tight">Kelola Ruangan</h1>
-                <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Manajemen dan Tata Kelola Fasilitas Kelas</p>
-            </div>
-        </div>
-        <!-- Add Room Button (Premium Brand Blue) -->
-        <button onclick="openAddModal()" type="button" class="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-black rounded-xl shadow-md transition-all hover:scale-[1.02] cursor-pointer select-none">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-            </svg>
-            <span>Tambah Ruangan</span>
-        </button>
-    </div>
-</div>
 
 <!-- Main Container -->
 <div class="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 mb-10">
+    <!-- Page Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8 select-none">
+        <div class="space-y-1">
+            <h1 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-slate-900 to-slate-700 tracking-tight">Kelola Ruangan</h1>
+            <p class="text-sm text-slate-500">Tambahkan, perbarui, atau hapus data ruangan kelas dan laboratorium yang tersedia di kampus.</p>
+        </div>
+        <!-- Add Room Button (Premium Brand Blue) -->
+        <div class="shrink-0">
+            <button onclick="openAddModal()" type="button" class="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-black rounded-xl shadow-md transition-all hover:scale-[1.02] cursor-pointer select-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                </svg>
+                <span>Tambah Ruangan</span>
+            </button>
+        </div>
+    </div>
 
     @if(session('success'))
         <!-- Success Alert (Matches theme) -->
@@ -71,17 +69,30 @@
     <!-- Search and Filter Panel -->
     <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm mb-6 space-y-5 select-none">
         <!-- Panel Header -->
-        <div class="flex items-center gap-2 pb-3 border-b border-slate-100/80">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-            </svg>
-            <h4 class="text-xs font-black text-slate-700 uppercase tracking-wider">Filter & Pencarian Ruangan</h4>
+        <div class="flex items-center justify-between pb-3 border-b border-slate-100/80">
+            <div class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                </svg>
+                <h4 class="text-xs font-black text-slate-700 uppercase tracking-wider">Filter & Pencarian Ruangan</h4>
+            </div>
+            <!-- Reset Button (Visible only when filtering is active) -->
+            <button type="button" id="btn-reset-filter" onclick="resetFilters()" class="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-50 hover:bg-slate-100 text-[10px] text-slate-500 hover:text-slate-700 font-extrabold rounded-lg border border-slate-200/60 transition-all duration-200 opacity-0 pointer-events-none cursor-pointer select-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 8H18.5" />
+                </svg>
+                <span>Reset Filter</span>
+            </button>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-end">
+        <!-- Row 1: Search, Campus -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-5 items-end">
             <!-- Search Input -->
-            <div class="lg:col-span-4 space-y-2">
-                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Cari Nama Ruangan</label>
+            <div class="md:col-span-8 space-y-2">
+                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                    Cari Nama Ruangan
+                </label>
                 <div class="relative w-full">
                     <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 text-slate-400">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -93,19 +104,28 @@
             </div>
 
             <!-- Kampus Filter -->
-            <div class="sm:col-span-1 lg:col-span-2 space-y-2">
-                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Kampus</label>
-                <select id="filter-campus" onchange="applyFilters()" class="w-full px-4 py-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-xs sm:text-sm font-bold text-slate-600 focus:outline-none transition-colors">
+            <div class="md:col-span-4 space-y-2">
+                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                    Lokasi Kampus
+                </label>
+                <select id="filter-campus" onchange="applyFilters()" class="w-full px-4 py-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-xs sm:text-sm font-bold text-slate-650 focus:outline-none transition-colors cursor-pointer">
                     <option value="">Semua Kampus</option>
-                    <option value="Kampus Banjarmasin">Banjarmasin</option>
-                    <option value="Kampus Banjarbaru">Banjarbaru</option>
+                    <option value="Kampus Banjarmasin">Kampus Banjarmasin</option>
+                    <option value="Kampus Banjarbaru">Kampus Banjarbaru</option>
                 </select>
             </div>
+        </div>
 
+        <!-- Row 2: Category, Faculty, Status -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-5 items-end mt-4 pt-4 border-t border-slate-100/50">
             <!-- Kategori Filter -->
-            <div class="sm:col-span-1 lg:col-span-2 space-y-2">
-                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Kategori</label>
-                <select id="filter-type" onchange="applyFilters()" class="w-full px-4 py-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-xs sm:text-sm font-bold text-slate-600 focus:outline-none transition-colors">
+            <div class="md:col-span-4 space-y-2">
+                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
+                    Kategori
+                </label>
+                <select id="filter-type" onchange="applyFilters()" class="w-full px-4 py-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-xs sm:text-sm font-bold text-slate-650 focus:outline-none transition-colors cursor-pointer">
                     <option value="">Semua Kategori</option>
                     <option value="kelas">Kelas</option>
                     <option value="lab">Lab</option>
@@ -115,17 +135,23 @@
             </div>
 
             <!-- Fakultas Filter -->
-            <div class="sm:col-span-1 lg:col-span-2 space-y-2">
-                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Fakultas</label>
-                <select id="filter-faculty" onchange="applyFilters()" class="w-full px-4 py-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-xs sm:text-sm font-bold text-slate-600 focus:outline-none transition-colors">
+            <div class="md:col-span-4 space-y-2">
+                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>
+                    Fakultas
+                </label>
+                <select id="filter-faculty" onchange="applyFilters()" class="w-full px-4 py-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-xs sm:text-sm font-bold text-slate-650 focus:outline-none transition-colors cursor-pointer">
                     <option value="">Semua Fakultas</option>
                 </select>
             </div>
 
             <!-- Status Filter -->
-            <div class="sm:col-span-1 lg:col-span-2 space-y-2">
-                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest">Status</label>
-                <select id="filter-status" onchange="applyFilters()" class="w-full px-4 py-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-xs sm:text-sm font-bold text-slate-600 focus:outline-none transition-colors">
+            <div class="md:col-span-4 space-y-2">
+                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                    Status
+                </label>
+                <select id="filter-status" onchange="applyFilters()" class="w-full px-4 py-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-xs sm:text-sm font-bold text-slate-650 focus:outline-none transition-colors cursor-pointer">
                     <option value="">Semua Status</option>
                     <option value="available">Tersedia</option>
                     <option value="occupied">Terpakai</option>
@@ -705,6 +731,26 @@
         } else {
             mobileEmpty.classList.add('hidden');
         }
+
+        // Show/hide Reset button dynamically
+        const isFiltering = searchQuery !== '' || campusFilter !== '' || typeFilter !== '' || facultyFilter !== '' || statusFilter !== '';
+        const resetBtn = document.getElementById('btn-reset-filter');
+        if (resetBtn) {
+            if (isFiltering) {
+                resetBtn.classList.remove('opacity-0', 'pointer-events-none');
+            } else {
+                resetBtn.classList.add('opacity-0', 'pointer-events-none');
+            }
+        }
+    }
+
+    function resetFilters() {
+        document.getElementById('admin-search-input').value = '';
+        document.getElementById('filter-campus').value = '';
+        document.getElementById('filter-type').value = '';
+        document.getElementById('filter-faculty').value = '';
+        document.getElementById('filter-status').value = '';
+        applyFilters();
     }
 
     // --- Modal Controls ---

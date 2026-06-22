@@ -3,26 +3,25 @@
 @section('title', 'Kelola Jadwal Akademik - Smart Class Booking')
 
 @section('content')
-<!-- Header Banner (Matches brand style) -->
-<div class="relative w-full h-32 bg-gradient-to-r from-blue-500/10 via-indigo-500/5 to-blue-600/10 -mt-20 lg:-mt-8 -mx-4 sm:-mx-6 lg:-mx-8 w-[calc(100%+2rem)] sm:w-[calc(100%+3rem)] lg:w-[calc(100%+4rem)] rounded-none border-b border-blue-100/30 mb-8 flex items-center justify-center overflow-hidden select-none">
-    <div class="w-full max-w-[1440px] px-4 sm:px-6 lg:px-10 flex items-center justify-between">
-        <div class="flex items-center gap-5">
-            <div class="space-y-0.5">
-                <h1 class="text-2xl font-black text-slate-900 tracking-tight">Kelola Jadwal Akademik</h1>
-                <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Kelola Jadwal Mata Kuliah 1 Semester</p>
-            </div>
-        </div>
-        <button onclick="openAddModal()" type="button" class="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-black rounded-xl shadow-md transition-all hover:scale-[1.02] cursor-pointer select-none">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
-            </svg>
-            <span>Tambah Jadwal</span>
-        </button>
-    </div>
-</div>
 
 <!-- Main Container -->
 <div class="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 mb-10">
+    <!-- Page Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8 select-none">
+        <div class="space-y-1">
+            <h1 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-slate-900 to-slate-700 tracking-tight">Jadwal Akademik</h1>
+            <p class="text-sm text-slate-500">Kelola jadwal kuliah tetap atau penguncian ruangan rutin untuk keperluan akademik fakultas.</p>
+        </div>
+        <!-- Add Schedule Button (Premium Brand Blue) -->
+        <div class="shrink-0">
+            <button onclick="openAddModal()" type="button" class="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-black rounded-xl shadow-md transition-all hover:scale-[1.02] cursor-pointer select-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                </svg>
+                <span>Tambah Jadwal</span>
+            </button>
+        </div>
+    </div>
 
     @if(session('success'))
         <!-- Success Alert (Matches theme) -->
@@ -127,7 +126,7 @@
                     Fakultas
                 </label>
                 <select id="filter-faculty" onchange="handleFacultyFilterChange(); applyFilters();" class="w-full px-4 py-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 focus:border-blue-600 focus:bg-white rounded-xl text-xs sm:text-sm font-bold text-slate-650 focus:outline-none transition-colors cursor-pointer">
-                    <option value="" disabled selected>Pilih Fakultas</option>
+                    <option value="" selected>Semua Fakultas</option>
                     <option value="Keguruan dan Ilmu Pendidikan">Keguruan dan Ilmu Pendidikan (FKIP)</option>
                     <option value="Ekonomi dan Bisnis">Ekonomi dan Bisnis (FEB)</option>
                     <option value="Hukum">Hukum (FH)</option>
@@ -800,9 +799,10 @@
         const facultyVal = document.getElementById('filter-faculty').value;
         const prodiSelect = document.getElementById('filter-prodi');
         
+        prodiSelect.innerHTML = '<option value="">Semua Program Studi</option>';
+        prodiSelect.disabled = false;
+
         if (facultyVal) {
-            prodiSelect.innerHTML = '<option value="">Pilih Program Studi</option>';
-            prodiSelect.disabled = false;
             if (prodiMap[facultyVal]) {
                 prodiMap[facultyVal].forEach(prodi => {
                     const opt = document.createElement('option');
@@ -812,9 +812,19 @@
                 });
             }
         } else {
-            prodiSelect.innerHTML = '<option value="" disabled selected>Pilih Fakultas Terlebih Dahulu</option>';
-            prodiSelect.disabled = true;
-            prodiSelect.value = "";
+            // Load all prodis alphabetically from all faculties
+            const allProdis = new Set();
+            for (const key in prodiMap) {
+                if (prodiMap.hasOwnProperty(key)) {
+                    prodiMap[key].forEach(prodi => allProdis.add(prodi));
+                }
+            }
+            Array.from(allProdis).sort().forEach(prodi => {
+                const opt = document.createElement('option');
+                opt.value = prodi;
+                opt.textContent = prodi;
+                prodiSelect.appendChild(opt);
+            });
         }
     }
 
@@ -1058,23 +1068,16 @@
 
         // Count total schedules for the selected faculty
         let facultyTotal = 0;
-        if (isFacultySelected) {
-            document.querySelectorAll('.schedule-row').forEach(row => {
-                const faculty = row.getAttribute('data-faculty') || '';
-                if (faculty === facultyFilter) {
-                    facultyTotal++;
-                }
-            });
-        }
+        document.querySelectorAll('.schedule-row').forEach(row => {
+            const faculty = row.getAttribute('data-faculty') || '';
+            if (!isFacultySelected || faculty === facultyFilter) {
+                facultyTotal++;
+            }
+        });
 
         // Filter Desktop Rows
         let desktopCount = 0;
         document.querySelectorAll('.schedule-row').forEach(row => {
-            if (!isFacultySelected) {
-                row.style.display = 'none';
-                return;
-            }
-
             const room = row.getAttribute('data-room') || '';
             const title = row.getAttribute('data-title') || '';
             const lecturer = row.getAttribute('data-lecturer') || '';
@@ -1106,11 +1109,6 @@
         // Filter Mobile Cards
         let mobileCount = 0;
         document.querySelectorAll('.schedule-card').forEach(card => {
-            if (!isFacultySelected) {
-                card.style.display = 'none';
-                return;
-            }
-
             const room = card.getAttribute('data-room') || '';
             const title = card.getAttribute('data-title') || '';
             const lecturer = card.getAttribute('data-lecturer') || '';
@@ -1142,11 +1140,7 @@
         // Toggle Empty States
         const desktopEmpty = document.getElementById('desktop-empty-state');
         if (desktopEmpty) {
-            if (!isFacultySelected) {
-                desktopEmpty.classList.remove('hidden');
-                desktopEmpty.querySelector('h3').textContent = 'Pilih Fakultas Terlebih Dahulu';
-                desktopEmpty.querySelector('p').textContent = 'Silakan pilih Fakultas pada filter di bawah untuk menampilkan daftar jadwal.';
-            } else if (desktopCount === 0) {
+            if (desktopCount === 0) {
                 desktopEmpty.classList.remove('hidden');
                 desktopEmpty.querySelector('h3').textContent = 'Tidak Ada Hasil';
                 desktopEmpty.querySelector('p').textContent = 'Tidak ditemukan jadwal/penguncian yang cocok dengan kriteria filter Anda.';
@@ -1157,11 +1151,7 @@
 
         const mobileEmpty = document.getElementById('mobile-empty-state');
         if (mobileEmpty) {
-            if (!isFacultySelected) {
-                mobileEmpty.classList.remove('hidden');
-                mobileEmpty.querySelector('h4').textContent = 'Pilih Fakultas Terlebih Dahulu';
-                mobileEmpty.querySelector('p').textContent = 'Silakan pilih Fakultas pada filter di bawah untuk menampilkan daftar jadwal.';
-            } else if (mobileCount === 0) {
+            if (mobileCount === 0) {
                 mobileEmpty.classList.remove('hidden');
                 mobileEmpty.querySelector('h4').textContent = 'Tidak Ada Hasil';
                 mobileEmpty.querySelector('p').textContent = 'Tidak ditemukan jadwal/penguncian yang cocok dengan kriteria filter Anda.';
@@ -1174,11 +1164,7 @@
         const displayCount = window.innerWidth >= 768 ? desktopCount : mobileCount;
         const counterEl = document.getElementById('schedule-counter');
         if (counterEl) {
-            if (!isFacultySelected) {
-                counterEl.textContent = `Menampilkan 0 Jadwal`;
-            } else {
-                counterEl.textContent = `Menampilkan ${displayCount} dari ${facultyTotal} Jadwal`;
-            }
+            counterEl.textContent = `Menampilkan ${displayCount} dari ${facultyTotal} Jadwal`;
         }
 
         // Show/hide Reset button dynamically

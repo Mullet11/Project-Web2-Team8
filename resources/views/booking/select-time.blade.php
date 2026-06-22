@@ -3,23 +3,21 @@
 @section('title', 'Pilih Jadwal - Smart Class Booking')
 
 @section('content')
-<!-- Header Banner Illustration (Matches brand color and ULM logo placeholder) -->
-<div class="relative w-full h-64 bg-gradient-to-r from-blue-500/10 via-indigo-500/5 to-blue-600/10 -mx-4 sm:-mx-6 lg:-mx-8 w-[calc(100%+2rem)] sm:w-[calc(100%+3rem)] lg:w-[calc(100%+4rem)] rounded-none border-b border-blue-100/30 mb-8 flex items-center justify-center overflow-hidden select-none">
-    <!-- ULM Logo/Image Placeholder (matches user request) -->
-    <div class="h-36 flex items-center justify-center p-4">
-        <img src="{{ asset('images/profile/ULM PNG.png') }}" alt="ULM Logo Placeholder" class="h-full object-contain filter drop-shadow-md">
-    </div>
-
-    <!-- Blue back button overlay (matches mockup style, brand color) -->
-    <a href="/dashboard" class="absolute top-6 left-6 w-11 h-11 rounded-full bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center shadow-lg transition-transform hover:scale-105 cursor-pointer z-10">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+<!-- Page Header -->
+<div class="mb-8 select-none flex items-center gap-4">
+    <a href="/dashboard" class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-500 hover:text-slate-700 transition-colors shrink-0">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
         </svg>
     </a>
+    <div>
+        <h1 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-slate-900 to-slate-700 tracking-tight">Booking Ruangan</h1>
+        <p class="text-sm text-slate-500 mt-1">Tentukan tanggal, pilih slot waktu yang tersedia, dan lengkapi detail pengajuan peminjaman ruangan.</p>
+    </div>
 </div>
 
-<!-- Content Area with Responsive Spacing -->
-<div class="px-6 py-8 sm:px-10 sm:py-10 lg:px-16 lg:py-12">
+<!-- Content Area -->
+<div class="w-full">
     <!-- Main Layout Grid -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-stretch mt-4">
 

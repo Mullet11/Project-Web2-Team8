@@ -3,20 +3,14 @@
 @section('title', 'Admin Dashboard - Smart Class Booking')
 
 @section('content')
-<!-- Header Banner / Back Button (Matches brand style) -->
-<div class="relative w-full h-32 bg-gradient-to-r from-blue-500/10 via-indigo-500/5 to-blue-600/10 -mt-20 lg:-mt-8 -mx-4 sm:-mx-6 lg:-mx-8 w-[calc(100%+2rem)] sm:w-[calc(100%+3rem)] lg:w-[calc(100%+4rem)] rounded-none border-b border-blue-100/30 mb-8 flex items-center justify-center overflow-hidden select-none">
-    <div class="w-full max-w-[1440px] px-4 sm:px-6 lg:px-10 flex items-center justify-between">
-        <div class="flex items-center gap-5">
-            <div class="space-y-0.5">
-                <h1 class="text-2xl font-black text-slate-900 tracking-tight">Admin Dashboard</h1>
-                <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Persetujuan Pengajuan Peminjaman Ruangan</p>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- Main Container -->
 <div class="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 mb-10">
+    <!-- Page Header -->
+    <div class="mb-8 select-none">
+        <h1 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-slate-900 to-slate-700 tracking-tight">Persetujuan Booking</h1>
+        <p class="text-sm text-slate-500 mt-1">Tinjau dan kelola seluruh pengajuan reservasi ruangan dari mahasiswa atau dosen secara berkala.</p>
+    </div>
 
     @if(session('success'))
         <!-- Success Alert (Matches theme) -->
