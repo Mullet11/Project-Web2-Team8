@@ -1,59 +1,193 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Smart Class Booking App 🎓
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Smart Class Booking adalah aplikasi berbasis web yang dirancang khusus untuk memfasilitasi mahasiswa dan civitas akademika (khususnya di lingkungan Universitas Lambung Mangkurat - ULM) dalam mencari, melihat jadwal ketersediaan, dan melakukan peminjaman ruangan (Kelas, Laboratorium, Aula, Theater) secara modern dan efisien.
 
-## About Laravel
+Aplikasi ini dilengkapi algoritma cerdas yang mencegah terjadinya bentrok jadwal (*double-booking*) antara kegiatan mahasiswa dengan jadwal perkuliahan rutin kampus, serta dilengkapi dengan sistem notifikasi email otomatis.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🔑 Fitur Aplikasi & Pembagian Role
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Sistem memiliki dua peran (*Role*) utama dengan hak akses yang berbeda:
 
-## Learning Laravel
+### 1. Mahasiswa (User)
+* **Katalog Ruangan Dinamis:** Mencari dan memfilter ruangan berdasarkan Kampus (Banjarmasin/Banjarbaru), Fakultas, Jenis Ruangan, dan Ketersediaan saat ini.
+* **Cek Agenda Harian:** Melihat jadwal pemakaian suatu ruangan pada tanggal tertentu secara *real-time* untuk mencari slot waktu yang kosong.
+* **Pengajuan Booking:** Melakukan *booking* ruangan pada rentang waktu yang tersedia. Sistem otomatis akan memblokir pengajuan jika jadwalnya bertabrakan.
+* **Riwayat Peminjaman (History):** Melacak status pengajuan apakah sedang Menunggu, Disetujui, atau Ditolak.
+* **Notifikasi Email:** Menerima email notifikasi secara langsung ke *inbox* (Gmail) ketika status permohonan berubah.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### 2. Administrator (Admin BAAK / Fakultas)
+* **Dashboard Persetujuan:** Mengelola antrean permohonan peminjaman ruangan (Approve/Reject) yang akan otomatis memicu pengiriman email ke mahasiswa terkait.
+* **Manajemen Ruangan:** Menambah, mengubah, atau menghapus data fisik ruangan beserta kapasitas dan fasilitasnya.
+* **Manajemen Jadwal Akademik (Schedules):** Memasukkan Jadwal Kuliah Rutin (*Fixed Class*) untuk "mengunci" ruangan secara otomatis setiap minggunya agar tidak bisa dibooking oleh mahasiswa.
+* **Log Reservasi:** Melihat keseluruhan riwayat peminjaman (*history log*) dari seluruh pengguna.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## 🛠 Teknologi yang Digunakan
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+* **Backend:** Laravel 11 (PHP 8.2+)
+* **Frontend:** Laravel Blade Templating
+* **Styling:** Tailwind CSS (Utility-first CSS Framework)
+* **Interaktivitas:** Vanilla JavaScript (DOM Manipulation)
+* **Build Tool:** Vite (Asset Bundling)
+* **Database:** MySQL
+* **Sistem Email:** SMTP Gmail (Laravel Mailables)
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## 📂 Arsitektur Aplikasi & Struktur Folder
 
-## Contributing
+Aplikasi ini menggunakan pola arsitektur **MVC (Model-View-Controller)** standar Laravel, dengan tambahan lapisan **ViewModel** untuk memisahkan *presentation logic* (logika perhitungan warna, jenis gambar, badge status) dari Controller.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```text
+Simari/
+├── app/
+│   ├── Http/Controllers/     # Menangani alur request (Routing Logic)
+│   ├── Mail/                 # Menangani konfigurasi format Email Notifikasi
+│   ├── Models/               # Representasi tabel database (Eloquent ORM)
+│   └── ViewModels/           # (Custom) Memanipulasi data mentah untuk siap disajikan ke View
+├── database/
+│   ├── migrations/           # Skema / struktur tabel database
+│   └── seeders/              # Data dummy / default bawaan sistem
+├── public/                   # Folder terekspos untuk aset statis (gambar, build css/js)
+├── resources/
+│   ├── css/ & js/            # Source file Tailwind dan Javascript murni
+│   └── views/                # File tampilan HTML (.blade.php)
+└── routes/                   # Definisi URL routing web (web.php)
+```
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 📊 Entity Relationship Diagram (ERD)
 
-## Security Vulnerabilities
+Berikut adalah relasi antar tabel pada sistem *database*:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```mermaid
+erDiagram
+    users ||--o{ reservations : "mengajukan"
+    rooms ||--o{ reservations : "memiliki"
+    rooms ||--o{ schedules : "dikunci oleh"
 
-## License
+    users {
+        bigint id PK
+        string name
+        string nim_nidn
+        string email
+        string whatsapp
+        string faculty
+        enum role "admin, mahasiswa"
+    }
+    rooms {
+        bigint id PK
+        string name
+        string campus
+        string faculty
+        string building
+        int capacity
+        text facilities
+        enum status "available, occupied, inactive"
+    }
+    reservations {
+        bigint id PK
+        bigint user_id FK
+        bigint room_id FK
+        string purpose
+        date date
+        time start_time
+        time end_time
+        enum status "menunggu, disetujui, ditolak"
+    }
+    schedules {
+        bigint id PK
+        bigint room_id FK
+        string title
+        string lecturer_name
+        string prodi
+        string day
+        time start_time
+        time end_time
+        enum type "fixed_class, general"
+    }
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+---
+
+## 🚀 Cara Menjalankan Program (Localhost)
+
+Pastikan Anda telah menginstal **PHP 8.2+**, **Composer**, **Node.js**, dan web server lokal seperti **Laragon/XAMPP**.
+
+1. **Clone repositori** ini ke komputer Anda.
+   ```bash
+   git clone https://github.com/Mullet11/Project-Web2-Team8.git
+   cd Project-Web2-Team8
+   ```
+
+2. **Instal dependensi Backend (PHP)**
+   ```bash
+   composer install
+   ```
+
+3. **Instal dependensi Frontend (Node.js)**
+   ```bash
+   npm install
+   ```
+
+4. **Konfigurasi Environment**
+   Salin file konfigurasi bawaan dan ubah kredensial database serta email SMTP Gmail Anda.
+   ```bash
+   cp .env.example .env
+   ```
+   Generate *application key*:
+   ```bash
+   php artisan key:generate
+   ```
+
+5. **Migrasi & Seeding Database**
+   Perintah ini akan membuat struktur tabel beserta data akun Admin (*admin123/password*) dan contoh ruangan.
+   ```bash
+   php artisan migrate:fresh --seed
+   ```
+
+6. **Build Asset Tailwind & Vite**
+   ```bash
+   npm run build
+   ```
+
+7. **Jalankan Server Lokal**
+   ```bash
+   php artisan serve
+   ```
+   *Buka http://localhost:8000 di browser Anda.*
+
+---
+
+## 📡 Dokumentasi Endpoint (Routing Web)
+
+Karena aplikasi ini mengusung pendekatan *Server-Side Rendering (Monolith)*, berikut adalah pemetaan rute utama yang digunakan:
+
+**Public & Auth:**
+* `GET /` - Halaman *Landing* & Akses Form Login / Sign Up
+* `POST /login` - Autentikasi Pengguna
+* `POST /register` - Pendaftaran akun baru Mahasiswa
+* `POST /logout` - Akhiri sesi login
+
+**Role Mahasiswa:**
+* `GET /dashboard` - Tampilan Utama katalog *filter* ruangan
+* `GET /rooms/{id}` - Melihat rincian detail spesifik ruangan
+* `GET /rooms/{id}/agenda` - Melihat jadwal / agenda ruangan di hari tertentu
+* `GET /rooms/{id}/book` - Form permohonan *booking* ruangan
+* `POST /book` - Endpoint penyimpanan data pengajuan peminjaman
+* `GET /history` - Melihat *list* riwayat permohonan *booking* sendiri
+* `GET /profile` - Menampilkan profil pengguna
+
+**Role Admin:**
+* `GET /admin/dashboard` - Panel validasi status (Antrean Persetujuan)
+* `POST /admin/reservations/{id}/approve` - Menyetujui *booking* **(Memicu Email)**
+* `POST /admin/reservations/{id}/reject` - Menolak *booking* **(Memicu Email)**
+* `GET /admin/rooms` - Panel manajemen basis data ruangan (CRUD)
+* `POST /admin/rooms` - Tambah data ruangan baru
+* `GET /admin/schedules` - Panel manajemen Jadwal Kuliah Rutin
+* `POST /admin/schedules` - Menambah blokir/penguncian jadwal permanen
+* `GET /admin/reservations` - Panel *Log History* seluruh aktivitas peminjaman di sistem
