@@ -7,6 +7,9 @@ use App\Models\Room;
 use App\Models\Reservation;
 use App\ViewModels\BookingViewModel;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\BookingStatusMail;
+use Illuminate\Support\Facades\Log;
 
 class BookingController extends Controller
 {
@@ -213,7 +216,7 @@ class BookingController extends Controller
 
         $no_booking = 'SBC-' . date('Ymd') . '-' . str_pad(rand(1, 999), 3, '0', STR_PAD_LEFT);
 
-        Reservation::create([
+        $reservation = Reservation::create([
             'no_booking' => $no_booking,
             'user_id' => Auth::id(),
             'room_id' => $id,
@@ -230,6 +233,12 @@ class BookingController extends Controller
             'waktu_selesai' => $validated['waktu_selesai'],
             'status' => 'menunggu'
         ]);
+
+        try {
+            Mail::to(Auth::user()->email)->send(new BookingStatusMail($reservation, 'menunggu'));
+        } catch (\Exception $e) {
+            Log::error('Gagal mengirim email menunggu: ' . $e->getMessage());
+        }
 
         return redirect('/history')->with('success', 'Booking berhasil dibuat!');
     }
