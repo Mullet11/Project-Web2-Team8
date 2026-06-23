@@ -6,6 +6,9 @@ use App\Models\Reservation;
 use App\Models\Room;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\BookingStatusMail;
+use Illuminate\Support\Facades\Log;
 
 class AdminController extends Controller
 {
@@ -24,6 +27,12 @@ class AdminController extends Controller
         $reservation = Reservation::findOrFail($id);
         $reservation->update(['status' => 'disetujui']);
 
+        try {
+            Mail::to($reservation->user->email)->send(new BookingStatusMail($reservation, 'disetujui'));
+        } catch (\Exception $e) {
+            Log::error('Gagal mengirim email disetujui: ' . $e->getMessage());
+        }
+
         return back()->with('success', 'Peminjaman disetujui!');
     }
 
@@ -31,6 +40,12 @@ class AdminController extends Controller
     {
         $reservation = Reservation::findOrFail($id);
         $reservation->update(['status' => 'ditolak']);
+
+        try {
+            Mail::to($reservation->user->email)->send(new BookingStatusMail($reservation, 'ditolak'));
+        } catch (\Exception $e) {
+            Log::error('Gagal mengirim email ditolak: ' . $e->getMessage());
+        }
 
         return back()->with('success', 'Peminjaman ditolak!');
     }
