@@ -52,6 +52,18 @@
             'title' => 'Booking Menunggu Persetujuan',
             'message' => 'Pengajuan peminjaman ruangan Anda sedang dalam antrean review oleh admin BAAK. Anda dapat mengedit data peminjaman selama status masih menunggu persetujuan.'
         ];
+    } elseif ($status === 'ditolak') {
+        $theme = [
+            'color' => 'slate',
+            'badge_bg' => 'bg-slate-100',
+            'badge_border' => 'border-slate-200',
+            'badge_text' => 'text-slate-700',
+            'btn_primary' => 'bg-slate-700 hover:bg-slate-800 shadow-slate-700/15 focus:ring-slate-700/20',
+            'card_bg' => 'bg-slate-50/80 border-slate-200',
+            'icon' => '<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-slate-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>',
+            'title' => 'Booking Ditolak',
+            'message' => 'Mohon maaf, pengajuan peminjaman ruangan Anda ditolak oleh Administrator. Silakan ajukan kembali di waktu atau ruangan yang berbeda.'
+        ];
     }
 @endphp
 

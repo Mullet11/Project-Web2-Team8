@@ -192,13 +192,27 @@ class HistoryViewModel
                             <path d="M133 38 l14 14 M147 38 l-14 14" stroke="#ffffff" stroke-width="3" stroke-linecap="round" />
                         </svg>',
             ];
+        } elseif ($status === 'ditolak') {
+            return [
+                'bg_bottom' => 'bg-slate-700',
+                'text_bottom' => 'text-slate-100/90',
+                'badge_text' => 'text-slate-700',
+                'btn_class' => 'bg-white hover:bg-slate-50 text-slate-700',
+                // Naufal's Ditolak SVG (Using a modified X mark)
+                'svg' => '<svg viewBox="0 0 200 120" class="w-full h-full max-h-36 object-contain" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="20" y="90" width="160" height="6" rx="3" fill="#e2e8f0" />
+                            <circle cx="100" cy="45" r="30" fill="#f1f5f9" />
+                            <circle cx="100" cy="45" r="26" fill="#e2e8f0" />
+                            <path d="M85 30 l30 30 M115 30 l-30 30" stroke="#64748b" stroke-width="6" stroke-linecap="round" />
+                        </svg>',
+            ];
         } else {
             // Menunggu
             return [
-                'bg_bottom' => 'bg-slate-500',
-                'text_bottom' => 'text-slate-100/90',
-                'badge_text' => 'text-slate-600',
-                'btn_class' => 'bg-white hover:bg-slate-50 text-slate-600',
+                'bg_bottom' => 'bg-amber-500', // Changed from slate to amber to match index
+                'text_bottom' => 'text-amber-100/90',
+                'badge_text' => 'text-amber-600',
+                'btn_class' => 'bg-white hover:bg-slate-50 text-amber-600',
                 // Naufal's Menunggu SVG
                 'svg' => '<svg viewBox="0 0 200 120" class="w-full h-full max-h-36 object-contain" xmlns="http://www.w3.org/2000/svg">
                             <rect x="20" y="90" width="160" height="6" rx="3" fill="#e2e8f0" />
